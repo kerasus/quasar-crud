@@ -7,6 +7,11 @@ const EntityMixin = {
       type: Function
     }
   },
+  created () {
+    if (!this.$axios) {
+      this.$axios = axios
+    }
+  },
   methods: {
     getEntityId () {
       const target = this.inputData.find(item => item.name.toString() === this.entityIdKey.toString())

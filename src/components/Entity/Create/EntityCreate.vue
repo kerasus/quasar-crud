@@ -36,7 +36,6 @@
 import Portlet from '../../../components/Portlet'
 import EntityMixin from '../../../mixins/EntityMixin'
 import { FormBuilder, inputMixin } from 'quasar-form-builder'
-import axios from 'axios'
 
 export default {
   name: 'EntityCreate',
@@ -91,7 +90,7 @@ export default {
     createEntity () {
       this.loading = true
       const formData = this.getFormData()
-      axios.post(this.api, formData, { headers: this.getHeaders() })
+      this.$axios.post(this.api, formData, { headers: this.getHeaders() })
         .then((response) => {
           this.loading = false
           this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: response.data[this.entityIdKeyInResponse] } })

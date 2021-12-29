@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Portlet from '../../../components/Portlet'
 import EntityMixin from '../../../mixins/EntityMixin'
 import { FormBuilder, inputMixin } from 'quasar-form-builder'
@@ -160,7 +159,7 @@ emits: ['onPageChanged', 'catchError'],
 
       const that = this
       this.loading = true
-      axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
+      this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
         .then(() => {
           that.reload()
         })
@@ -200,7 +199,7 @@ emits: ['onPageChanged', 'catchError'],
         address = this.api
       }
 
-      axios.get(address, {
+      this.$axios.get(address, {
         params: that.createParams(page)
       })
         .then((response) => {
