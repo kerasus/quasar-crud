@@ -98,7 +98,7 @@ const EntityMixin = {
     },
     getData () {
       this.loading = true
-      axios.get(this.api)
+      this.$axios.get(this.api)
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
