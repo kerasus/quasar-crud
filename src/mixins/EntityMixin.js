@@ -5,6 +5,10 @@ const EntityMixin = {
     beforeLoadInputData: {
       default: () => {},
       type: Function
+    },
+    afterLoadInputData: {
+      default: () => {},
+      type: Function
     }
   },
   created () {
@@ -102,6 +106,7 @@ const EntityMixin = {
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
+          this.afterLoadInputData(response.data, this.setNewInputData)
           this.loading = false
         })
         .catch(() => {
