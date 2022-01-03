@@ -5,6 +5,10 @@ const EntityMixin = {
     beforeLoadInputData: {
       default: () => {},
       type: Function
+    },
+    afterLoadInputData: {
+      default: () => {},
+      type: Function
     }
   },
   created () {
@@ -98,10 +102,11 @@ const EntityMixin = {
     },
     getData () {
       this.loading = true
-      axios.get(this.api)
+      this.$axios.get(this.api)
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
+          this.afterLoadInputData(response.data, this.setNewInputData)
           this.loading = false
         })
         .catch(() => {
