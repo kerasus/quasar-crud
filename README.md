@@ -32,9 +32,9 @@ To use it in vue files, you need to import the component you want and use it lik
 </script>
 ```
 
-## Features
+## Features:
 
-###EntityIndex
++ ###EntityIndex
 
 | props               |           default           | type             |
 |---------------------|:---------------------------:|:-----------------|
@@ -47,7 +47,7 @@ To use it in vue files, you need to import the component you want and use it lik
 | beforeLoadInputData |          () => { }          | Function         |
 | afterLoadInputData  |          () => { }          | Function         |
 
-###EntityEdit
++ ###EntityEdit
 
 | props               |           default           | type     |
 |---------------------|:---------------------------:|:---------|
@@ -62,7 +62,7 @@ To use it in vue files, you need to import the component you want and use it lik
 | beforeLoadInputData |          () => { }          | Function |
 | afterLoadInputData  |          () => { }          | Function |
 
-###EntityCreate
++ ###EntityCreate
 
 | props                 |           default           | type     |
 |-----------------------|:---------------------------:|:---------|
@@ -76,7 +76,7 @@ To use it in vue files, you need to import the component you want and use it lik
 | table                 | { columns: [ ], data: [ ] } | Object   |
 | beforeLoadInputData   |          () => { }          | Function |
 | afterLoadInputData    |          () => { }          | Function |
-###EntityShow
++ ###EntityShow
 
 
 | props               |           default           | type     |
@@ -94,14 +94,14 @@ To use it in vue files, you need to import the component you want and use it lik
 | afterLoadInputData  |          () => { }          | Function |
 
 
-###Portlet:
++ ###Portlet:
 
 it has 3 slot that you can use them in all previous components:
 	
     #title
     #toolbar
     #content
-###EntityIndexTable:
++ ###EntityIndexTable:
 it has 3 slot that you can use them in **EntityIndex** component: 
 
     #top="props"
