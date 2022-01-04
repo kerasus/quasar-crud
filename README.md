@@ -117,38 +117,9 @@ it has 3 slot that you can use them in **EntityIndex** component:
 | changePage |                                                             () => {}                                                              | Function  |
 
 
-##Notice
-You can create forms in all previous components using [quasar-form-builder](https://www.npmjs.com/package/quasar-form-builder).  
-To access them you can v-model an array of input's props as value prop in quasar-crud's components
+>###Notice!
+>You can create forms in all previous components using [quasar-form-builder](https://www.npmjs.com/package/quasar-form-builder).  
+>To access them you can v-model an array of input's props as value prop in quasar-crud's components
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
  
