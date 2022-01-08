@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="quasar-crud-index-table q-pa-md">
     <q-table
       ref="table"
       v-model:pagination="inputData.pagination"
@@ -67,17 +67,35 @@
         </slot>
       </template>
 
+      <template v-slot:pagination>
+        <div>{{'صفحه ' + inputData.pagination.page + ' از ' + pagesNumber }}</div>
+      </template>
     </q-table>
-
-    <div v-if="inputData.pagination.rowsNumber > 0" class="row justify-center q-mt-md">
+    <div v-if="inputData.pagination" class="q-pa-lg flex flex-center">
+      <q-btn
+          icon="chevron_right"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="inputData.pagination.page === 1 "
+          @click="prevPage"
+      />
       <q-pagination
-        v-model="inputData.pagination.page"
-        :max="pagesNumber"
-        :max-pages="6"
-        boundary-numbers
-        direction-links
-        boundary-links
-        @update:model-value="onChangePage"
+          v-model="targetPage"
+          color="black"
+          :max="pagesNumber"
+          :max-pages="3"
+          :boundary-numbers="false"
+      />
+      <q-btn
+          icon="chevron_left"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="inputData.pagination.page === pagesNumber "
+          @click="nextPage"
       />
     </div>
   </div>
@@ -147,7 +165,8 @@ export default {
   data () {
     return {
       visibleColumns: [],
-      tableKey: Date.now()
+      tableKey: Date.now(),
+      targetPage: null
     }
   },
   computed: {
@@ -169,6 +188,15 @@ export default {
     //     console.log('tableKey', that.tableKey)
     //   }, 1000)
     // })
+  },
+  watch: {
+    targetPage(){
+      if(this.targetPage <= this.pagesNumber){
+        setTimeout(()=> {
+              this.changePage(this.targetPage)
+            }, 1000)
+      }
+    }
   },
   methods: {
     searchEvent () {
@@ -199,11 +227,20 @@ export default {
         })
       }
     },
-    onPaginationClicked (data) {
-      console.log('onPaginationClicked', data)
+    prevPage () {
+      if (this.inputData.pagination.page !== 1 && this.inputData.pagination.page <= this.pagesNumber) {
+        this.inputData.pagination.page--
+        this.onChangePage ()
+      }
+    },
+    nextPage () {
+      if (this.inputData.pagination.page !== this.pagesNumber && this.inputData.pagination.page  < this.pagesNumber) {
+        this.inputData.pagination.page ++
+        this.onChangePage ()
+      }
     },
     onChangePage () {
-      this.changePage(this.inputData.pagination)
+      this.changePage(this.inputData.pagination.page)
 
       // const { page, rowsPerPage, sortBy, descending } = props.pagination
       // const filter = props.filter
@@ -241,25 +278,37 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.q-expansion-item__container .q-item
-  display: none
+<style lang="sass">
+.quasar-crud-index-table
+  .q-expansion-item__container .q-item
+    display: none
 
-.my-sticky-column-table
-  /* specifying max-width so the example can
-    highlight the sticky column on any browser window */
-  max-width: 100%
+  .my-sticky-column-table
+    /* specifying max-width so the example can
+      highlight the sticky column on any browser window */
+    max-width: 100%
 
-  thead tr:first-child th:first-child
-    /* bg color is important for th; just specify one */
-    background-color: #fff
+    thead tr:first-child th:first-child
+      /* bg color is important for th; just specify one */
+      background-color: #fff
 
-  td:first-child
-    background-color: #f5f5dc
+    td:first-child
+      background-color: #f5f5dc
 
-  th:first-child,
-  td:first-child
-    position: sticky
-    left: 0
-    z-index: 1
+    th:first-child,
+    td:first-child
+      position: sticky
+      left: 0
+      z-index: 1
+
+  .target-page-input
+    .q-field__control
+      height: 33px
+      .q-field__label
+        top: 0
+        font-size: 14px
+      .q-field__native
+        padding: 6px 0
+
+
 </style>

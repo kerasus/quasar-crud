@@ -167,26 +167,26 @@ emits: ['onPageChanged', 'catchError'],
           that.loading = false
         })
     },
-    changePage (pagination) {
-      this.clearDara()
-      this.refreshPagination()
-      this.getData(this.api, pagination.page)
+    changePage (page) {
+      this.clearData()
+      // this.refreshPagination()
+      this.getData(this.api, page)
     },
-    refreshPagination () {
-      this.tableData.pagination = {
-        sortBy: 'desc',
-        descending: false,
-        page: 1,
-        rowsPerPage: 10,
-        pageKey: 'page',
-        rowsNumber: 0
-      }
-    },
-    clearDara () {
+    // refreshPagination () {
+    //   this.tableData.pagination = {
+    //     sortBy: 'desc',
+    //     descending: false,
+    //     page: 1,
+    //     rowsPerPage: 10,
+    //     pageKey: 'page',
+    //     rowsNumber: 0
+    //   }
+    // },
+    clearData () {
       this.tableData.data = []
     },
     reload () {
-      this.clearDara()
+      this.clearData()
       this.getData(this.api, this.tableData.pagination.page)
     },
     search () {
