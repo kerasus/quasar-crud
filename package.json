@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "main": "index.js",
   "keywords": [
@@ -13,6 +13,11 @@
       "name": "Ali Esmaeeli",
       "email": "aliesmaeeli20@gmail.com",
       "url": "https://github.com/kerasus/quasar-crud"
+    },
+    {
+      "name": "Maryam Razmjoo",
+      "email": "MaryamRazmjoo76@yahoo.com",
+      "url": "https://github.com/MaryamRazmjoo/quasar-crud"
     }
   ],
   "homepage": "https://github.com/kerasus/quasar-crud",
@@ -28,7 +33,7 @@
     "core-js": "^3.6.5",
     "moment-jalaali": "^0.9.4",
     "quasar": "^2.0.0",
-    "quasar-form-builder": "^0.1.3",
+    "quasar-form-builder": "^0.1.4",
     "standard": "^16.0.4",
     "vue": "^3.0.0",
     "vue-router": "4"
