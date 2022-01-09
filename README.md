@@ -32,76 +32,76 @@ To use it in vue files, you need to import the component you want and use it lik
 </script>
 ```
 
-## Features
+## Features:
 
-###EntityIndex
++ ###EntityIndex
 
-| props               |           default           | type             |
-|---------------------|:---------------------------:|:-----------------|
-| value               |             [ ]             | Array            |
-| title               |             ' '             | String           |
-| api                 |             ' '             | String           |
-| createRouteName     |             ' '             | String, Boolean  |
-| tableKeys           |  { data: ' ', total: ' ' }  | Object           |
-| table               | { columns: [ ], data: [ ] } | Object           |
-| beforeLoadInputData |          () => { }          | Function         |
-| afterLoadInputData  |          () => { }          | Function         |
+| props               |           default           | type             | description                                |
+|---------------------|:---------------------------:|:-----------------|--------------------------------------------|
+| value               |             [ ]             | Array            |                                            |
+| title               |             ' '             | String           |                                            |
+| api                 |             ' '             | String           |                                            |
+| createRouteName     |             ' '             | String, Boolean  |                                            |
+| tableKeys           |  { data: ' ', total: ' ' }  | Object           | query params of response                   |
+| table               | { columns: [ ], data: [ ] } | Object           | column include  props of column in q-table | 
+| beforeLoadInputData |          () => { }          | Function         |                                            |
+| afterLoadInputData  |          () => { }          | Function         |                                            |
 
-###EntityEdit
++ ###EntityEdit
 
-| props               |           default           | type     |
-|---------------------|:---------------------------:|:---------|
-| value               |             [ ]             | Array    |
-| title               |             ' '             | String   |
-| api                 |             ' '             | String   |
-| entityIdKey         |           ' id '            | String   |
-| entityParamKey      |           ' id '            | String   |
-| showRouteName       |             ' '             | String   |
-| table               | { columns: [ ], data: [ ] } | Object   |
-| beforeGetData       |            {   }            | Object   |
-| beforeLoadInputData |          () => { }          | Function |
-| afterLoadInputData  |          () => { }          | Function |
+| props               |           default           | type      | description                  |
+|---------------------|:---------------------------:|:----------|------------------------------|
+| value               |             [ ]             | Array     |                              |
+| title               |             ' '             | String    |                              |
+| api                 |             ' '             | String    |                              |
+| entityIdKey         |           ' id '            | String    | Id of selected item          |
+| entityParamKey      |           ' id '            | String    | need for router param        |
+| showRouteName       |             ' '             | String    | route name of show component |
+| table               | { columns: [ ], data: [ ] } | Object    |                              |
+| beforeGetData       |          () => { }          | Function  |                              |
+| beforeLoadInputData |          () => { }          | Function  |                              |
+| afterLoadInputData  |          () => { }          | Function  |                              |
 
-###EntityCreate
++ ###EntityCreate
 
-| props                 |           default           | type     |
-|-----------------------|:---------------------------:|:---------|
-| value                 |             [ ]             | Array    |
-| title                 |             ' '             | String   |
-| api                   |             ' '             | String   |
-| entityIdKeyInResponse |           ' id '            | String   |
-| showRouteName         |             ' '             | String   |
-| showRouteParamKey     |             ' '             | String   |
-| indexRouteName        |             ' '             | String   |
-| table                 | { columns: [ ], data: [ ] } | Object   |
-| beforeLoadInputData   |          () => { }          | Function |
-| afterLoadInputData    |          () => { }          | Function |
-###EntityShow
-
-
-| props               |           default           | type     |
-|---------------------|:---------------------------:|:---------|
-| value               |             [ ]             | Array    |
-| title               |             ' '             | String   |
-| api                 |             ' '             | String   |
-| entityIdKey         |           ' id '            | String   |
-| entityParamKey      |           ' id '            | String   |
-| editRouteName       |             ' '             | String   |
-| indexRouteName      |             ' '             | String   |
-| table               | { columns: [ ], data: [ ] } | Object   |
-| beforeGetData       |            {   }            | Object   |
-| beforeLoadInputData |          () => { }          | Function |
-| afterLoadInputData  |          () => { }          | Function |
+| props                 |           default           | type     | description                                      |
+|-----------------------|:---------------------------:|:---------|--------------------------------------------------|
+| value                 |             [ ]             | Array    |                                                  |
+| title                 |             ' '             | String   |                                                  |
+| api                   |             ' '             | String   |                                                  |
+| showRouteName         |             ' '             | String   | route name of show component                     |
+| showRouteParamKey     |             ' '             | String   | router param of show component                   |
+| entityIdKeyInResponse |           ' id '            | String   | ned for value of  router param of show component |
+| indexRouteName        |             ' '             | String   | route name of index component                    |
+| table                 | { columns: [ ], data: [ ] } | Object   |                                                  |
+| beforeLoadInputData   |          () => { }          | Function |                                                  |
+| afterLoadInputData    |          () => { }          | Function |                                                  |
++ ###EntityShow
 
 
-###Portlet:
+| props               |           default           | type     | description                   |
+|---------------------|:---------------------------:|:---------|-------------------------------|
+| value               |             [ ]             | Array    |                               |
+| title               |             ' '             | String   |                               |
+| api                 |             ' '             | String   |                               |
+| entityIdKey         |           ' id '            | String   | Id of selected item           |
+| entityParamKey      |           ' id '            | String   | need for router param         |
+| editRouteName       |             ' '             | String   | route name of edit component  |
+| indexRouteName      |             ' '             | String   | route name of index component |
+| table               | { columns: [ ], data: [ ] } | Object   |                               |
+| beforeGetData       |          () => { }          | Function |                               |
+| beforeLoadInputData |          () => { }          | Function |                               |
+| afterLoadInputData  |          () => { }          | Function |                               |
+
+
++ ###Portlet:
 
 it has 3 slot that you can use them in all previous components:
 	
     #title
     #toolbar
     #content
-###EntityIndexTable:
++ ###EntityIndexTable:
 it has 3 slot that you can use them in **EntityIndex** component: 
 
     #top="props"
@@ -117,38 +117,9 @@ it has 3 slot that you can use them in **EntityIndex** component:
 | changePage |                                                             () => {}                                                              | Function  |
 
 
-##Notice
-You can create forms in all previous components using [quasar-form-builder](https://www.npmjs.com/package/quasar-form-builder).  
-To access them you can v-model an array of input's props as value prop in quasar-crud's components
+>###Notice!
+>You can create forms in all previous components using [quasar-form-builder](https://www.npmjs.com/package/quasar-form-builder).  
+>To access them you can v-model an array of input's props as value prop in quasar-crud's components
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
  
