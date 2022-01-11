@@ -67,6 +67,10 @@ export default {
       default: 'id',
       type: String
     },
+    beforeGetData: {
+      default: () => {},
+      type: Function
+    },
     editRouteName: {
       default: '',
       type: String
@@ -91,7 +95,8 @@ export default {
       loading: false
     }
   },
-  created () {
+  async created () {
+    await this.beforeGetData()
     this.getData()
     this.key = Date.now()
   },
