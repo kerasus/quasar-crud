@@ -28,7 +28,7 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <form-builder v-model:value="inputData" :disable="false" />
+        <form-builder :key="key" v-model:value="inputData" :disable="false" />
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
@@ -94,6 +94,7 @@ export default {
   async created () {
     await this.beforeGetData()
     this.getData()
+    this.key = Date.now()
   },
   methods: {
     editEntity () {

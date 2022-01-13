@@ -28,7 +28,7 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <form-builder v-model:value="inputData" />
+        <form-builder :key="key" v-model:value="inputData" />
         <div class="row">
           <div class="col">
             <EntityIndexTable
@@ -211,6 +211,7 @@ emits: ['onPageChanged', 'catchError'],
           that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
           that.$emit('onPageChanged', response)
+          this.key = Date.now()
         })
         .catch(error => {
           that.loading = false
