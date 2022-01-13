@@ -34,7 +34,7 @@ To use it in vue files, you need to import the component you want and use it lik
 
 ## Features:
 
-+ ###EntityIndex
++ ### EntityIndex
 
 | props               |           default           | type             | description                                |
 |---------------------|:---------------------------:|:-----------------|--------------------------------------------|
@@ -47,7 +47,7 @@ To use it in vue files, you need to import the component you want and use it lik
 | beforeLoadInputData |          () => { }          | Function         |                                            |
 | afterLoadInputData  |          () => { }          | Function         |                                            |
 
-+ ###EntityEdit
++ ### EntityEdit
 
 | props               |           default           | type      | description                  |
 |---------------------|:---------------------------:|:----------|------------------------------|
@@ -62,7 +62,7 @@ To use it in vue files, you need to import the component you want and use it lik
 | beforeLoadInputData |          () => { }          | Function  |                              |
 | afterLoadInputData  |          () => { }          | Function  |                              |
 
-+ ###EntityCreate
++ ### EntityCreate
 
 | props                 |           default           | type     | description                                      |
 |-----------------------|:---------------------------:|:---------|--------------------------------------------------|
@@ -76,7 +76,7 @@ To use it in vue files, you need to import the component you want and use it lik
 | table                 | { columns: [ ], data: [ ] } | Object   |                                                  |
 | beforeLoadInputData   |          () => { }          | Function |                                                  |
 | afterLoadInputData    |          () => { }          | Function |                                                  |
-+ ###EntityShow
++ ### EntityShow
 
 
 | props               |           default           | type     | description                   |
@@ -94,14 +94,14 @@ To use it in vue files, you need to import the component you want and use it lik
 | afterLoadInputData  |          () => { }          | Function |                               |
 
 
-+ ###Portlet:
++ ### Portlet:
 
 it has 3 slot that you can use them in all previous components:
 	
     #title
     #toolbar
     #content
-+ ###EntityIndexTable:
++ ### EntityIndexTable:
 it has 3 slot that you can use them in **EntityIndex** component: 
 
     #top="props"
@@ -117,7 +117,7 @@ it has 3 slot that you can use them in **EntityIndex** component:
 | changePage |                                                             () => {}                                                              | Function  |
 
 
->###Notice!
+>### Notice!
 >You can create forms in all previous components using [quasar-form-builder](https://www.npmjs.com/package/quasar-form-builder).  
 >To access them you can v-model an array of input's props as value prop in quasar-crud's components
 
