@@ -1,6 +1,11 @@
 import axios from 'axios'
 
 const EntityMixin = {
+  data () {
+    return {
+      key: Date.now()
+    }
+  },
   props: {
     beforeLoadInputData: {
       default: () => {},
