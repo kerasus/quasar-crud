@@ -7,11 +7,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import List from './TestPages/List'
 import Show from './TestPages/Show'
 import Edit from './TestPages/Edit'
+import Create from './TestPages/Create'
 
 const routes = [
     { name: 'User.Index',path: '/', component: List },
     { name: 'User.Show',path: '/show/:id', component: Show },
     { name: 'User.Edit',path: '/:id/edit', component: Edit },
+    { name: 'User.Create',path: '/create', component: Create },
 ]
 
 const router = createRouter({

@@ -5,7 +5,7 @@
       :api="api"
       :table="table"
       :table-keys="tableKeys"
-      :create-route-name="'Admin.News.Create'"
+      :create-route-name="'User.Create'"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
       <q-td :props="inputData.props">
@@ -110,6 +110,12 @@ export default {
       ]
     }
   },
+  // created () {
+  //   this.$axios.get('https://reqres.in/api/users')
+  //   .then( res=>{
+  //     console.log(res)
+  //   })
+  // },
   methods: {
     getRemoveMessage (row) {
       const first_name = row.first_name
