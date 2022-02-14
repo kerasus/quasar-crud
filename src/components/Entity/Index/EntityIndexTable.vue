@@ -85,7 +85,7 @@
           v-model="targetPage"
           color="black"
           :max="pagesNumber"
-          :max-pages="3"
+          :max-pages="4"
           :boundary-numbers="false"
       />
       <q-btn
