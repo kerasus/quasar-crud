@@ -28,7 +28,11 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
+        <slot name="top-extra-element">
+        </slot>
         <form-builder v-model:value="inputData" :disable="false" />
+        <slot name="bottom-extra-element">
+        </slot>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
