@@ -1,12 +1,13 @@
 <template>
-  <entity-show
+  <entity-create
       v-model:value="inputs"
-      title="اطلاعات کاربر"
+      title="ساخت کاربر جدید"
       :api="api"
       :entity-id-key="entityIdKey"
       :entity-param-key="entityParamKey"
-      :edit-route-name="editRouteName"
+      :show-route-name="showRouteName"
       :index-route-name="indexRouteName"
+      :before-send-data="beforeSendData"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -24,24 +25,25 @@
         </template>
       </q-banner>
     </template>
-  </entity-show>
+  </entity-create>
 </template>
 
 <script>
-import EntityShow from '../components/Entity/Show/EntityShow'
+import EntityCreate from '@/components/Entity/Create/EntityCreate'
 export default {
-  name: 'Show',
-  components: {EntityShow},
+  name: 'Edit',
+  components: { EntityCreate },
   data () {
     return {
       api: 'https://reqres.in/api/users',
       entityIdKey: 'id',
       entityParamKey: 'id',
-      editRouteName: 'User.Edit',
+      showRouteName: 'User.Show',
       indexRouteName: 'User.Index',
       inputs: [
-        { type: 'avatar', name: 'avatar', responseKey: 'data.avatar', size: '200px', col: 'col-md-12' },
-        { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-3' },
+        { type: 'file', name: 'avatar', responseKey: 'data.avatar', col: 'col-md-3' },
+        { type: 'space', name: 'space', col: 'col-md-12' },
+        { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-3', disable: true },
         { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-3' },
         { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-3' },
         { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-3' }
@@ -53,6 +55,11 @@ export default {
   created () {
     this.api += '/' + this.$route.params.id
   },
+  methods: {
+    beforeSendData (formData/* , setNewInputData */) {
+      console.log('formData before send data: ', formData)
+    }
+  }
 }
 </script>
 

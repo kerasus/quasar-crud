@@ -166,7 +166,7 @@ export default {
     return {
       visibleColumns: [],
       tableKey: Date.now(),
-      targetPage: null
+      targetPage: 0
     }
   },
   computed: {
