@@ -28,9 +28,12 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
+        <slot name="before-form-builder"></slot>
         <form-builder :key="key" v-model:value="inputData" />
+        <slot name="after-form-builder"></slot>
         <div class="row">
           <div class="col">
+            <slot name="before-index-table"></slot>
             <EntityIndexTable
               v-model:value="tableData"
               :columns="table.columns"
@@ -47,6 +50,7 @@
                 </slot>
               </template>
             </EntityIndexTable>
+            <slot name="after-index-table"></slot>
           </div>
         </div>
       </q-expansion-item>

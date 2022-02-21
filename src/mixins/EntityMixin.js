@@ -7,6 +7,10 @@ const EntityMixin = {
     }
   },
   props: {
+    beforeSendData: {
+      default: () => {},
+      type: Function
+    },
     beforeLoadInputData: {
       default: () => {},
       type: Function
