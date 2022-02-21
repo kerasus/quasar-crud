@@ -72,30 +72,12 @@
       </template>
     </q-table>
     <div v-if="pagesNumber > 1" class="q-pa-lg flex flex-center">
-      <q-btn
-          icon="chevron_right"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="inputData.pagination.page === 1 "
-          @click="prevPage"
-      />
       <q-pagination
           v-model="targetPage"
           color="black"
           :max="pagesNumber"
           :max-pages="4"
           :boundary-numbers="false"
-      />
-      <q-btn
-          icon="chevron_left"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="inputData.pagination.page === pagesNumber "
-          @click="nextPage"
       />
     </div>
   </div>
