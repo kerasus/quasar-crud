@@ -37,6 +37,38 @@
         </template>
       </q-td>
     </template>
+    <template #before-form-builder>
+      <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
+        before form builder
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="beforeFormBuilder = false" />
+        </template>
+      </q-banner>
+    </template>
+    <template #after-form-builder>
+      <q-banner v-if="afterFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
+        after form builder
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="afterFormBuilder = false" />
+        </template>
+      </q-banner>
+    </template>
+    <template #before-index-table>
+      <q-banner v-if="beforeIndexTable" inline-actions rounded class="bg-orange text-white q-ma-md">
+        before index table
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="beforeIndexTable = false" />
+        </template>
+      </q-banner>
+    </template>
+    <template #after-index-table>
+      <q-banner v-if="afterIndexTable" inline-actions rounded class="bg-orange text-white q-ma-md">
+        after index table
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="afterIndexTable = false" />
+        </template>
+      </q-banner>
+    </template>
   </entity-index>
 </template>
 
@@ -107,7 +139,11 @@ export default {
         { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
         { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
         { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
-      ]
+      ],
+      beforeFormBuilder: true,
+      afterFormBuilder: true,
+      beforeIndexTable: true,
+      afterIndexTable: true
     }
   },
   // created () {

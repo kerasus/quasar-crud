@@ -28,11 +28,9 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="top-extra-element">
-        </slot>
-        <form-builder v-model:value="inputData" disable />
-        <slot name="bottom-extra-element">
-        </slot>
+        <slot name="before-form-builder"></slot>
+        <form-builder :key="key" v-model:value="inputData" disable />
+        <slot name="after-form-builder"></slot>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
@@ -71,6 +69,10 @@ export default {
       default: 'id',
       type: String
     },
+    beforeGetData: {
+      default: () => {},
+      type: Function
+    },
     editRouteName: {
       default: '',
       type: String
@@ -95,8 +97,10 @@ export default {
       loading: false
     }
   },
-  created () {
+  async created () {
+    await this.beforeGetData()
     this.getData()
+    this.key = Date.now()
   },
   methods: {
     goToEditView () {

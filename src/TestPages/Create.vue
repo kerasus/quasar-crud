@@ -1,36 +1,65 @@
 <template>
-<entity-create
-    v-model:value="inputs"
-    api="https://reqres.in/api/users"
-    entity-id-key-in-response="id"
-    index-route-name="User.Index"
-    show-route-name="User.Show"
-    show-route-param-key="id"
-    title="test">
-</entity-create>
-
-
+  <entity-create
+      v-model:value="inputs"
+      title="ساخت کاربر جدید"
+      :api="api"
+      :entity-id-key="entityIdKey"
+      :entity-param-key="entityParamKey"
+      :show-route-name="showRouteName"
+      :index-route-name="indexRouteName"
+      :before-send-data="beforeSendData"
+  >
+    <template #before-form-builder>
+      <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
+        before form builder
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="beforeFormBuilder = false" />
+        </template>
+      </q-banner>
+    </template>
+    <template #after-form-builder>
+      <q-banner v-if="afterFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
+        after form builder
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="afterFormBuilder = false" />
+        </template>
+      </q-banner>
+    </template>
+  </entity-create>
 </template>
 
 <script>
 import EntityCreate from '@/components/Entity/Create/EntityCreate'
-
 export default {
-  name: 'Create',
+  name: 'Edit',
   components: { EntityCreate },
   data () {
     return {
-      expanded: true,
       api: 'https://reqres.in/api/users',
-      entityIdKeyInResponse: 'id',
-      showRouteParamKey: 'id',
+      entityIdKey: 'id',
+      entityParamKey: 'id',
       showRouteName: 'User.Show',
       indexRouteName: 'User.Index',
       inputs: [
-        { type: 'input', name: 'title', responseKey: 'title', label: 'عنوان', col: 'col-md-12' }
-      ]
+        { type: 'file', name: 'avatar', responseKey: 'data.avatar', col: 'col-md-3' },
+        { type: 'space', name: 'space', col: 'col-md-12' },
+        { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-3', disable: true },
+        { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-3' },
+        { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-3' },
+        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-3' }
+      ],
+      beforeFormBuilder: true,
+      afterFormBuilder: true
     }
   },
+  created () {
+    this.api += '/' + this.$route.params.id
+  },
+  methods: {
+    beforeSendData (formData/* , setNewInputData */) {
+      console.log('formData before send data: ', formData)
+    }
+  }
 }
 </script>
 
