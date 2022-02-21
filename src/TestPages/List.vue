@@ -146,6 +146,12 @@ export default {
       afterIndexTable: true
     }
   },
+  // created () {
+  //   this.$axios.get('https://reqres.in/api/users')
+  //   .then( res=>{
+  //     console.log(res)
+  //   })
+  // },
   methods: {
     getRemoveMessage (row) {
       const first_name = row.first_name

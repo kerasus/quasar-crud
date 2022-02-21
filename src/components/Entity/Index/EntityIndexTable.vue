@@ -68,34 +68,16 @@
       </template>
 
       <template v-slot:pagination>
-        <div>{{'صفحه ' + inputData.pagination.page + ' از ' + pagesNumber }}</div>
+        <div>{{'صفحه ' + crrPage + ' از ' + pagesNumber }}</div>
       </template>
     </q-table>
-    <div v-if="inputData.pagination" class="q-pa-lg flex flex-center">
-      <q-btn
-          icon="chevron_right"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="inputData.pagination.page === 1 "
-          @click="prevPage"
-      />
+    <div v-if="pagesNumber > 1" class="q-pa-lg flex flex-center">
       <q-pagination
           v-model="targetPage"
           color="black"
           :max="pagesNumber"
-          :max-pages="3"
+          :max-pages="4"
           :boundary-numbers="false"
-      />
-      <q-btn
-          icon="chevron_left"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="inputData.pagination.page === pagesNumber "
-          @click="nextPage"
       />
     </div>
   </div>
@@ -171,7 +153,10 @@ export default {
   },
   computed: {
     pagesNumber () {
-      return Math.ceil(this.inputData.pagination.rowsNumber / this.inputData.pagination.rowsPerPage)
+      return this.inputData.pagination.rowsNumber? Math.ceil(this.inputData.pagination.rowsNumber / this.inputData.pagination.rowsPerPage) : 1
+    },
+    crrPage () {
+      return this.inputData.pagination.page ? this.inputData.pagination.page : 1
     }
   },
   mounted () {

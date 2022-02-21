@@ -8,12 +8,14 @@ import List from './TestPages/List'
 import Show from './TestPages/Show'
 import Create from './TestPages/Create'
 import Edit from './TestPages/Edit'
+import Create from './TestPages/Create'
 
 const routes = [
     { name: 'User.Index',path: '/', component: List },
     { name: 'User.Create',path: '/create', component: Create },
     { name: 'User.Show',path: '/show/:id', component: Show },
     { name: 'User.Edit',path: '/:id/edit', component: Edit },
+    { name: 'User.Create',path: '/create', component: Create },
 ]
 
 const router = createRouter({
