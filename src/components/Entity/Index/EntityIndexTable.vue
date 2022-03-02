@@ -1,57 +1,57 @@
 <template>
   <div class="quasar-crud-index-table q-pa-md">
     <q-table
-      ref="table"
-      v-model:pagination="inputData.pagination"
-      :grid="$q.screen.lt.sm"
-      title="Treats"
-      :rows="inputData.data"
-      :columns="columns"
-      :loading="loading"
-      row-key="name"
-      :rows-per-page-options="[]"
-      @request="onChangePage"
+        ref="table"
+        v-model:pagination="inputData.pagination"
+        :grid="$q.screen.lt.sm"
+        title="Treats"
+        :rows="inputData.data"
+        :columns="columns"
+        :loading="loading"
+        row-key="name"
+        :rows-per-page-options="[]"
+        @request="onChangePage"
     >
       <template #top="props">
         <div class="col-2 q-table__title">{{ title }}</div>
         <q-space />
         <q-select
-          v-if="false"
-          v-model="visibleColumns"
-          multiple
-          dense
-          options-dense
-          :display-value="$q.lang.table.columns"
-          emit-value
-          map-options
-          :options="columns"
-          option-value="name"
-          style="min-width: 150px"
+            v-if="false"
+            v-model="visibleColumns"
+            multiple
+            dense
+            options-dense
+            :display-value="$q.lang.table.columns"
+            emit-value
+            map-options
+            :options="columns"
+            option-value="name"
+            style="min-width: 150px"
         />
         <q-btn
-          flat round dense
-          icon="search"
-          no-caps
-          @click="searchEvent"
+            flat round dense
+            icon="search"
+            no-caps
+            @click="searchEvent"
         >
           <q-tooltip>
             جستجو
           </q-tooltip>
         </q-btn>
         <q-btn
-          flat round dense
-          icon="archive"
-          no-caps
-          @click="exportTable"
+            flat round dense
+            icon="archive"
+            no-caps
+            @click="exportTable"
         >
           <q-tooltip>
             خروجی اکسل
           </q-tooltip>
         </q-btn>
         <q-btn
-          flat round dense
-          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-          @click="props.toggleFullscreen"
+            flat round dense
+            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="props.toggleFullscreen"
         >
           <q-tooltip>
             تمام صفحه
@@ -76,8 +76,8 @@
           v-model="targetPage"
           color="black"
           :max="pagesNumber"
-          :max-pages="4"
-          :boundary-numbers="false"
+          :max-pages="5"
+          direction-links
       />
     </div>
   </div>
@@ -89,12 +89,12 @@ import { exportFile } from 'quasar'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = (typeof formatFn !== 'undefined')
-    ? formatFn(val)
-    : val
+      ? formatFn(val)
+      : val
 
   formatted = (typeof formatted === 'undefined') || formatted === null
-    ? ''
-    : String(formatted)
+      ? ''
+      : String(formatted)
 
   formatted = formatted.split('"').join('""')
   /**
@@ -148,7 +148,7 @@ export default {
     return {
       visibleColumns: [],
       tableKey: Date.now(),
-      targetPage: 0
+      targetPage: 1
     }
   },
   computed: {
@@ -178,8 +178,8 @@ export default {
     targetPage(){
       if(this.targetPage <= this.pagesNumber){
         setTimeout(()=> {
-              this.changePage(this.targetPage)
-            }, 1000)
+          this.changePage(this.targetPage)
+        }, 1000)
       }
     }
   },
@@ -190,18 +190,18 @@ export default {
     exportTable () {
       // naive encoding to csv format
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
-        this.inputData.data.map(row => this.columns.map(col => wrapCsvValue(
-          typeof col.field === 'function'
-            ? col.field(row)
-            : row[typeof col.field === 'undefined' ? col.name : col.field],
-          col.format
-        )).join(','))
+          this.inputData.data.map(row => this.columns.map(col => wrapCsvValue(
+              typeof col.field === 'function'
+                  ? col.field(row)
+                  : row[typeof col.field === 'undefined' ? col.name : col.field],
+              col.format
+          )).join(','))
       ).join('\r\n')
 
       const status = exportFile(
-        'table-export.csv',
-        '\ufeff'+content,
-        'text/csv'
+          'table-export.csv',
+          '\ufeff'+content,
+          'text/csv'
       )
 
       if (status !== true) {
