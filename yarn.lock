@@ -7457,10 +7457,10 @@
   "resolved" "https://registry.npmjs.org/qs/-/qs-6.9.6.tgz"
   "version" "6.9.6"
 
-"quasar-form-builder@^0.1.6":
-  "integrity" "sha512-sq/oWLw62Y/XdZgmu0oNkKDUp2YFLxE6WjN0gKlEPQ53zCahkhim9F5qW0RPPYgLpEwfsI7mK2wWfCCY6iLDAQ=="
-  "resolved" "https://registry.npmjs.org/quasar-form-builder/-/quasar-form-builder-0.1.6.tgz"
-  "version" "0.1.6"
+"quasar-form-builder@^0.1.7":
+  "integrity" "sha512-dW1PQPv8EuzmvYyVk6i3ulKTIPimOHkn5j8W/FOW4i6iZ6F++52nn2hGMT9hihJ2Zc/Va69khbcceEJP4Ln7+g=="
+  "resolved" "https://registry.npmjs.org/quasar-form-builder/-/quasar-form-builder-0.1.7.tgz"
+  "version" "0.1.7"
   dependencies:
     "@quasar/extras" "^1.0.0"
     "core-js" "^3.6.5"
