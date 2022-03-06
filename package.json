@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "main": "index.js",
   "keywords": [
@@ -33,7 +33,7 @@
     "core-js": "^3.6.5",
     "moment-jalaali": "^0.9.4",
     "quasar": "^2.0.0",
-    "quasar-form-builder": "^0.1.8",
+    "quasar-form-builder": "^0.1.9",
     "standard": "^16.0.4",
     "vue": "^3.0.0",
     "vue-router": "4"
