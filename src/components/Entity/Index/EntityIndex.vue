@@ -194,7 +194,7 @@ emits: ['onPageChanged', 'catchError'],
       this.getData(this.api, this.tableData.pagination.page)
     },
     search () {
-      this.changePage(this.api, undefined)
+      this.changePage()
     },
     getData (address, page) {
       const that = this
