@@ -24,7 +24,7 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <slot name="before-form-builder"></slot>
-        <form-builder v-model:value="inputData" :disable="false" />
+        <form-builder ref="formBuilder" v-model:value="inputData" :disable="false" />
         <slot name="after-form-builder"></slot>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
@@ -65,7 +65,7 @@ export default {
       type: String
     },
     showRouteParamKey: {
-      default: '',
+      default: 'id',
       type: String
     },
     indexRouteName: {
@@ -96,7 +96,8 @@ export default {
       this.$axios.post(this.api, formData, { headers: this.getHeaders() })
         .then((response) => {
           this.loading = false
-          this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: response.data[this.entityIdKeyInResponse] } })
+          const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
+          this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
         })
         .catch(() => {
           this.loading = false
