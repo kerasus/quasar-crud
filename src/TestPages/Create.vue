@@ -43,10 +43,29 @@ export default {
       inputs: [
         { type: 'file', name: 'avatar', responseKey: 'data.avatar', col: 'col-md-3' },
         { type: 'space', name: 'space', col: 'col-md-12' },
-        { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-3', disable: true },
-        { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-3' },
-        { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-3' },
-        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-3' }
+
+        {
+          type: 'formBuilder',
+          name: 'formBuilderCol',
+          col: 'col-md-6',
+          value: [
+            { type: 'input', name: 'id1', responseKey: 'id1', value: null, label: 'شناسه1', col: 'col-md-6' },
+            { type: 'input', name: 'id2', responseKey: 'id2', value: null, label: 'شناسه2', col: 'col-md-6' },
+            {
+              type: 'formBuilder',
+              name: 'formBuilderCol',
+              col: 'col-md-6',
+              value: [
+                { type: 'input', name: 'id3', responseKey: 'id3', value: null, label: 'شناسه3', col: 'col-md-6' },
+                { type: 'input', name: 'id4', responseKey: 'id4', value: null, label: 'شناسه4', col: 'col-md-6' },
+              ]
+            },
+          ]
+        },
+        { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-6', disable: true },
+        { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-4' },
+        { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-4' },
+        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-4' }
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true

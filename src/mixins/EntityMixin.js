@@ -27,7 +27,25 @@ const EntityMixin = {
   },
   methods: {
     getEntityId () {
-      const target = this.inputData.find(item => item.name.toString() === this.entityIdKey.toString())
+
+      function getEntityIdFromNestedInputData (entityIdKey, inputs) {
+        for (let i = 0; i < inputs.length; i++) {
+          const input = inputs[i]
+          if (input.type !== 'formBuilder') {
+            if (input.name.toString() === entityIdKey) {
+              return input
+            }
+          } else {
+            const target = getEntityIdFromNestedInputData(entityIdKey, input.value)
+            if (target) {
+              return target
+            }
+          }
+        }
+
+        return false
+      }
+      const target = getEntityIdFromNestedInputData(this.entityIdKey.toString(), this.inputData)
       if (!target) {
         return false
       }
@@ -58,7 +76,8 @@ const EntityMixin = {
     getFormData () {
       const formHasFileInput = this.formHasFileInput()
       const formData = formHasFileInput ? new FormData() : {}
-      this.inputData.forEach(item => {
+      const inputs = this.$refs.formBuilder.getValues()
+      inputs.forEach(item => {
         if (item.disable || typeof item.value === 'undefined' || item.value === null) {
           return
         }
@@ -93,7 +112,7 @@ const EntityMixin = {
         if (typeof formData[keysArray[0]] === 'undefined') {
           formData[keysArray[0]] = {}
         }
-        const newKeysArray = keysArray.filter((item, index) => index != 0)
+        const newKeysArray = keysArray.filter((item, index) => index !== 0)
         this.createChainedObject(formData[keysArray[0]], newKeysArray, value)
       }
     },
@@ -104,9 +123,8 @@ const EntityMixin = {
           // success!
         })
         .catch((err) => {
-          alert(err)
           // uh, oh, error!!
-          // console.error(err)
+          console.error(err)
         })
     },
     getData () {
@@ -123,12 +141,20 @@ const EntityMixin = {
         })
     },
     loadInputData (responseData) {
-      this.inputData.forEach(input => {
-        if (typeof input.responseKey !== 'undefined' && input.responseKey !== null) {
-          input.value = this.getValidChainedObject(responseData, input.responseKey.split('.'))
-        }
-      })
-      this.change(this.inputData)
+      const that = this
+      function setValueOfNestedInputData (responseData, inputs) {
+        inputs.forEach(input => {
+          if (input.type !== 'formBuilder') {
+            if (typeof input.responseKey !== 'undefined' && input.responseKey !== null) {
+              input.value = that.getValidChainedObject(responseData, input.responseKey.split('.'))
+            }
+          } else {
+            setValueOfNestedInputData(responseData, input.value)
+          }
+        })
+      }
+
+      setValueOfNestedInputData(responseData, this.inputData)
     },
     getValidChainedObject (object, keys) {
       if (!Array.isArray(keys) && typeof keys !== 'string') {

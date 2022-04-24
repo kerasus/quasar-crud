@@ -41,10 +41,24 @@ export default {
       inputs: [
         { type: 'file', name: 'avatar', responseKey: 'data.avatar', col: 'col-md-3' },
         { type: 'space', name: 'space', col: 'col-md-12' },
-        { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-3', disable: true },
-        { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-3' },
-        { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-3' },
-        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-3' }
+        {
+          type: 'formBuilder',
+          name: 'formBuilderCol',
+          col: 'col-md-6',
+          value: [
+            { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-6', disable: true },
+            { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-6' },
+          ]
+        },
+        {
+          type: 'formBuilder',
+          name: 'formBuilderCol',
+          col: 'col-md-6',
+          value: [
+            { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-6' },
+            { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-6' }
+          ]
+        }
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true
