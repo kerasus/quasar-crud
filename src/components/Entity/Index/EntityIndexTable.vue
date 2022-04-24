@@ -76,7 +76,7 @@
           v-model="targetPage"
           color="black"
           :max="pagesNumber"
-          :max-pages="5"
+          :max-pages="6"
           direction-links
       />
     </div>
