@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "main": "index.js",
   "keywords": [
