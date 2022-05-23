@@ -241,7 +241,7 @@ export default {
     },
     SetApiId () {
       if (this.$route.params.id) {
-        this.neededConfig.api += this.$route.params.id
+        this.neededConfig.api += '/' + this.$route.params.id
       }
     },
     createComponentConfig (mode) {
