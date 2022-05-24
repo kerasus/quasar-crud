@@ -266,7 +266,7 @@ export default {
         this.SetApiId()
       }
     },
-    getCorrectApiAddress(api) {
+    getCorrectApiAddress (api) {
       const apiParts = api.split('/')
       if (apiParts[apiParts.length - 1]) {
         return api
