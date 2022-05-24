@@ -266,6 +266,13 @@ export default {
         this.SetApiId()
       }
     },
+    getCorrectApiAddress (api) {
+      const apiParts = api.split('/')
+      if (apiParts[apiParts.length - 1]) {
+        return api
+      }
+      return api.slice(0, api.length - 1)
+    },
     getModdedComponentProperties (mode, componentConfig) {
       if (this.config.api[mode]) {
         componentConfig.api = this.config.api[mode]
@@ -273,6 +280,7 @@ export default {
       if (this.config.title[mode]) {
         componentConfig.title = this.config.title[mode]
       }
+      componentConfig.api = this.getCorrectApiAddress(componentConfig.api)
       return componentConfig
     },
     checkIfPropertyExists (key) {
