@@ -11,6 +11,24 @@ const EntityMixin = {
       default: true,
       type: Boolean
     },
+    onReloadButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onCancelButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSaveButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
     beforeSendData: {
       default: () => {},
       type: Function

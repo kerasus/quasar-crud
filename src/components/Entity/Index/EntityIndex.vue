@@ -4,7 +4,7 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="search" @click="search">
+      <q-btn flat round icon="search" @click="runNeededMethod(onSearchButton, search)">
         <q-tooltip>
           جستجو
         </q-tooltip>
@@ -14,7 +14,7 @@
           جدید
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="cached" @click="reload">
+      <q-btn flat round icon="cached" @click="runNeededMethod(onReloadButton, reload)">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
@@ -82,6 +82,12 @@ export default {
   mixins: [inputMixin, EntityMixin],
   props: {
     onAddButton: {
+      default() {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSearchButton: {
       default() {
         return false
       },

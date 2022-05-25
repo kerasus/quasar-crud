@@ -80,19 +80,7 @@ export default {
         }
       },
       type: Object
-    },
-    onSaveButton: {
-      default() {
-        return false
-      },
-      type: [Function, Boolean]
-    },
-    onCancelButton: {
-      default() {
-        return false
-      },
-      type: [Function, Boolean]
-    },
+    }
   },
   data () {
     return {
