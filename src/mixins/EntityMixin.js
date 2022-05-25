@@ -7,6 +7,28 @@ const EntityMixin = {
     }
   },
   props: {
+    showExpandButton: {
+      default: true,
+      type: Boolean
+    },
+    onReloadButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onCancelButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSaveButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
     beforeSendData: {
       default: () => {},
       type: Function
@@ -26,8 +48,14 @@ const EntityMixin = {
     }
   },
   methods: {
+    runNeededMethod (substituteMethod, callBackMethod) {
+      if (!callBackMethod) {
+        substituteMethod()
+        return
+      }
+      callBackMethod()
+    },
     getEntityId () {
-
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]

@@ -4,13 +4,20 @@
   <slot v-if="currentComponent === 'entity-edit'" name="before-entity-edit"></slot>
   <slot v-if="currentComponent === 'entity-index'" name="before-entity-index"></slot>
   <component
-    :is="currentComponent"
-    v-model:value="getNeededInputs"
-    :before-load-input-data="getBeforeLoadInputDataProp"
-    :after-load-input-data="getAfterLoadInputDataProp"
-    :before-get-data="getBeforeGetEditDataProp"
-    v-bind="neededConfig"
-    ref="entityComponent"
+      :is="currentComponent"
+      v-model:value="getNeededInputs"
+      :before-load-input-data="getNeededProp('beforeLoad','InputData')"
+      :after-load-input-data="getNeededProp('afterLoad','InputData')"
+      :before-get-data="getNeededProp('beforeGet','Data')"
+      :on-add-button="getNeededProp('on','AddButton')"
+      :on-cancel-button="getNeededProp('on','CancelButton')"
+      :on-save-button="getNeededProp('on','SaveButton')"
+      :on-reload-button="getNeededProp('on','ReloadButton')"
+      :on-search-button="getNeededProp('on','SearchButton')"
+      :on-edit-button="getNeededProp('on','EditButton')"
+      :on-list-button="getNeededProp('on','ListButton')"
+      v-bind="neededConfig"
+      ref="entityComponent"
   >
     <template v-slot:before-form-builder>
       <slot v-if="currentComponent === 'entity-create'" name="entity-create-before-form-builder"></slot>
@@ -42,7 +49,12 @@
 
 <script>
 import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from 'quasar-crud'
-
+const allEntities = {
+  EntityEdit,
+  EntityCreate,
+  EntityIndex,
+  EntityShow
+}
 export default {
   name: 'EntityCrud',
   components: {
@@ -133,6 +145,12 @@ export default {
       default () {
         return ''
       }
+    },
+    onIndexAddButton: {
+      default: () => {
+        return false
+      },
+      type: [Function, Boolean]
     }
   },
   emits: [
@@ -145,6 +163,7 @@ export default {
   data () {
     return {
       currentComponent: '',
+      currentComponentName: '',
       currentMode: '',
       neededConfig: {}
     }
@@ -156,23 +175,13 @@ export default {
       }
       return this.inputDefaultValue
     },
-    getBeforeLoadInputDataProp () {
-      if (this.$props['beforeLoad' + this.capitalizeFirstLetter(this.currentMode) + 'InputData']) {
-        return this.$props['beforeLoad' + this.capitalizeFirstLetter(this.currentMode) + 'InputData']
+    getNeededProp () {
+      return (prefix, suffix) => {
+        if (this.$props[prefix + this.currentComponentName + suffix]) {
+          return this.$props[prefix + this.currentComponentName + suffix]
+        }
+        return null
       }
-      return null
-    },
-    getAfterLoadInputDataProp () {
-      if (this.$props['afterLoad' + this.capitalizeFirstLetter(this.currentMode) + 'InputData']) {
-        return this.$props['afterLoad' + this.capitalizeFirstLetter(this.currentMode) + 'InputData']
-      }
-      return null
-    },
-    getBeforeGetEditDataProp () {
-      if (this.$props['beforeGet' + this.capitalizeFirstLetter(this.currentMode) + 'Data']) {
-        return this.$props['beforeGet' + this.capitalizeFirstLetter(this.currentMode) + 'Data']
-      }
-      return null
     },
     inputDefaultValue: {
       get () {
@@ -238,6 +247,7 @@ export default {
       }
       this.currentComponent = componentName
       this.currentMode = cName
+      this.currentComponentName = this.capitalizeFirstLetter(cName)
     },
     SetApiId () {
       if (this.$route.params.id) {
@@ -247,15 +257,7 @@ export default {
     createComponentConfig (mode) {
       const componentConfig = {}
       let currentModeProps = {}
-      if (mode === 'show') {
-        currentModeProps = EntityShow.props
-      } else if (mode === 'index') {
-        currentModeProps = EntityIndex.props
-      } else if (mode === 'edit') {
-        currentModeProps = EntityEdit.props
-      } else if (mode === 'create') {
-        currentModeProps = EntityCreate.props
-      }
+      currentModeProps = allEntities['Entity' + this.capitalizeFirstLetter(mode)].props
       for (const key in currentModeProps) {
         if (this.checkIfPropertyExists(key)) {
           componentConfig[key] = this.config[key]
@@ -266,13 +268,22 @@ export default {
         this.SetApiId()
       }
     },
+    getCorrectApiAddress (api) {
+      const apiParts = api.split('/')
+      if (apiParts[apiParts.length - 1]) {
+        return api
+      }
+      return api.slice(0, api.length - 1)
+    },
     getModdedComponentProperties (mode, componentConfig) {
-      if (this.config.api[mode]) {
-        componentConfig.api = this.config.api[mode]
-      }
-      if (this.config.title[mode]) {
-        componentConfig.title = this.config.title[mode]
-      }
+      const MultipleValuedConfigs = ['api', 'title']
+      MultipleValuedConfigs.forEach(item => {
+        const option = this.config[item]
+        if (option[mode]) {
+          componentConfig[item] = option[mode]
+        }
+      })
+      componentConfig.api = this.getCorrectApiAddress(componentConfig.api)
       return componentConfig
     },
     checkIfPropertyExists (key) {
