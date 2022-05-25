@@ -10,6 +10,12 @@
       :after-load-input-data="getNeededProp('afterLoad','InputData')"
       :before-get-data="getNeededProp('beforeGet','Data')"
       :on-add-button="getNeededProp('on','AddButton')"
+      :on-cancel-button="getNeededProp('on','CancelButton')"
+      :on-save-button="getNeededProp('on','SaveButton')"
+      :on-reload-button="getNeededProp('on','ReloadButton')"
+      :on-search-button="getNeededProp('on','SearchButton')"
+      :on-edit-button="getNeededProp('on','EditButton')"
+      :on-list-button="getNeededProp('on','ListButton')"
       v-bind="neededConfig"
       ref="entityComponent"
   >
