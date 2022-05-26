@@ -10,12 +10,6 @@
       :after-load-input-data="getNeededProp('afterLoad','InputData')"
       :before-get-data="getNeededProp('beforeGet','Data')"
       :on-add-button="getNeededProp('on','AddButton')"
-      :on-cancel-button="getNeededProp('on','CancelButton')"
-      :on-save-button="getNeededProp('on','SaveButton')"
-      :on-reload-button="getNeededProp('on','ReloadButton')"
-      :on-search-button="getNeededProp('on','SearchButton')"
-      :on-edit-button="getNeededProp('on','EditButton')"
-      :on-list-button="getNeededProp('on','ListButton')"
       v-bind="neededConfig"
       ref="entityComponent"
   >
@@ -55,6 +49,45 @@ const allEntities = {
   EntityIndex,
   EntityShow
 }
+function capitalizeFirstLetter (word) {
+  const str = word
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+const allModes = ['show', 'index', 'edit', 'create']
+function setConfiguredPropsForAllModes (prefix, suffix, defaultValue, defaultType) {
+  function getConfiguredPropName (prefix, item, suffix) {
+    let name = prefix + capitalizeFirstLetter(item) + suffix
+    if (!prefix) {
+      name = item + suffix
+    }
+    if (!suffix) {
+      name = prefix + capitalizeFirstLetter(item)
+    }
+    return name
+  }
+  function getConfiguredPropValues (defaultValue, defaultType) {
+    return {
+      default: defaultValue,
+      type: defaultType
+    }
+  }
+  const finalProps = {}
+  allModes.forEach(item => {
+    finalProps[getConfiguredPropName(prefix, item, suffix)] = getConfiguredPropValues(defaultValue, defaultType)
+  })
+  return finalProps
+}
+const crudProps = {
+  ...setConfiguredPropsForAllModes('', 'Inputs', () => { return [] }, Array),
+  ...setConfiguredPropsForAllModes('beforeGet', 'Data', () => {}, Function),
+  ...setConfiguredPropsForAllModes('beforeLoad', 'InputData', () => {}, Function),
+  ...setConfiguredPropsForAllModes('afterLoad', 'InputData', () => {}, Function),
+  ...setConfiguredPropsForAllModes('on', 'AddButton', () => { return false }, Function),
+  ...setConfiguredPropsForAllModes('show', 'ExpandButton', true, Boolean),
+  ...setConfiguredPropsForAllModes('on', 'ReloadButton', () => { return false }, Function),
+  ...setConfiguredPropsForAllModes('on', 'CancelButton', () => { return false }, Function),
+  ...setConfiguredPropsForAllModes('on', 'SaveButton', () => { return false }, Function)
+}
 export default {
   name: 'EntityCrud',
   components: {
@@ -64,75 +97,12 @@ export default {
     EntityShow
   },
   props: {
-    createInputs: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    showInputs: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    editInputs: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    indexInputs: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
+    ...crudProps,
     defaultInputs: {
       type: Array,
       default () {
         return []
       }
-    },
-    beforeGetEditData: {
-      default: () => {},
-      type: Function
-    },
-    beforeGetShowData: {
-      default: () => {},
-      type: Function
-    },
-    beforeLoadEditInputData: {
-      default: () => {},
-      type: Function
-    },
-    afterLoadEditInputData: {
-      default: () => {},
-      type: Function
-    },
-    beforeLoadShowInputData: {
-      default: () => {},
-      type: Function
-    },
-    afterLoadShowInputData: {
-      default: () => {},
-      type: Function
-    },
-    beforeLoadIndexInputData: {
-      default: () => {},
-      type: Function
-    },
-    afterLoadIndexInputData: {
-      default: () => {},
-      type: Function
-    },
-    beforeLoadCreateInputData: {
-      default: () => {},
-      type: Function
-    },
-    afterLoadCreateInputData: {
-      default: () => {},
-      type: Function
     },
     config: {
       type: Object,
@@ -145,12 +115,6 @@ export default {
       default () {
         return ''
       }
-    },
-    onIndexAddButton: {
-      default: () => {
-        return false
-      },
-      type: [Function, Boolean]
     }
   },
   emits: [
@@ -247,7 +211,7 @@ export default {
       }
       this.currentComponent = componentName
       this.currentMode = cName
-      this.currentComponentName = this.capitalizeFirstLetter(cName)
+      this.currentComponentName = capitalizeFirstLetter(cName)
     },
     SetApiId () {
       if (this.$route.params.id) {
@@ -257,7 +221,7 @@ export default {
     createComponentConfig (mode) {
       const componentConfig = {}
       let currentModeProps = {}
-      currentModeProps = allEntities['Entity' + this.capitalizeFirstLetter(mode)].props
+      currentModeProps = allEntities['Entity' + capitalizeFirstLetter(mode)].props
       for (const key in currentModeProps) {
         if (this.checkIfPropertyExists(key)) {
           componentConfig[key] = this.config[key]
@@ -289,12 +253,7 @@ export default {
     checkIfPropertyExists (key) {
       return !!(this.config[key])
     },
-    capitalizeFirstLetter (word) {
-      const str = word
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    },
     getRoutesMode () {
-      const allModes = ['show', 'index', 'edit', 'create']
       const routeMode = this.$route.name.toLowerCase()
       return this.customInitialMode ? this.customInitialMode : allModes.find(mode => routeMode.includes('.' + mode))
     }

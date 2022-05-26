@@ -49,7 +49,7 @@ const EntityMixin = {
   },
   methods: {
     runNeededMethod (substituteMethod, callBackMethod) {
-      if (!callBackMethod) {
+      if (!!substituteMethod && substituteMethod()) {
         substituteMethod()
         return
       }
