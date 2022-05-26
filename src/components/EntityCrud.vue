@@ -60,23 +60,23 @@ function capitalizeFirstLetter (word) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 const allModes = ['show', 'index', 'edit', 'create']
+function getConfiguredPropName (prefix, item, suffix) {
+  let name = prefix + capitalizeFirstLetter(item) + suffix
+  if (!prefix) {
+    name = item + suffix
+  }
+  if (!suffix) {
+    name = prefix + capitalizeFirstLetter(item)
+  }
+  return name
+}
+function getConfiguredPropValues (defaultValue, defaultType) {
+  return {
+    default: defaultValue,
+    type: defaultType
+  }
+}
 function setConfiguredPropsForAllModes (prefix, suffix, defaultValue, defaultType) {
-  function getConfiguredPropName (prefix, item, suffix) {
-    let name = prefix + capitalizeFirstLetter(item) + suffix
-    if (!prefix) {
-      name = item + suffix
-    }
-    if (!suffix) {
-      name = prefix + capitalizeFirstLetter(item)
-    }
-    return name
-  }
-  function getConfiguredPropValues (defaultValue, defaultType) {
-    return {
-      default: defaultValue,
-      type: defaultType
-    }
-  }
   const finalProps = {}
   allModes.forEach(item => {
     finalProps[getConfiguredPropName(prefix, item, suffix)] = getConfiguredPropValues(defaultValue, defaultType)
