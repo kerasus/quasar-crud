@@ -4,22 +4,22 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="search" @click="search">
+      <q-btn flat round icon="search" @click="runNeededMethod(onSearchButton, search)">
         <q-tooltip>
           جستجو
         </q-tooltip>
       </q-btn>
-      <q-btn v-if="createRouteName" flat round icon="add" @click="goToCreatePage">
+      <q-btn v-if="createRouteName" flat round icon="add" @click="runNeededMethod(onAddButton, goToCreatePage)">
         <q-tooltip>
           جدید
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="cached" @click="reload">
+      <q-btn flat round icon="cached" @click="runNeededMethod(onReloadButton, reload)">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
-      <q-btn flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
           <span v-else>نمایش فرم</span>
@@ -81,6 +81,18 @@ export default {
   components: { Portlet, EntityIndexTable, FormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
+    onAddButton: {
+      default() {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSearchButton: {
+      default() {
+        return false
+      },
+      type: [Function, Boolean]
+    },
     value: {
       default: () => [],
       type: Array

@@ -4,22 +4,22 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="cached" @click="getData()">
+      <q-btn flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="edit" @click="goToEditView()">
+      <q-btn flat round icon="edit" @click="runNeededMethod(onEditButton, goToEditView)">
         <q-tooltip>
           ویرایش
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="list" @click="goToIndexView()">
+      <q-btn flat round icon="list" @click="runNeededMethod(onListButton, goToIndexView)">
         <q-tooltip>
           لیست
         </q-tooltip>
       </q-btn>
-      <q-btn flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
           <span v-else>نمایش فرم</span>
@@ -89,7 +89,19 @@ export default {
         }
       },
       type: Object
-    }
+    },
+    onEditButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onListButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
   },
   data () {
     return {

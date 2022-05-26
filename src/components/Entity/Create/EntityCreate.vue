@@ -4,17 +4,17 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="check" @click="createEntity()">
+      <q-btn flat round icon="check" @click="runNeededMethod(onSaveButton, createEntity)">
         <q-tooltip>
           ذخیره
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="close" @click="goToIndexView()">
+      <q-btn flat round icon="close" @click="runNeededMethod(onCancelButton, goToIndexView)">
         <q-tooltip>
           لغو
         </q-tooltip>
       </q-btn>
-      <q-btn flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
           <span v-else>نمایش فرم</span>
