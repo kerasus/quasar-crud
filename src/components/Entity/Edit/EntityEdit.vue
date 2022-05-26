@@ -29,7 +29,7 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <slot name="before-form-builder"></slot>
-        <form-builder :key="key" v-model:value="inputData" :disable="false" />
+        <form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="false" />
         <slot name="after-form-builder"></slot>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
