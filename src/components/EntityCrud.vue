@@ -56,6 +56,9 @@ const allEntities = {
   EntityShow
 }
 function capitalizeFirstLetter (word) {
+  if (!word) {
+    return null
+  }
   const str = word
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
