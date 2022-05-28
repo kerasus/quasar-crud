@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "main": "index.js",
   "keywords": [
@@ -27,24 +27,24 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.16.5",
-    "@quasar/extras": "^1.0.0",
-    "axios": "^0.24.0",
-    "core-js": "^3.6.5",
-    "moment-jalaali": "^0.9.4",
-    "quasar": "^2.0.0",
-    "quasar-form-builder": "^0.1.12",
-    "standard": "^16.0.4",
-    "vue": "^3.0.0",
-    "vue-router": "4"
+    "@babel/eslint-parser": "^7.18.2",
+    "@quasar/extras": "^1.14.0",
+    "axios": "^0.27.2",
+    "core-js": "^3.22.7",
+    "moment-jalaali": "^0.9.6",
+    "quasar": "^2.7.1",
+    "quasar-form-builder": "^0.1.13",
+    "standard": "^17.0.0",
+    "vue": "^3.2.36",
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~5.0.4",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "eslint": "^8.16.0",
     "eslint-plugin-vue": "^7.0.0",
     "postcss-rtl": "^1.2.3",
     "sass": "1.32.12",
