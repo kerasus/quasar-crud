@@ -39,17 +39,9 @@
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~5.0.4",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.16.0",
-    "eslint-plugin-vue": "^7.0.0",
-    "postcss-rtl": "^1.2.3",
-    "sass": "1.32.12",
-    "sass-loader": "^10.1.0",
-    "vue-cli-plugin-quasar": "~4.0.4"
+    "eslint-plugin-vue": "^9.0.1"
   },
   "eslintConfig": {
     "root": true,
