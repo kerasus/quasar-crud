@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-md">
+  <q-card>
     <q-toolbar>
       <section class="q-my-sm q-mr-md cursor-pointer text-subtitle1">
         <div class="doc-card-title">
