@@ -5,6 +5,8 @@
       :api="api"
       :table="table"
       :table-keys="tableKeys"
+      v-model:table-selected-values="selected"
+      :table-selection-mode="'multiple'"
       :create-route-name="'User.Create'"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
@@ -44,6 +46,7 @@
           <q-btn flat label="Dismiss" @click="beforeFormBuilder = false" />
         </template>
       </q-banner>
+      selected value: {{ selected }}
     </template>
     <template #after-form-builder>
       <q-banner v-if="afterFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -80,6 +83,7 @@ export default {
   data () {
     return {
       expanded: true,
+      selected:[],
       api: 'https://reqres.in/api/users',
       tableKeys: {
         data: 'data',
