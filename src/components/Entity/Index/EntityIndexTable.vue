@@ -4,12 +4,14 @@
         ref="table"
         v-model:pagination="inputData.pagination"
         :grid="$q.screen.lt.sm"
-        title="Treats"
         :rows="inputData.data"
         :columns="columns"
         :loading="loading"
-        row-key="name"
+        :row-key="rowKey"
         :rows-per-page-options="[]"
+        :selected-rows-label="getSelectedString"
+        :selection="tableSelectionMode"
+        v-model:selected="tableChosenValues"
         @request="onChangePage"
     >
       <template #top="props">
@@ -138,20 +140,48 @@ export default {
       default: () => [],
       type: Array
     },
+    rowKey: {
+      default: 'id',
+      type: String
+    },
     changePage: {
       default: () => {},
       type: Function
+    },
+    tableSelectedValues: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    tableSelectionMode: {
+      type: String,
+      default () {
+        return 'none'
+      }
     }
   },
-  emits: ['search'],
+  emits: [
+    'search',
+    'update:tableSelectedValues'
+  ],
   data () {
     return {
+      selected: [],
       visibleColumns: [],
       tableKey: Date.now(),
       targetPage: 1
     }
   },
   computed: {
+    tableChosenValues: {
+      get () {
+        return this.tableSelectedValues
+      },
+      set (value) {
+        this.$emit('update:tableSelectedValues', value)
+      }
+    },
     pagesNumber () {
       return this.inputData.pagination.rowsNumber? Math.ceil(this.inputData.pagination.rowsNumber / this.inputData.pagination.rowsPerPage) : 1
     },
@@ -184,6 +214,15 @@ export default {
     }
   },
   methods: {
+    getSelectedString () {
+      if (this.$q.lang.isoName === 'fa') {
+        return this.tableChosenValues.length === 0 ? '' : this.tableChosenValues.length + ' انتخاب از ' + this.inputData.data.length + ' مورد'
+      }
+      else if (!this.$q.lang.rtl) {
+        return this.tableChosenValues.length === 0 ? '' : this.tableChosenValues.length + ' record' + (this.tableChosenValues.length > 1 ? 's' : '') + ' selected of ' + this.inputData.data.length
+      }
+      return this.tableChosenValues.length === 0 ? '' : this.inputData.data.length + '/' + this.tableChosenValues.length
+    },
     searchEvent () {
       this.$emit('search')
     },

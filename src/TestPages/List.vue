@@ -5,6 +5,9 @@
       :api="api"
       :table="table"
       :table-keys="tableKeys"
+      v-model:table-selected-values="selected"
+      :table-selection-mode="'multiple'"
+      :item-indicator-key="'first_name'"
       :create-route-name="'User.Create'"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
@@ -53,6 +56,8 @@
         </template>
       </q-banner>
     </template>
+    <template v-slot:chip-area>
+    </template>
     <template #before-index-table>
       <q-banner v-if="beforeIndexTable" inline-actions rounded class="bg-orange text-white q-ma-md">
         before index table
@@ -80,6 +85,7 @@ export default {
   data () {
     return {
       expanded: true,
+      selected:[],
       api: 'https://reqres.in/api/users',
       tableKeys: {
         data: 'data',
