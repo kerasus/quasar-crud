@@ -6,6 +6,8 @@
   <component
       :is="currentComponent"
       v-model:value="getNeededInputs"
+      v-model:table-selected-values="tableChosenValues"
+      :table-selection-mode="getTableSelectionMode"
       :before-load-input-data="getNeededProp('beforeLoad','InputData')"
       :after-load-input-data="getNeededProp('afterLoad','InputData')"
       :before-get-data="getNeededProp('beforeGet','Data')"
@@ -113,6 +115,18 @@ export default {
         return []
       }
     },
+    tableSelectedValues: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    tableSelectionMode: {
+      type: String,
+      default () {
+        return 'none'
+      }
+    },
     config: {
       type: Object,
       default () {
@@ -128,6 +142,7 @@ export default {
   },
   emits: [
     'update:defaultInputs',
+    'update:tableSelectedValues',
     'update:indexInputs',
     'update:editInputs',
     'update:createInputs',
@@ -147,6 +162,12 @@ export default {
         return this[this.currentMode + 'Inputs']
       }
       return this.inputDefaultValue
+    },
+    getTableSelectionMode () {
+      if (this.currentComponent === 'entity-index') {
+        return this.tableSelectionMode
+      }
+      return null
     },
     getNeededProp () {
       return (prefix, suffix) => {
@@ -194,6 +215,17 @@ export default {
       },
       set (value) {
         this.$emit('update:createInputs', value)
+      }
+    },
+    tableChosenValues: {
+      get () {
+        if (this.currentComponent === 'entity-index') {
+          return this.tableSelectedValues
+        }
+        return null
+      },
+      set (value) {
+        this.$emit('update:tableSelectedValues', value)
       }
     },
     getRouteChange () {
