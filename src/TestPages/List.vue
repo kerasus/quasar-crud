@@ -7,6 +7,7 @@
       :table-keys="tableKeys"
       v-model:table-selected-values="selected"
       :table-selection-mode="'multiple'"
+      :item-indicator-key="'first_name'"
       :create-route-name="'User.Create'"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
@@ -46,7 +47,6 @@
           <q-btn flat label="Dismiss" @click="beforeFormBuilder = false" />
         </template>
       </q-banner>
-      selected value: {{ selected }}
     </template>
     <template #after-form-builder>
       <q-banner v-if="afterFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -55,6 +55,8 @@
           <q-btn flat label="Dismiss" @click="afterFormBuilder = false" />
         </template>
       </q-banner>
+    </template>
+    <template v-slot:chip-area>
     </template>
     <template #before-index-table>
       <q-banner v-if="beforeIndexTable" inline-actions rounded class="bg-orange text-white q-ma-md">

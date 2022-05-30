@@ -31,6 +31,17 @@
         <slot name="before-form-builder"></slot>
         <form-builder ref="formBuilder" :key="key" v-model:value="inputData" />
         <slot name="after-form-builder"></slot>
+        <slot name="chip-area">
+          <q-chip
+              v-for="(item, index) in tableChosenValues"
+              :key="index"
+              clickable
+              removable
+              @remove="deselectItem(item)"
+          >
+            {{ getChipTitle(index) }}
+          </q-chip>
+        </slot>
         <div class="row">
           <div class="col">
             <slot name="before-index-table"></slot>
@@ -99,6 +110,12 @@ export default {
       type: String,
       default () {
         return 'none'
+      }
+    },
+    itemIndicatorKey: {
+      type: String,
+      default () {
+        return 'name'
       }
     },
     value: {
@@ -172,6 +189,12 @@ export default {
       },
       set (value) {
         this.$emit('update:tableSelectedValues', value)
+      }
+    },
+    getChipTitle () {
+      return (index) => {
+        const value = this.tableChosenValues[index][this.itemIndicatorKey]
+        return value ? value : '_'
       }
     }
   },
@@ -274,6 +297,15 @@ export default {
       }
 
       return params
+    },
+    deselectItem (item) {
+      let indexOfValueToRemove
+      this.tableChosenValues.forEach((element, index) => {
+        if (element[this.itemIndicatorKey] === item[this.itemIndicatorKey]) {
+          indexOfValueToRemove = index
+        }
+      })
+      this.tableChosenValues.splice(indexOfValueToRemove, 1);
     }
   }
 }
