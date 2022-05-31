@@ -6,9 +6,9 @@
           flat
           dense
           round
+          @click="leftDrawerOpen = !leftDrawerOpen"
           aria-label="Menu"
           icon="menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
         <q-toolbar-title>

@@ -4,7 +4,7 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="search" @click="runNeededMethod(onSearchButton, search)">
+      <q-btn flat round icon="search" @click="search">
         <q-tooltip>
           جستجو
         </q-tooltip>
@@ -14,7 +14,7 @@
           جدید
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="cached" @click="runNeededMethod(onReloadButton, reload)">
+      <q-btn flat round icon="cached" @click="reload">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
@@ -31,16 +31,29 @@
         <slot name="before-form-builder"></slot>
         <form-builder ref="formBuilder" :key="key" v-model:value="inputData" />
         <slot name="after-form-builder"></slot>
+        <slot name="chip-area">
+          <q-chip
+              v-for="(item, index) in tableChosenValues"
+              :key="index"
+              clickable
+              removable
+              @remove="deselectItem(item)"
+          >
+            {{ getChipTitle(index) }}
+          </q-chip>
+        </slot>
         <div class="row">
           <div class="col">
             <slot name="before-index-table"></slot>
             <EntityIndexTable
-              v-model:value="tableData"
-              :columns="table.columns"
-              :title="title"
-              :loading="loading"
-              :change-page="changePage"
-              @search="search"
+                v-model:value="tableData"
+                v-model:table-selected-values="tableChosenValues"
+                :table-selection-mode="tableSelectionMode"
+                :columns="table.columns"
+                :title="title"
+                :loading="loading"
+                :change-page="changePage"
+                @search="search"
             >
               <template #entity-index-table-cell="{inputData}">
                 <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
@@ -87,11 +100,23 @@ export default {
       },
       type: [Function, Boolean]
     },
-    onSearchButton: {
-      default() {
-        return false
-      },
-      type: [Function, Boolean]
+    tableSelectedValues: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    tableSelectionMode: {
+      type: String,
+      default () {
+        return 'none'
+      }
+    },
+    itemIndicatorKey: {
+      type: String,
+      default () {
+        return 'name'
+      }
     },
     value: {
       default: () => [],
@@ -128,7 +153,11 @@ export default {
       type: Object
     }
   },
-emits: ['onPageChanged', 'catchError'],
+  emits: [
+    'onPageChanged',
+    'catchError',
+    'update:tableSelectedValues'
+  ],
   data () {
     return {
       removeIdKey: 'id',
@@ -153,6 +182,22 @@ emits: ['onPageChanged', 'catchError'],
   mounted () {
     this.search()
   },
+  computed: {
+    tableChosenValues: {
+      get () {
+        return this.tableSelectedValues
+      },
+      set (value) {
+        this.$emit('update:tableSelectedValues', value)
+      }
+    },
+    getChipTitle () {
+      return (index) => {
+        const value = this.tableChosenValues[index][this.itemIndicatorKey]
+        return value ? value : '_'
+      }
+    }
+  },
   methods: {
     goToCreatePage () {
       this.$router.push({ name: this.createRouteName })
@@ -176,12 +221,12 @@ emits: ['onPageChanged', 'catchError'],
       const that = this
       this.loading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-        .then(() => {
-          that.reload()
-        })
-        .catch(() => {
-          that.loading = false
-        })
+          .then(() => {
+            that.reload()
+          })
+          .catch(() => {
+            that.loading = false
+          })
     },
     changePage (page) {
       this.clearData()
@@ -218,30 +263,30 @@ emits: ['onPageChanged', 'catchError'],
       this.$axios.get(address, {
         params: that.createParams(page)
       })
-        .then((response) => {
-          that.loading = false
+          .then((response) => {
+            that.loading = false
 
-          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
-          that.$emit('onPageChanged', response)
-          this.key = Date.now()
-        })
-        .catch(error => {
-          that.loading = false
-          that.$emit('catchError', error)
-        })
+            that.$emit('onPageChanged', response)
+            this.key = Date.now()
+          })
+          .catch(error => {
+            that.loading = false
+            that.$emit('catchError', error)
+          })
     },
     createParams (page) {
       const params = {}
       this.inputData.forEach(item => {
         if (
-          typeof item.name !== 'undefined' &&
-          item.name !== null &&
-          typeof item.value !== 'undefined' &&
-          item.value !== null
+            typeof item.name !== 'undefined' &&
+            item.name !== null &&
+            typeof item.value !== 'undefined' &&
+            item.value !== null
         ) {
           params[item.name] = item.value
         }
@@ -252,6 +297,15 @@ emits: ['onPageChanged', 'catchError'],
       }
 
       return params
+    },
+    deselectItem (item) {
+      let indexOfValueToRemove
+      this.tableChosenValues.forEach((element, index) => {
+        if (element[this.itemIndicatorKey] === item[this.itemIndicatorKey]) {
+          indexOfValueToRemove = index
+        }
+      })
+      this.tableChosenValues.splice(indexOfValueToRemove, 1);
     }
   }
 }

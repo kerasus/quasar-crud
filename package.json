@@ -2,54 +2,38 @@
   "name": "quasar-crud",
   "version": "0.2.17",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
-  "main": "index.js",
-  "keywords": [
-    "vue",
-    "quasar",
-    "quasar-crud"
-  ],
-  "contributors": [
-    {
-      "name": "Ali Esmaeeli",
-      "email": "aliesmaeeli20@gmail.com",
-      "url": "https://github.com/kerasus/quasar-crud"
-    },
-    {
-      "name": "Maryam Razmjoo",
-      "email": "MaryamRazmjoo76@yahoo.com",
-      "url": "https://github.com/MaryamRazmjoo/quasar-crud"
-    }
-  ],
-  "homepage": "https://github.com/kerasus/quasar-crud",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "main": "index.js",
   "dependencies": {
-    "@babel/eslint-parser": "^7.16.5",
-    "@quasar/extras": "^1.0.0",
-    "axios": "^0.24.0",
-    "core-js": "^3.6.5",
-    "moment-jalaali": "^0.9.4",
-    "quasar": "^2.0.0",
-    "quasar-form-builder": "^0.1.14",
-    "standard": "^16.0.4",
-    "vue": "^3.0.0",
+    "@babel/eslint-parser": "^7.18.2",
+    "@quasar/extras": "^1.14.0",
+    "axios": "^0.27.2",
+    "core-js": "^3.22.7",
+    "moment-jalaali": "^0.9.6",
+    "quasar": "^2.7.1",
+    "quasar-form-builder": "^0.1.13",
+    "standard": "^17.0.0",
+    "vue": "^3.2.36",
     "vue-router": "4"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/cli-plugin-babel": "~5.0.4",
+    "@vue/cli-plugin-eslint": "~5.0.4",
+    "@vue/cli-service": "~5.0.4",
+    "@vue/compiler-sfc": "^3.2.36",
+    "autoprefixer": "^9.8.8",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0",
-    "postcss-rtl": "^1.2.3",
-    "sass": "1.32.12",
-    "sass-loader": "^10.1.0",
-    "vue-cli-plugin-quasar": "~4.0.4"
+    "eslint": "^8.16.0",
+    "eslint-plugin-vue": "^7.20.0",
+    "postcss": "^7.0.39",
+    "postcss-rtl": "^0.0.3",
+    "sass": "1.52.1",
+    "sass-loader": "^13.0.0",
+    "vue-cli-plugin-quasar": "~5.0.1"
   },
   "eslintConfig": {
     "root": true,
@@ -89,5 +73,23 @@
     "> 1%",
     "last 2 versions",
     "not dead"
+  ],
+  "contributors": [
+    {
+      "name": "Ali Esmaeeli",
+      "email": "aliesmaeeli20@gmail.com",
+      "url": "https://github.com/kerasus/quasar-crud"
+    },
+    {
+      "name": "Maryam Razmjoo",
+      "email": "MaryamRazmjoo76@yahoo.com",
+      "url": "https://github.com/MaryamRazmjoo/quasar-crud"
+    }
+  ],
+  "homepage": "https://github.com/kerasus/quasar-crud",
+  "keywords": [
+    "vue",
+    "quasar",
+    "quasar-crud"
   ]
 }
