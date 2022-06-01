@@ -19,6 +19,11 @@
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
+      <q-btn v-if="showCloseButton" flat round icon="cancel" v-close-popup>
+        <q-tooltip>
+          بستن
+        </q-tooltip>
+      </q-btn>
       <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
@@ -28,12 +33,9 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
-        <form-builder ref="formBuilder" :key="key" v-model:value="inputData" />
-        <slot name="after-form-builder"></slot>
         <slot name="chip-area">
           <q-chip
-              v-for="(item, index) in tableChosenValues"
+              v-for="(item, index) in tableSelectedValues"
               :key="index"
               clickable
               removable
@@ -42,15 +44,20 @@
             {{ getChipTitle(index) }}
           </q-chip>
         </slot>
+        <slot name="before-form-builder"></slot>
+        <form-builder ref="formBuilder" :key="key" v-model:value="inputData" />
+        <slot name="after-form-builder"></slot>
         <div class="row">
           <div class="col">
             <slot name="before-index-table"></slot>
             <EntityIndexTable
                 v-model:value="tableData"
-                v-model:table-selected-values="tableChosenValues"
+                v-model:table-selected-values="tableSelectedValues"
+                @update:table-selected-values="updateSelestedavlues"
                 :table-selection-mode="tableSelectionMode"
                 :columns="table.columns"
                 :title="title"
+                :row-key="rowKey"
                 :loading="loading"
                 :change-page="changePage"
                 @search="search"
@@ -67,7 +74,7 @@
           </div>
         </div>
       </q-expansion-item>
-      <q-dialog v-model="confirmRemoveDoalog" persistent>
+      <q-dialog v-model="confirmRemoveDialog" persistent>
         <q-card>
           <q-card-section class="row items-center">
             <q-icon name="warning" color="primary" size="md"/>
@@ -151,6 +158,10 @@ export default {
         }
       },
       type: Object
+    },
+    rowKey: {
+      default: 'id',
+      type: String
     }
   },
   emits: [
@@ -161,7 +172,7 @@ export default {
   data () {
     return {
       removeIdKey: 'id',
-      confirmRemoveDoalog: false,
+      confirmRemoveDialog: false,
       confirmRemoveMessage: 'false',
       selectedItemToRemove: null,
       expanded: true,
@@ -193,7 +204,7 @@ export default {
     },
     getChipTitle () {
       return (index) => {
-        const value = this.tableChosenValues[index][this.itemIndicatorKey]
+        const value = this.tableSelectedValues[index][this.itemIndicatorKey]
         return value ? value : '_'
       }
     }
@@ -211,7 +222,7 @@ export default {
         this.confirmRemoveMessage = 'آیا از حذف مورد اطمینان دارید؟'
       }
       this.selectedItemToRemove = item
-      this.confirmRemoveDoalog = true
+      this.confirmRemoveDialog = true
     },
     removeItem () {
       if (this.selectedItemToRemove === null) {
@@ -298,14 +309,19 @@ export default {
 
       return params
     },
+    updateSelestedavlues(value) {
+      this.$emit('update:tableSelectedValues', value)
+    },
     deselectItem (item) {
       let indexOfValueToRemove
-      this.tableChosenValues.forEach((element, index) => {
+      let tableChosenValues = this.tableSelectedValues
+      tableChosenValues.forEach((element, index) => {
         if (element[this.itemIndicatorKey] === item[this.itemIndicatorKey]) {
           indexOfValueToRemove = index
         }
       })
-      this.tableChosenValues.splice(indexOfValueToRemove, 1);
+      tableChosenValues.splice(indexOfValueToRemove, 1)
+      this.updateSelestedavlues(tableChosenValues)
     }
   }
 }

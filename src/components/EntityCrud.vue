@@ -158,7 +158,7 @@ export default {
   },
   computed: {
     getNeededInputs () {
-      if (this[this.currentMode + 'Inputs'].length > 0) {
+      if (this[this.currentMode + 'Inputs'] && this[this.currentMode + 'Inputs'].length > 0) {
         return this[this.currentMode + 'Inputs']
       }
       return this.inputDefaultValue
