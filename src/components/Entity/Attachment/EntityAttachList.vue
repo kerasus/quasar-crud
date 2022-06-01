@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import { EntityIndexTable } from 'quasar-crud'
+import  EntityIndexTable from '../../Entity/Index/EntityIndexTable'
 import { inputMixin } from 'quasar-form-builder'
-import EntityMixin from 'src/components/Attach/EntityMixin'
+import EntityMixin from '../../../mixins/EntityMixin'
 export default {
   name: 'EntityAttachList',
   components: { EntityIndexTable },
