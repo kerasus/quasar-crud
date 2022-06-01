@@ -52,8 +52,8 @@
             <slot name="before-index-table"></slot>
             <EntityIndexTable
                 v-model:value="tableData"
-                v-model:table-selected-values="tableSelectedValues"
-                @update:table-selected-values="updateSelestedavlues"
+                v-model:table-selected-values="tableChosenValues"
+                @update:table-selected-values="updateSelectedavlues"
                 :table-selection-mode="tableSelectionMode"
                 :columns="table.columns"
                 :title="title"
@@ -198,9 +198,7 @@ export default {
       get () {
         return this.tableSelectedValues
       },
-      set (value) {
-        this.$emit('update:tableSelectedValues', value)
-      }
+      set () {}
     },
     getChipTitle () {
       return (index) => {
@@ -309,19 +307,19 @@ export default {
 
       return params
     },
-    updateSelestedavlues(value) {
+    updateSelectedavlues(value) {
       this.$emit('update:tableSelectedValues', value)
     },
     deselectItem (item) {
       let indexOfValueToRemove
-      let tableChosenValues = this.tableSelectedValues
+      let tableChosenValues = this.tableChosenValues
       tableChosenValues.forEach((element, index) => {
         if (element[this.itemIndicatorKey] === item[this.itemIndicatorKey]) {
           indexOfValueToRemove = index
         }
       })
       tableChosenValues.splice(indexOfValueToRemove, 1)
-      this.updateSelestedavlues(tableChosenValues)
+      this.updateSelectedavlues(tableChosenValues)
     }
   }
 }
