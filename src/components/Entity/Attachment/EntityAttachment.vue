@@ -220,15 +220,19 @@ export default {
       const finalData = {}
       this.computedCrudFormInputs.forEach(input => {
         if (input.selected.length > 0) {
-          finalData[input.name] = [...input.selected]
+          let val = input.selected
+          if (val.length === 1) {
+            val = val[0]
+          }
+          finalData[input.name] = val
         }
       })
       console.log('finalData', finalData)
-      this.$q.notify({
-        type: 'positive',
-        message: 'Entity Attached Successfully',
-        position: 'top'
-      })
+      // this.$q.notify({
+      //   type: 'positive',
+      //   message: 'Entity Attached Successfully',
+      //   position: 'top'
+      // })
       // this.entityCrudFormDialog = false
     }
   },
