@@ -53,7 +53,7 @@
             <EntityIndexTable
                 v-model:value="tableData"
                 v-model:table-selected-values="tableChosenValues"
-                @update:table-selected-values="updateSelectedavlues"
+                @update:table-selected-values="updateSelectedValues"
                 :table-selection-mode="tableSelectionMode"
                 :columns="table.columns"
                 :title="title"
@@ -181,6 +181,7 @@ export default {
       selectedItemToRemove: null,
       expanded: true,
       loading: false,
+      tableFlatData:null,
       tableData: {
         data: [],
         pagination: {
@@ -206,7 +207,7 @@ export default {
     },
     getChipTitle () {
       return (index) => {
-        const value = this.tableSelectedValues[index][this.itemIndicatorKey]
+        const value = this.getValidChainedObject(this.tableSelectedValues[index], this.itemIndicatorKey)
         return value ? value : '_'
       }
     }
@@ -277,6 +278,7 @@ export default {
         params: that.createParams(page)
       })
           .then((response) => {
+            this.tableFlatData = response.data
             that.loading = false
 
             that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
@@ -311,19 +313,19 @@ export default {
 
       return params
     },
-    updateSelectedavlues(value) {
+    updateSelectedValues(value) {
       this.$emit('update:tableSelectedValues', value)
     },
     deselectItem (item) {
       let indexOfValueToRemove
       let tableChosenValues = this.tableChosenValues
       tableChosenValues.forEach((element, index) => {
-        if (element[this.itemIndicatorKey] === item[this.itemIndicatorKey]) {
+        if (this.getValidChainedObject(element, this.itemIndicatorKey) === this.getValidChainedObject(item, this.itemIndicatorKey)) {
           indexOfValueToRemove = index
         }
       })
       tableChosenValues.splice(indexOfValueToRemove, 1)
-      this.updateSelectedavlues(tableChosenValues)
+      this.updateSelectedValues(tableChosenValues)
     }
   }
 }

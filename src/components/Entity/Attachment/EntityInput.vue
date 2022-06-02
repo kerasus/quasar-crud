@@ -7,19 +7,19 @@
   <q-dialog v-model="dialog" full-width full-height>
     <div>
       <entity-index
-        :value="inputs"
-        :title="tableTitle"
-        :api="apiAddress"
-        :table="table"
-        :table-keys="tableKeys"
-        :table-selection-mode="selectionMode"
-        :show-close-button="true"
-        :show-expand-button="false"
-        :row-key="'id'"
-        v-model:table-selected-values="selected"
-        @update:table-selected-values="onSelectedUpdate"
-        :item-indicator-key="'id'"
-        style="width: 100%; height: 100%;"
+          :value="inputs"
+          :title="tableTitle"
+          :api="apiAddress"
+          :table="table"
+          :table-keys="tableKeys"
+          :table-selection-mode="selectionMode"
+          :show-close-button="true"
+          :show-expand-button="false"
+          :row-key="'id'"
+          v-model:table-selected-values="selected"
+          @update:table-selected-values="onSelectedUpdate"
+          :item-indicator-key="itemIndicatorKey"
+          style="width: 100%; height: 100%;"
       >
         <template v-slot:table-cell="{inputData}">
           <q-td :props="inputData.props">
@@ -139,6 +139,12 @@ export default {
       type: Array,
       default () {
         return []
+      }
+    },
+    itemIndicatorKey: {
+      type: String,
+      default () {
+        return 'name'
       }
     }
   },

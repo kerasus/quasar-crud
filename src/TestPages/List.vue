@@ -229,7 +229,8 @@ export default {
               { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
-            ]
+            ],
+            itemIndicatorKey: 'id'
           },
           value: [],
           selected: [],
@@ -305,6 +306,7 @@ export default {
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
+            itemIndicatorKey: 'first_name',
             showTableItemsRouteName: 'Admin.BlockManagement.Show'
           },
           value: [],
@@ -381,6 +383,7 @@ export default {
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
+            itemIndicatorKey: 'id',
             showTableItemsRouteName: 'Admin.BlockManagement.Show'
           },
           value: [],
