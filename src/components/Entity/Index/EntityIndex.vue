@@ -101,6 +101,10 @@ export default {
   components: { Portlet, EntityIndexTable, FormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
+    showCloseButton: {
+      default: false,
+      type: Boolean
+    },
     onAddButton: {
       default() {
         return false

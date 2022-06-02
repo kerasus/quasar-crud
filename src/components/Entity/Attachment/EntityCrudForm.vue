@@ -16,9 +16,9 @@
 
 <script>
 import { shallowRef } from 'vue'
-import EntityMixin from 'src/components/Attach/EntityMixin'
+import EntityMixin from '../../../mixins/EntityMixin'
 import { FormBuilder, inputMixin } from 'quasar-form-builder'
-import EntityInput from 'components/Attach/EntityInput'
+import EntityInput from '../Attachment/EntityInput'
 
 const EntityInputComp = shallowRef(EntityInput)
 export default {

@@ -7,7 +7,7 @@
   <q-dialog v-model="dialog" full-width full-height>
     <div>
       <entity-index
-        v-model:value="inputs"
+        :value="inputs"
         :title="tableTitle"
         :api="apiAddress"
         :table="table"
@@ -34,7 +34,7 @@
               </q-avatar>
             </template>
             <template v-else-if="inputData.props.col.name === 'actions'">
-              <q-btn round flat dense size="md" color="info" icon="info" :to="{name:showTableItemsRouteName, params: {id: inputData.props.row.id}}">
+              <q-btn round flat dense size="md" color="info" icon="info" :to="{name: showTableItemsRouteName, params: {id: inputData.props.row.id}}">
                 <q-tooltip>
                   مشاهده
                 </q-tooltip>
@@ -52,7 +52,7 @@
 
 <script>
 import { inputMixin } from 'quasar-form-builder'
-import { EntityIndex } from 'quasar-crud'
+import  EntityIndex  from '../Index/EntityIndex'
 export default {
   name: 'EntityInput',
   mixins: [inputMixin],

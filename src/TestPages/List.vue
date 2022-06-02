@@ -168,7 +168,6 @@ export default {
             apiAddress: 'https://reqres.in/api/users',
             tableTitle: 'لیست محصولات',
             showTableItemsRouteName: 'Admin.BlockManagement.Show',
-            api: 'https://reqres.in/api/users',
             tableKeys: {
               data: 'data',
               total: 'total',
@@ -241,7 +240,6 @@ export default {
           indexConfig: {
             apiAddress: 'https://reqres.in/api/users',
             tableTitle: 'لیست محصولات',
-            api: 'https://reqres.in/api/users',
             tableKeys: {
               data: 'data',
               total: 'total',
