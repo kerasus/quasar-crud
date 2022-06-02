@@ -7,6 +7,7 @@
   <q-dialog v-model="dialog" full-width full-height>
     <div>
       <entity-index
+          v-model:table-selected-values="selected"
           :value="inputs"
           :title="tableTitle"
           :api="apiAddress"
@@ -16,10 +17,9 @@
           :show-close-button="true"
           :show-expand-button="false"
           :row-key="'id'"
-          v-model:table-selected-values="selected"
-          @update:table-selected-values="onSelectedUpdate"
           :item-indicator-key="itemIndicatorKey"
           style="width: 100%; height: 100%;"
+          @update:table-selected-values="onSelectedUpdate"
       >
         <template v-slot:table-cell="{inputData}">
           <q-td :props="inputData.props">

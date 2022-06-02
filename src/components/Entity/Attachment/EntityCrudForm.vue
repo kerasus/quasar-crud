@@ -5,9 +5,9 @@
         color="positive"
         text-color="white"
         :label="'ثبت'"
-        @click="attachData"
         align="right"
-        class="form-button"/>
+        class="form-button"
+        @click="attachData"/>
       <div class="col-12 no-padding">
         <form-builder v-model:value="computedCrudFormInputs" />
       </div>

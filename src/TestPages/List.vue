@@ -1,11 +1,11 @@
 <template>
   <entity-index
       v-model:value="inputs"
+      v-model:table-selected-values="selected"
       title="لیست کاربران"
       :api="api"
       :table="table"
       :table-keys="tableKeys"
-      v-model:table-selected-values="selected"
       :table-selection-mode="'multiple'"
       :item-indicator-key="'first_name'"
       :create-route-name="'User.Create'"
@@ -76,6 +76,7 @@
     </template>
   </entity-index>
   <entity-attachment
+      v-model:crud-form-inputs="crudFormInputs"
       expanded-default
       :title="'افزودن یا حذف محصول از این بلاک'"
       :button-label="'افزودن'"
@@ -84,7 +85,6 @@
       :attachment-list-api-address="api"
       :table="table"
       :table-keys="tableKeys"
-      v-model:crud-form-inputs="crudFormInputs"
   />
 </template>
 

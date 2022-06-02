@@ -3,6 +3,7 @@
     <q-table
         ref="table"
         v-model:pagination="inputData.pagination"
+        v-model:selected="tableChosenValues"
         :grid="$q.screen.lt.sm"
         :rows="inputData.data"
         :columns="columns"
@@ -11,7 +12,6 @@
         :rows-per-page-options="[]"
         :selected-rows-label="getSelectedString"
         :selection="tableSelectionMode"
-        v-model:selected="tableChosenValues"
         @request="onChangePage"
     >
       <template #top="props">

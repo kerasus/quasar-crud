@@ -19,7 +19,7 @@
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
-      <q-btn v-if="showCloseButton" flat round icon="cancel" v-close-popup>
+      <q-btn v-if="showCloseButton" v-close-popup flat round icon="cancel">
         <q-tooltip>
           بستن
         </q-tooltip>
@@ -53,13 +53,13 @@
             <EntityIndexTable
                 v-model:value="tableData"
                 v-model:table-selected-values="tableChosenValues"
-                @update:table-selected-values="updateSelectedValues"
                 :table-selection-mode="tableSelectionMode"
                 :columns="table.columns"
                 :title="title"
                 :row-key="rowKey"
                 :loading="loading"
                 :change-page="changePage"
+                @update:table-selected-values="updateSelectedValues"
                 @search="search"
             >
               <template #entity-index-table-cell="{inputData}">
