@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <q-btn push color="primary" text-color="white" :label="label" @click="openCloseModal">
-      <q-badge color="orange" floating>{{ getValuesLength }}</q-badge>
-    </q-btn>
+  <div class="row">
+      <q-btn class="col-12" push color="primary" text-color="white" :label="label" @click="openCloseModal">
+        <q-badge color="orange" floating>{{ getValuesLength }}</q-badge>
+      </q-btn>
   </div>
   <q-dialog v-model="dialog" full-width full-height>
     <div>

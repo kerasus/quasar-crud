@@ -113,6 +113,7 @@ export default {
     margin-bottom: 20px;
     width: 100px;
     height: 40px;
+    align-items: center;
   }
 }
 </style>
