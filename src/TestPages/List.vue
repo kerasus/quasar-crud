@@ -164,6 +164,9 @@ export default {
           name: 'product',
           selectionMode: 'multiple',
           label: 'محصول',
+          buttonColor:'deep-purple',
+          buttonTextColor:'white',
+          buttonBadgeColor:'pink',
           indexConfig: {
             apiAddress: 'https://reqres.in/api/users',
             tableTitle: 'لیست محصولات',
@@ -237,6 +240,9 @@ export default {
           name: 'exam',
           label: 'آزمون',
           selectionMode: 'multiple',
+          buttonColor:'indigo',
+          buttonTextColor:'black',
+          buttonBadgeColor:'blue',
           indexConfig: {
             apiAddress: 'https://reqres.in/api/users',
             tableTitle: 'لیست محصولات',
@@ -309,6 +315,9 @@ export default {
           type: 'entity',
           name: 'subcategory',
           selectionMode: 'multiple',
+          buttonColor:'red',
+          buttonTextColor:'black',
+          buttonBadgeColor:'green',
           label: 'زیر گروه',
           indexConfig: {
             apiAddress: 'https://reqres.in/api/users',

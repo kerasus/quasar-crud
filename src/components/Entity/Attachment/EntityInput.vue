@@ -1,7 +1,7 @@
 <template>
   <div class="row">
-      <q-btn class="col-12" push color="primary" text-color="white" :label="label" @click="openCloseModal">
-        <q-badge color="orange" floating>{{ getValuesLength }}</q-badge>
+      <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
+        <q-badge :color="buttonBadgeColor" floating>{{ getValuesLength }}</q-badge>
       </q-btn>
   </div>
   <q-dialog v-model="dialog" full-width full-height>
@@ -68,6 +68,18 @@ export default {
     buttonName: {
       type: String,
       default: 'ali'
+    },
+    buttonColor: {
+      type: String,
+      default: 'primary'
+    },
+    buttonTextColor: {
+      type: String,
+      default: 'white'
+    },
+    buttonBadgeColor: {
+      type: String,
+      default: 'orange'
     },
     tableTitle: {
       type: String,

@@ -65,6 +65,9 @@ export default {
           input.props = input.indexConfig
           input.props.selectionMode = input.selectionMode
           input.props.label = input.label || input.name
+          input.props.buttonBadgeColor = input.buttonBadgeColor
+          input.props.buttonTextColor = input.buttonTextColor
+          input.props.buttonColor = input.buttonColor
 
           if (typeof input.selected !== 'undefined') {
             return input
