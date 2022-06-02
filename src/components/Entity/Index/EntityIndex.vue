@@ -278,7 +278,6 @@ export default {
         params: that.createParams(page)
       })
           .then((response) => {
-            this.tableFlatData = response.data
             that.loading = false
 
             that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
