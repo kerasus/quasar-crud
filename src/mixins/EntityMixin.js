@@ -11,23 +11,9 @@ const EntityMixin = {
       default: true,
       type: Boolean
     },
-    onReloadButton: {
-      default () {
-        return false
-      },
-      type: [Function, Boolean]
-    },
-    onCancelButton: {
-      default () {
-        return false
-      },
-      type: [Function, Boolean]
-    },
-    onSaveButton: {
-      default () {
-        return false
-      },
-      type: [Function, Boolean]
+    showCloseButton: {
+      default: false,
+      type: Boolean
     },
     beforeSendData: {
       default: () => {},
@@ -49,13 +35,14 @@ const EntityMixin = {
   },
   methods: {
     runNeededMethod (substituteMethod, callBackMethod) {
-      if (!!substituteMethod && substituteMethod()) {
+      if (!!substituteMethod && substituteMethod()){
         substituteMethod()
         return
       }
       callBackMethod()
     },
     getEntityId () {
+
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]

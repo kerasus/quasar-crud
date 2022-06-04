@@ -8,6 +8,8 @@
       v-model:value="getNeededInputs"
       v-model:table-selected-values="tableChosenValues"
       :table-selection-mode="getTableSelectionMode"
+      v-bind="neededConfig"
+      ref="entityComponent"
       :before-load-input-data="getNeededProp('beforeLoad','InputData')"
       :after-load-input-data="getNeededProp('afterLoad','InputData')"
       :before-get-data="getNeededProp('beforeGet','Data')"
@@ -18,8 +20,6 @@
       :on-search-button="getNeededProp('on','SearchButton')"
       :on-edit-button="getNeededProp('on','EditButton')"
       :on-list-button="getNeededProp('on','ListButton')"
-      v-bind="neededConfig"
-      ref="entityComponent"
   >
     <template v-slot:before-form-builder>
       <slot v-if="currentComponent === 'entity-create'" name="entity-create-before-form-builder"></slot>
@@ -158,7 +158,7 @@ export default {
   },
   computed: {
     getNeededInputs () {
-      if (this[this.currentMode + 'Inputs'].length > 0) {
+      if (this[this.currentMode + 'Inputs'] && this[this.currentMode + 'Inputs'].length > 0) {
         return this[this.currentMode + 'Inputs']
       }
       return this.inputDefaultValue

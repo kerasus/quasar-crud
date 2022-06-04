@@ -6,6 +6,7 @@ import EntityEdit from './src/components/Entity/Edit/EntityEdit'
 import EntityIndex from './src/components/Entity/Index/EntityIndex'
 import EntityCrud from './src/components/EntityCrud'
 import EntityIndexTable from './src/components/Entity/Index/EntityIndexTable'
+import EntityInput from './src/components/Entity/Attachment/EntityInput'
 import Portlet from './src/components/Portlet'
 
-export { EntityCreate, EntityShow, EntityEdit, EntityIndex, EntityCrud, Portlet, EntityIndexTable }
+export { EntityCreate, EntityShow, EntityEdit, EntityIndex, EntityCrud, Portlet, EntityIndexTable, EntityInput }
