@@ -24,7 +24,7 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <slot name="before-form-builder"></slot>
-        <form-builder ref="formBuilder" v-model:value="inputData" :disable="false" />
+        <entity-crud-form-builder ref="formBuilder" v-model:value="inputData" :disable="false" />
         <slot name="after-form-builder"></slot>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
@@ -37,12 +37,15 @@
 <script>
 import Portlet from '../../../components/Portlet'
 import EntityMixin from '../../../mixins/EntityMixin'
-import { FormBuilder, inputMixin } from 'quasar-form-builder'
+import { inputMixin } from 'quasar-form-builder'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder'
 
 export default {
   name: 'EntityCreate',
-  components: { Portlet, FormBuilder },
-  mixins: [inputMixin, EntityMixin],
+  components: { EntityCrudFormBuilder, Portlet },
+  mixins: [
+    inputMixin,
+      EntityMixin],
   props: {
     value: {
       default: () => [],

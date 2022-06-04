@@ -1,7 +1,7 @@
 <template>
   <div class="row">
       <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
-        <q-badge :color="buttonBadgeColor" floating>{{ getValuesLength }}</q-badge>
+        <q-badge v-if="value && value.length > 0" :color="buttonBadgeColor" floating>{{ value.length }}</q-badge>
       </q-btn>
   </div>
   <q-dialog v-model="dialog" full-width full-height>
@@ -16,9 +16,8 @@
           :table-selection-mode="selectionMode"
           :show-close-button="true"
           :show-expand-button="false"
-          :row-key="'id'"
+          :row-key="itemIdentifyKey"
           :item-indicator-key="itemIndicatorKey"
-          style="width: 100%; height: 100%;"
           @update:table-selected-values="onSelectedUpdate"
       >
         <template v-slot:table-cell="{inputData}">
@@ -142,10 +141,12 @@ export default {
       }
     },
     itemIndicatorKey: {
-      type: String,
-      default () {
-        return 'name'
-      }
+      type: [String, Function],
+      default: 'title'
+    },
+    itemIdentifyKey: {
+      type: [String, Function],
+      default: 'id'
     }
   },
   data () {
@@ -156,27 +157,26 @@ export default {
     }
   },
   methods: {
-    onSelectedUpdate (val) {
-      this.selected = val
-      this.inputData = val
-      this.$emit('update:value', this.inputData)
+    onSelectedUpdate (values) {
+      let selected = (this.selectionMode === 'multiple') ? [] : null
+      values.forEach( vlue => {
+        if (this.selectionMode === 'multiple') {
+          selected.push(vlue)
+        } else {
+          selected = vlue
+        }
+      })
+      this.selected = selected
+      this.inputData = selected
+      this.$emit('update:value', this.selected)
     },
     openCloseModal () {
       this.dialog = !this.dialog
     },
-    getRemoveMessage (row) {
-      const firstName = row.first_name
-      const lastName = row.last_name
-      return 'آیا از حذف ' + firstName + ' ' + lastName + ' اطمینان دارید؟'
-    }
-  },
-  computed: {
-    getValuesLength () {
-      const val = this.selected.length
-      return val > -1 ? val : 0
-    }
-  },
-  watch: {}
+    getItemIdentifyKey () {
+      return this.itemIdentifyKey
+    },
+  }
 }
 </script>
 

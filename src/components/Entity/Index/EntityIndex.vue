@@ -45,7 +45,7 @@
           </q-chip>
         </slot>
         <slot name="before-form-builder"></slot>
-        <form-builder ref="formBuilder" :key="key" v-model:value="inputData" />
+        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
         <slot name="after-form-builder"></slot>
         <div class="row">
           <div class="col">
@@ -93,12 +93,13 @@
 <script>
 import Portlet from '../../../components/Portlet'
 import EntityMixin from '../../../mixins/EntityMixin'
-import { FormBuilder, inputMixin } from 'quasar-form-builder'
+import { inputMixin } from 'quasar-form-builder'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder'
 import EntityIndexTable from '../../../components/Entity/Index/EntityIndexTable'
 
 export default {
   name: 'EntityIndex',
-  components: { Portlet, EntityIndexTable, FormBuilder },
+  components: { Portlet, EntityIndexTable, EntityCrudFormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
     showCloseButton: {
@@ -126,7 +127,7 @@ export default {
     itemIndicatorKey: {
       type: String,
       default () {
-        return 'name'
+        return 'title'
       }
     },
     value: {
@@ -244,19 +245,8 @@ export default {
     },
     changePage (page) {
       this.clearData()
-      // this.refreshPagination()
       this.getData(this.api, page)
     },
-    // refreshPagination () {
-    //   this.tableData.pagination = {
-    //     sortBy: 'desc',
-    //     descending: false,
-    //     page: 1,
-    //     rowsPerPage: 10,
-    //     pageKey: 'page',
-    //     rowsNumber: 0
-    //   }
-    // },
     clearData () {
       this.tableData.data = []
     },
