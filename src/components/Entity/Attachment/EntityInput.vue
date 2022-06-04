@@ -3,32 +3,37 @@
       <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
         <q-badge v-if="value && value.length > 0" :color="buttonBadgeColor" floating>{{ value.length }}</q-badge>
       </q-btn>
+      <q-dialog v-model="dialog" full-width full-height>
+        <div>
+          <entity-index
+              v-model:table-selected-values="selected"
+              :value="inputs"
+              :title="tableTitle"
+              :api="apiAddress"
+              :table="table"
+              :table-keys="tableKeys"
+              :table-selection-mode="selectionMode"
+              :show-close-button="true"
+              :show-expand-button="false"
+              :row-key="itemIdentifyKey"
+              :item-indicator-key="itemIndicatorKey"
+              @update:table-selected-values="onSelectedUpdate"
+          />
+        </div>
+      </q-dialog>
   </div>
-  <q-dialog v-model="dialog" full-width full-height>
-    <entity-index
-        v-model:table-selected-values="selected"
-        :value="inputs"
-        :title="tableTitle"
-        :api="apiAddress"
-        :table="table"
-        :table-keys="tableKeys"
-        :table-selection-mode="selectionMode"
-        :show-close-button="true"
-        :show-expand-button="false"
-        :row-key="itemIdentifyKey"
-        :item-indicator-key="itemIndicatorKey"
-        @update:table-selected-values="onSelectedUpdate"
-    />
-  </q-dialog>
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { inputMixin } from 'quasar-form-builder'
-import  EntityIndex  from '../Index/EntityIndex'
+
 export default {
   name: 'EntityInput',
   mixins: [inputMixin],
-  components: { EntityIndex },
+  components: {
+    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
+  },
   props: {
     value: {
       default: null
