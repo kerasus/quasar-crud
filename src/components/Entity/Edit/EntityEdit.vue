@@ -104,12 +104,12 @@ export default {
       const formData = this.getFormData()
       this.beforeSendData(formData, this.setNewInputData)
       this.$axios.put(this.api, formData, { headers: this.getHeaders() })
-        .then(() => {
-          this.goToShowView()
-        })
-        .catch(() => {
-          this.getData()
-        })
+          .then(() => {
+            this.goToShowView()
+          })
+          .catch(() => {
+            this.getData()
+          })
     }
   }
 }

@@ -1,26 +1,25 @@
 <template>
   <div class="row">
-      <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
-        <q-badge v-if="value && value.length > 0" :color="buttonBadgeColor" floating>{{ value.length }}</q-badge>
-      </q-btn>
-      <q-dialog v-model="dialog" full-width full-height>
-        <div>
-          <entity-index
-              v-model:table-selected-values="selected"
-              :value="inputs"
-              :title="tableTitle"
-              :api="apiAddress"
-              :table="table"
-              :table-keys="tableKeys"
-              :table-selection-mode="selectionMode"
-              :show-close-button="true"
-              :show-expand-button="false"
-              :row-key="itemIdentifyKey"
-              :item-indicator-key="itemIndicatorKey"
-              @update:table-selected-values="onSelectedUpdate"
-          />
-        </div>
-      </q-dialog>
+    <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
+      <q-badge v-if="Array.isArray(value) && value.length > 0" :color="buttonBadgeColor" floating>{{ value.length }}</q-badge>
+      <q-badge v-else-if="value" :color="buttonBadgeColor" floating>1</q-badge>
+    </q-btn>
+    <q-dialog v-model="dialog" full-width full-height>
+      <entity-index
+          v-model:table-selected-values="selected"
+          :value="inputs"
+          :title="tableTitle"
+          :api="apiAddress"
+          :table="table"
+          :table-keys="tableKeys"
+          :table-selection-mode="selectionMode"
+          :show-close-button="true"
+          :show-expand-button="false"
+          :row-key="itemIdentifyKey"
+          :item-indicator-key="itemIndicatorKey"
+          @update:table-selected-values="onSelectedUpdate"
+      />
+    </q-dialog>
   </div>
 </template>
 
@@ -34,8 +33,16 @@ export default {
   components: {
     EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
   },
+  watch: {
+    value (newValue) {
+      this.selected = this.input.selected
+    }
+  },
   props: {
     value: {
+      default: null
+    },
+    input: {
       default: null
     },
     name: {
@@ -119,10 +126,12 @@ export default {
       }
     },
     itemIndicatorKey: {
+      required: true,
       type: [String, Function],
       default: 'title'
     },
     itemIdentifyKey: {
+      required: true,
       type: [String, Function],
       default: 'id'
     }

@@ -51,19 +51,20 @@ export default {
           input.selected = (selectionMode === 'multiple') ? [] : null
           let values = (selectionMode === 'multiple') ? [] : null
 
-          input.value.forEach( value => {
-            if (!value[identifyKey]) {
-              value = null
-              return
-            }
-            if (selectionMode === 'multiple') {
+          if (selectionMode === 'multiple') {
+            input.value.forEach( value => {
+              if (!value[identifyKey]) {
+                value = null
+                return
+              }
               input.selected.push(value)
               values.push(value[identifyKey])
-            } else {
-              input.selected = value
-              values = value[identifyKey]
-            }
-          })
+            })
+          } else {
+            input.selected = input.value
+            values = input.value[identifyKey]
+          }
+
           input.value = values
         })
         this.$emit('update:value', inputs)
@@ -112,9 +113,6 @@ export default {
       }
 
       return input
-    },
-    isEntityInput (input) {
-      return input.type === EntityInputComp.value
     }
   }
 }

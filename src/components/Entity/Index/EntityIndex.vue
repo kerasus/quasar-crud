@@ -34,15 +34,26 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <slot name="chip-area">
-          <q-chip
-              v-for="(item, index) in tableSelectedValues"
-              :key="index"
-              clickable
-              removable
-              @remove="deselectItem(item)"
-          >
-            {{ getChipTitle(index) }}
-          </q-chip>
+          <template v-if="Array.isArray(tableSelectedValues)">
+            <q-chip
+                v-for="(item, index) in tableSelectedValues"
+                :key="index"
+                clickable
+                removable
+                @remove="deselectItem(item)"
+            >
+              {{ getChipTitle(item) }}
+            </q-chip>
+          </template>
+          <template v-else>
+            <q-chip
+                clickable
+                removable
+                @remove="deselectItem(tableSelectedValues)"
+            >
+              {{ getChipTitle(tableSelectedValues) }}
+            </q-chip>
+          </template>
         </slot>
         <slot name="before-form-builder"></slot>
         <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
@@ -50,7 +61,7 @@
         <div class="row">
           <div class="col">
             <slot name="before-index-table"></slot>
-            <EntityIndexTable
+            <entity-index-table
                 v-model:value="tableData"
                 v-model:table-selected-values="tableChosenValues"
                 :table-selection-mode="tableSelectionMode"
@@ -69,7 +80,7 @@
                   </q-td>
                 </slot>
               </template>
-            </EntityIndexTable>
+            </entity-index-table>
             <slot name="after-index-table"></slot>
           </div>
         </div>
@@ -113,7 +124,7 @@ export default {
       type: [Function, Boolean]
     },
     tableSelectedValues: {
-      type: Array,
+      type: [Array, Object],
       default () {
         return []
       }
@@ -202,18 +213,19 @@ export default {
   computed: {
     tableChosenValues: {
       get () {
-        return this.tableSelectedValues
+        if (Array.isArray(this.tableSelectedValues)) {
+          return this.tableSelectedValues
+        }
+        return [this.tableSelectedValues]
       },
       set () {}
-    },
-    getChipTitle () {
-      return (index) => {
-        const value = this.getValidChainedObject(this.tableSelectedValues[index], this.itemIndicatorKey)
-        return value ? value : '_'
-      }
     }
   },
   methods: {
+    getChipTitle (item) {
+      const value = this.getValidChainedObject(item, this.itemIndicatorKey)
+      return value ? value : '_'
+    },
     goToCreatePage () {
       this.$router.push({ name: this.createRouteName })
     },
