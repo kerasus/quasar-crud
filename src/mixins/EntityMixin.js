@@ -147,8 +147,6 @@ const EntityMixin = {
         })
     },
     isEntityInput (input) {
-      console.log('isEntityInput: input', input)
-      console.log('isEntityInput: input.type === EntityInputComp.value', input.type === EntityInputComp.value)
       return input.type === EntityInputComp.value
     },
     getData () {

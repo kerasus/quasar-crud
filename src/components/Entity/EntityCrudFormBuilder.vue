@@ -46,6 +46,9 @@ export default {
           if (!this.isEntityInput(input)) {
             return
           }
+
+          const identifyKey = this.getItemIdentifyKey(input)
+          const selectionMode = this.getInputSelectionMode(input)
           if (input.value === null || typeof input.value === 'undefined') {
             input.selected = (selectionMode === 'multiple') ? [] : null
             input.value = (selectionMode === 'multiple') ? [] : null
@@ -65,9 +68,6 @@ export default {
           if (Array.isArray(input.value) && input.value.length > 0 && typeof input.value[0] !== 'object') {
             return
           }
-
-          const identifyKey = this.getItemIdentifyKey(input)
-          const selectionMode = this.getInputSelectionMode(input)
 
           if (selectionMode !== 'multiple') {
             input.selected = input.value
