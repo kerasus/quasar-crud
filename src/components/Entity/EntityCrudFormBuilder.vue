@@ -46,25 +46,47 @@ export default {
           if (!this.isEntityInput(input)) {
             return
           }
-          const identifyKey = this.getItemIdentifyKey(input)
-          const selectionMode = this.getInputSelectionMode(input)
-          input.selected = (selectionMode === 'multiple') ? [] : null
-          let values = (selectionMode === 'multiple') ? [] : null
-
-          if (selectionMode === 'multiple') {
-            input.value.forEach( value => {
-              if (!value[identifyKey]) {
-                value = null
-                return
-              }
-              input.selected.push(value)
-              values.push(value[identifyKey])
-            })
-          } else {
-            input.selected = input.value
-            values = input.value[identifyKey]
+          if (input.value === null || typeof input.value === 'undefined') {
+            input.selected = (selectionMode === 'multiple') ? [] : null
+            input.value = (selectionMode === 'multiple') ? [] : null
+            return
           }
 
+          // EntityInput compontnt set entity object (or array of entity object) in value
+          // we want to change value to entity id (or array of entity id) and put entity object (or array of entity object) in selected key
+          // in use of multiple EntityInput compontnt in form,
+          // once one of them has changed, the other component that has already been changed (value to selected) should not be changed again
+
+          // check value is not an object
+          if (!Array.isArray(input.value) && typeof input.value !== 'object') {
+            return
+          }
+          // check value is not an array of objects
+          if (Array.isArray(input.value) && input.value.length > 0 && typeof input.value[0] !== 'object') {
+            return
+          }
+
+          const identifyKey = this.getItemIdentifyKey(input)
+          const selectionMode = this.getInputSelectionMode(input)
+
+          if (selectionMode !== 'multiple') {
+            input.selected = input.value
+            input.value = input.value[identifyKey]
+            return
+          }
+
+          let selected = (selectionMode === 'multiple') ? [] : null
+          let values = (selectionMode === 'multiple') ? [] : null
+          input.value.forEach( value => {
+            if (!value[identifyKey]) {
+              value = null
+              return
+            }
+            selected.push(value)
+            values.push(value[identifyKey])
+          })
+
+          input.selected = selected
           input.value = values
         })
         this.$emit('update:value', inputs)
