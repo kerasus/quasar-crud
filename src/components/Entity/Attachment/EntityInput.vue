@@ -2,7 +2,7 @@
   <div class="row">
     <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
       <q-badge v-if="Array.isArray(value) && value.length > 0" :color="buttonBadgeColor" floating>{{ value.length }}</q-badge>
-      <q-badge v-else-if="value" :color="buttonBadgeColor" floating>1</q-badge>
+      <q-badge v-else-if="!Array.isArray(value) && typeof value !== 'undefined' && value !== null" :color="buttonBadgeColor" floating>1</q-badge>
     </q-btn>
     <q-dialog v-model="dialog" full-width full-height>
       <entity-index
@@ -34,7 +34,7 @@ export default {
     EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
   },
   watch: {
-    value (newValue) {
+    value () {
       this.selected = this.input.selected
     }
   },
