@@ -142,7 +142,20 @@ export default {
         { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-6', disable: true },
         { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-4' },
         { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-4' },
-        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-4' }
+        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-4' },
+        { type: 'tiptap-editor', name: 'tiptap', responseKey: 'data.tiptap', label: 'ادیتور پیشرفته', options: {
+            bubbleMenu: false,
+            floatingMenu: false,
+            poem: false,
+            reading: false,
+            persianKeyboard: true,
+            mathliveOptions: { smartFence: false },
+            uploadServer: {
+              url: 'imageUrl',
+              instantUpload: true,
+              headers: { Authorization: 'Bearer ' + '65465' }
+            }
+          }, col: 'col-md-12' },
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true
