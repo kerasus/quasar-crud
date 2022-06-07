@@ -109,18 +109,12 @@ const EntityMixin = {
           formData.append(item.name, item.value)
         } else {
           this.createChainedObject(formData, item.name, item.value)
-          // formData[item.name] = item.value
         }
       })
 
       return formData
     },
     createChainedObject (formData, chainedName, value) {
-      // const formData = {}
-      // const chainedName = 'a.b.c'
-      // const value = 'valll'
-      // getObject(formData, chainedName, value)
-
       let keysArray = chainedName
       if (typeof chainedName === 'string') {
         keysArray = chainedName.split('.')

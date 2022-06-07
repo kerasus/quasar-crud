@@ -86,14 +86,28 @@
       :table="table"
       :table-keys="tableKeys"
   />
+  <q-separator class="q-my-md" />
+  <entity-action
+      v-model:value="crudFormInputs"
+      :form-title="'entity action'"
+      :action-title="'do some action'"
+      :action-method="'post'"
+      :action-api="'/api/action'"
+      :beforeDoAction="beforeDoAction"
+      @onActionSuccess="onActionSuccess"
+      @onActionError="onActionError"
+  >
+
+  </entity-action>
 </template>
 
 <script>
 import EntityIndex from '../components/Entity/Index/EntityIndex'
+import EntityAction from '../components/Entity/EntityAction'
 import EntityAttachment from '../components/Entity/Attachment/EntityAttachment'
 export default {
   name: 'List',
-  components: { EntityAttachment, EntityIndex},
+  components: { EntityAttachment, EntityIndex, EntityAction},
   data () {
     return {
       expanded: true,
@@ -397,13 +411,16 @@ export default {
       afterIndexTable: true
     }
   },
-  // created () {
-  //   this.$axios.get('https://reqres.in/api/users')
-  //   .then( res=>{
-  //     console.log(res)
-  //   })
-  // },
   methods: {
+    beforeDoAction () {
+      console.log('beforeDoAction')
+    },
+    onActionSuccess (response) {
+      console.log('onActionSuccess: ',response)
+    },
+    onActionError (error) {
+      console.log('onActionError: ', error)
+    },
     getRemoveMessage (row) {
       const first_name = row.first_name
       const last_name = row.last_name
