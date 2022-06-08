@@ -29,6 +29,9 @@
         </q-btn>
       </q-card-actions>
     </template>
+    <template #afterActions>
+      <slot name="afterAction"/>
+    </template>
   </portlet>
 </template>
 

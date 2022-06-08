@@ -16,6 +16,7 @@
       <slot name="content"></slot>
     </q-card-section>
     <slot name="actions"/>
+    <slot name="afterActions"/>
   </q-card>
 </template>
 
