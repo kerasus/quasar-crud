@@ -19,6 +19,11 @@
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
+      <q-btn v-if="showCloseButton" v-close-popup flat round icon="cancel">
+        <q-tooltip>
+          بستن
+        </q-tooltip>
+      </q-btn>
       <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
@@ -28,31 +33,44 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
-        <form-builder ref="formBuilder" :key="key" v-model:value="inputData" />
-        <slot name="after-form-builder"></slot>
         <slot name="chip-area">
-          <q-chip
-              v-for="(item, index) in tableChosenValues"
-              :key="index"
-              clickable
-              removable
-              @remove="deselectItem(item)"
-          >
-            {{ getChipTitle(index) }}
-          </q-chip>
+          <template v-if="Array.isArray(tableSelectedValues)">
+            <q-chip
+                v-for="(item, index) in tableSelectedValues"
+                :key="index"
+                clickable
+                removable
+                @remove="deselectItem(item)"
+            >
+              {{ getChipTitle(item) }}
+            </q-chip>
+          </template>
+          <template v-else>
+            <q-chip
+                clickable
+                removable
+                @remove="deselectItem(tableSelectedValues)"
+            >
+              {{ getChipTitle(tableSelectedValues) }}
+            </q-chip>
+          </template>
         </slot>
+        <slot name="before-form-builder"></slot>
+        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
+        <slot name="after-form-builder"></slot>
         <div class="row">
           <div class="col">
             <slot name="before-index-table"></slot>
-            <EntityIndexTable
+            <entity-index-table
                 v-model:value="tableData"
                 v-model:table-selected-values="tableChosenValues"
                 :table-selection-mode="tableSelectionMode"
                 :columns="table.columns"
                 :title="title"
+                :row-key="rowKey"
                 :loading="loading"
                 :change-page="changePage"
+                @update:table-selected-values="updateSelectedValues"
                 @search="search"
             >
               <template #entity-index-table-cell="{inputData}">
@@ -62,12 +80,12 @@
                   </q-td>
                 </slot>
               </template>
-            </EntityIndexTable>
+            </entity-index-table>
             <slot name="after-index-table"></slot>
           </div>
         </div>
       </q-expansion-item>
-      <q-dialog v-model="confirmRemoveDoalog" persistent>
+      <q-dialog v-model="confirmRemoveDialog" persistent>
         <q-card>
           <q-card-section class="row items-center">
             <q-icon name="warning" color="primary" size="md"/>
@@ -86,14 +104,19 @@
 <script>
 import Portlet from '../../../components/Portlet'
 import EntityMixin from '../../../mixins/EntityMixin'
-import { FormBuilder, inputMixin } from 'quasar-form-builder'
+import { inputMixin } from 'quasar-form-builder'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder'
 import EntityIndexTable from '../../../components/Entity/Index/EntityIndexTable'
 
 export default {
   name: 'EntityIndex',
-  components: { Portlet, EntityIndexTable, FormBuilder },
+  components: { Portlet, EntityIndexTable, EntityCrudFormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
+    showCloseButton: {
+      default: false,
+      type: Boolean
+    },
     onAddButton: {
       default() {
         return false
@@ -101,7 +124,7 @@ export default {
       type: [Function, Boolean]
     },
     tableSelectedValues: {
-      type: Array,
+      type: [Array, Object],
       default () {
         return []
       }
@@ -115,7 +138,7 @@ export default {
     itemIndicatorKey: {
       type: String,
       default () {
-        return 'name'
+        return 'title'
       }
     },
     value: {
@@ -151,6 +174,10 @@ export default {
         }
       },
       type: Object
+    },
+    rowKey: {
+      default: 'id',
+      type: String
     }
   },
   emits: [
@@ -161,11 +188,12 @@ export default {
   data () {
     return {
       removeIdKey: 'id',
-      confirmRemoveDoalog: false,
+      confirmRemoveDialog: false,
       confirmRemoveMessage: 'false',
       selectedItemToRemove: null,
       expanded: true,
       loading: false,
+      tableFlatData:null,
       tableData: {
         data: [],
         pagination: {
@@ -185,20 +213,19 @@ export default {
   computed: {
     tableChosenValues: {
       get () {
-        return this.tableSelectedValues
+        if (Array.isArray(this.tableSelectedValues)) {
+          return this.tableSelectedValues
+        }
+        return [this.tableSelectedValues]
       },
-      set (value) {
-        this.$emit('update:tableSelectedValues', value)
-      }
-    },
-    getChipTitle () {
-      return (index) => {
-        const value = this.tableChosenValues[index][this.itemIndicatorKey]
-        return value ? value : '_'
-      }
+      set () {}
     }
   },
   methods: {
+    getChipTitle (item) {
+      const value = this.getValidChainedObject(item, this.itemIndicatorKey)
+      return value ? value : '_'
+    },
     goToCreatePage () {
       this.$router.push({ name: this.createRouteName })
     },
@@ -211,7 +238,7 @@ export default {
         this.confirmRemoveMessage = 'آیا از حذف مورد اطمینان دارید؟'
       }
       this.selectedItemToRemove = item
-      this.confirmRemoveDoalog = true
+      this.confirmRemoveDialog = true
     },
     removeItem () {
       if (this.selectedItemToRemove === null) {
@@ -230,19 +257,8 @@ export default {
     },
     changePage (page) {
       this.clearData()
-      // this.refreshPagination()
       this.getData(this.api, page)
     },
-    // refreshPagination () {
-    //   this.tableData.pagination = {
-    //     sortBy: 'desc',
-    //     descending: false,
-    //     page: 1,
-    //     rowsPerPage: 10,
-    //     pageKey: 'page',
-    //     rowsNumber: 0
-    //   }
-    // },
     clearData () {
       this.tableData.data = []
     },
@@ -298,14 +314,19 @@ export default {
 
       return params
     },
+    updateSelectedValues(value) {
+      this.$emit('update:tableSelectedValues', value)
+    },
     deselectItem (item) {
       let indexOfValueToRemove
-      this.tableChosenValues.forEach((element, index) => {
-        if (element[this.itemIndicatorKey] === item[this.itemIndicatorKey]) {
+      let tableChosenValues = this.tableChosenValues
+      tableChosenValues.forEach((element, index) => {
+        if (this.getValidChainedObject(element, this.itemIndicatorKey) === this.getValidChainedObject(item, this.itemIndicatorKey)) {
           indexOfValueToRemove = index
         }
       })
-      this.tableChosenValues.splice(indexOfValueToRemove, 1);
+      tableChosenValues.splice(indexOfValueToRemove, 1)
+      this.updateSelectedValues(tableChosenValues)
     }
   }
 }

@@ -1,4 +1,8 @@
 import axios from 'axios'
+import { shallowRef } from 'vue'
+import EntityInput from '../components/Entity/Attachment/EntityInput'
+
+const EntityInputComp = shallowRef(EntityInput)
 
 const EntityMixin = {
   data () {
@@ -11,23 +15,9 @@ const EntityMixin = {
       default: true,
       type: Boolean
     },
-    onReloadButton: {
-      default () {
-        return false
-      },
-      type: [Function, Boolean]
-    },
-    onCancelButton: {
-      default () {
-        return false
-      },
-      type: [Function, Boolean]
-    },
-    onSaveButton: {
-      default () {
-        return false
-      },
-      type: [Function, Boolean]
+    showCloseButton: {
+      default: false,
+      type: Boolean
     },
     beforeSendData: {
       default: () => {},
@@ -49,13 +39,14 @@ const EntityMixin = {
   },
   methods: {
     runNeededMethod (substituteMethod, callBackMethod) {
-      if (!!substituteMethod && substituteMethod()) {
+      if (!!substituteMethod && substituteMethod()){
         substituteMethod()
         return
       }
       callBackMethod()
     },
     getEntityId () {
+
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]
@@ -155,6 +146,9 @@ const EntityMixin = {
           console.error(err)
         })
     },
+    isEntityInput (input) {
+      return input.type === EntityInputComp.value
+    },
     getData () {
       this.loading = true
       this.$axios.get(this.api)
@@ -172,13 +166,31 @@ const EntityMixin = {
       const that = this
       function setValueOfNestedInputData (responseData, inputs) {
         inputs.forEach(input => {
-          if (input.type !== 'formBuilder') {
-            if (typeof input.responseKey !== 'undefined' && input.responseKey !== null) {
-              input.value = that.getValidChainedObject(responseData, input.responseKey.split('.'))
-            }
-          } else {
-            setValueOfNestedInputData(responseData, input.value)
+          if (typeof input.responseKey === 'undefined' || input.responseKey === null) {
+            return
           }
+          if (input.type === 'formBuilder') {
+            setValueOfNestedInputData(responseData, input.value)
+            return
+          }
+          const validChainedObject = that.getValidChainedObject(responseData, input.responseKey.split('.'))
+          // if (!this.isEntityInput(input)) {
+          if (input.type !== EntityInputComp.value) {
+            input.value = validChainedObject
+            return
+          }
+
+          input.selected = validChainedObject
+          if (Array.isArray(input.selected)) {
+            input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
+            return
+          }
+          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected[input.indexConfig.itemIdentifyKey]) {
+            input.value = input.selected[input.indexConfig.itemIdentifyKey]
+          } else {
+            console.error('input.indexConfig.itemIdentifyKey not set: ', input)
+          }
+
         })
       }
 
@@ -200,7 +212,7 @@ const EntityMixin = {
       }
 
       if (keysArray.length === 1) {
-        if (typeof object[keysArray[0]] === 'undefined') {
+        if (!object || typeof object[keysArray[0]] === 'undefined') {
           return null
         }
         return object[keysArray[0]]

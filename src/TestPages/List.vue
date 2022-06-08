@@ -1,11 +1,11 @@
 <template>
   <entity-index
       v-model:value="inputs"
+      v-model:table-selected-values="selected"
       title="لیست کاربران"
       :api="api"
       :table="table"
       :table-keys="tableKeys"
-      v-model:table-selected-values="selected"
       :table-selection-mode="'multiple'"
       :item-indicator-key="'first_name'"
       :create-route-name="'User.Create'"
@@ -75,13 +75,25 @@
       </q-banner>
     </template>
   </entity-index>
+  <entity-attachment
+      v-model:crud-form-inputs="crudFormInputs"
+      expanded-default
+      :title="'افزودن یا حذف محصول از این بلاک'"
+      :button-label="'افزودن'"
+      :list-title="'لیست محصولات بلاک'"
+      :list-show-route-name="'Admin.BlockManagement.Show'"
+      :attachment-list-api-address="api"
+      :table="table"
+      :table-keys="tableKeys"
+  />
 </template>
 
 <script>
 import EntityIndex from '../components/Entity/Index/EntityIndex'
+import EntityAttachment from '../components/Entity/Attachment/EntityAttachment'
 export default {
   name: 'List',
-  components: {EntityIndex},
+  components: { EntityAttachment, EntityIndex},
   data () {
     return {
       expanded: true,
@@ -145,6 +157,239 @@ export default {
         { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
         { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
         { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
+      ],
+      crudFormInputs: [
+        {
+          type: 'entity',
+          name: 'product',
+          selectionMode: 'multiple',
+          label: 'محصول',
+          buttonColor:'deep-purple',
+          buttonTextColor:'white',
+          buttonBadgeColor:'pink',
+          indexConfig: {
+            apiAddress: 'https://reqres.in/api/users',
+            tableTitle: 'لیست محصولات',
+            showTableItemsRouteName: 'Admin.BlockManagement.Show',
+            tableKeys: {
+              data: 'data',
+              total: 'total',
+              currentPage: 'page',
+              perPage: 'per_page',
+              pageKey: 'page'
+            },
+            table: {
+              columns: [
+                {
+                  name: 'id',
+                  required: true,
+                  label: '#',
+                  align: 'left',
+                  field: row => row.id
+                },
+                {
+                  name: 'thumbnail',
+                  required: true,
+                  label: 'تصویر',
+                  align: 'left',
+                  field: row => row.avatar
+                },
+                {
+                  name: 'first_name',
+                  required: true,
+                  label: 'نام',
+                  align: 'left',
+                  field: row => row.first_name
+                },
+                {
+                  name: 'last_name',
+                  required: true,
+                  label: 'نام خانوادگی',
+                  align: 'left',
+                  field: row => row.last_name
+                },
+                {
+                  name: 'email',
+                  required: true,
+                  label: 'ایمیل',
+                  align: 'left',
+                  field: row => row.email
+                },
+                {
+                  name: 'actions',
+                  required: true,
+                  label: '',
+                  align: 'left',
+                  field: ''
+                }
+              ],
+              data: []
+            },
+            inputs: [
+              { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
+              { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
+              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
+            ],
+            itemIndicatorKey: 'id'
+          },
+          value: [],
+          selected: [],
+          col: 'col-md-4'
+        },
+        {
+          type: 'entity',
+          name: 'exam',
+          label: 'آزمون',
+          selectionMode: 'multiple',
+          buttonColor:'indigo',
+          buttonTextColor:'black',
+          buttonBadgeColor:'blue',
+          indexConfig: {
+            apiAddress: 'https://reqres.in/api/users',
+            tableTitle: 'لیست محصولات',
+            tableKeys: {
+              data: 'data',
+              total: 'total',
+              currentPage: 'page',
+              perPage: 'per_page',
+              pageKey: 'page'
+            },
+            table: {
+              columns: [
+                {
+                  name: 'id',
+                  required: true,
+                  label: '#',
+                  align: 'left',
+                  field: row => row.id
+                },
+                {
+                  name: 'thumbnail',
+                  required: true,
+                  label: 'تصویر',
+                  align: 'left',
+                  field: row => row.avatar
+                },
+                {
+                  name: 'first_name',
+                  required: true,
+                  label: 'نام',
+                  align: 'left',
+                  field: row => row.first_name
+                },
+                {
+                  name: 'last_name',
+                  required: true,
+                  label: 'نام خانوادگی',
+                  align: 'left',
+                  field: row => row.last_name
+                },
+                {
+                  name: 'email',
+                  required: true,
+                  label: 'ایمیل',
+                  align: 'left',
+                  field: row => row.email
+                },
+                {
+                  name: 'actions',
+                  required: true,
+                  label: '',
+                  align: 'left',
+                  field: ''
+                }
+              ],
+              data: []
+            },
+            inputs: [
+              { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
+              { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
+              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
+            ],
+            itemIndicatorKey: 'first_name',
+            showTableItemsRouteName: 'Admin.BlockManagement.Show'
+          },
+          value: [],
+          selected: [],
+          col: 'col-md-4'
+        },
+        {
+          type: 'entity',
+          name: 'subcategory',
+          selectionMode: 'multiple',
+          buttonColor:'red',
+          buttonTextColor:'black',
+          buttonBadgeColor:'green',
+          label: 'زیر گروه',
+          indexConfig: {
+            apiAddress: 'https://reqres.in/api/users',
+            tableTitle: 'لیست محصولات',
+            tableKeys: {
+              data: 'data',
+              total: 'total',
+              currentPage: 'page',
+              perPage: 'per_page',
+              pageKey: 'page'
+            },
+            table: {
+              columns: [
+                {
+                  name: 'id',
+                  required: true,
+                  label: '#',
+                  align: 'left',
+                  field: row => row.id
+                },
+                {
+                  name: 'thumbnail',
+                  required: true,
+                  label: 'تصویر',
+                  align: 'left',
+                  field: row => row.avatar
+                },
+                {
+                  name: 'first_name',
+                  required: true,
+                  label: 'نام',
+                  align: 'left',
+                  field: row => row.first_name
+                },
+                {
+                  name: 'last_name',
+                  required: true,
+                  label: 'نام خانوادگی',
+                  align: 'left',
+                  field: row => row.last_name
+                },
+                {
+                  name: 'email',
+                  required: true,
+                  label: 'ایمیل',
+                  align: 'left',
+                  field: row => row.email
+                },
+                {
+                  name: 'actions',
+                  required: true,
+                  label: '',
+                  align: 'left',
+                  field: ''
+                }
+              ],
+              data: []
+            },
+            inputs: [
+              { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
+              { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
+              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
+            ],
+            itemIndicatorKey: 'id',
+            showTableItemsRouteName: 'Admin.BlockManagement.Show'
+          },
+          value: [],
+          selected: [],
+          col: 'col-md-4'
+        }
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true,

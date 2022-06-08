@@ -43,7 +43,84 @@ export default {
       inputs: [
         { type: 'file', name: 'avatar', responseKey: 'data.avatar', col: 'col-md-3' },
         { type: 'space', name: 'space', col: 'col-md-12' },
-
+        {
+          type: 'entity',
+          name: 'product',
+          selectionMode: 'multiple',
+          label: 'محصول',
+          buttonColor:'deep-purple',
+          buttonTextColor:'white',
+          buttonBadgeColor:'pink',
+          indexConfig: {
+            apiAddress: 'https://reqres.in/api/users',
+            tableTitle: 'لیست محصولات',
+            showTableItemsRouteName: 'Admin.BlockManagement.Show',
+            tableKeys: {
+              data: 'data',
+              total: 'total',
+              currentPage: 'page',
+              perPage: 'per_page',
+              pageKey: 'page'
+            },
+            table: {
+              columns: [
+                {
+                  name: 'id',
+                  required: true,
+                  label: '#',
+                  align: 'left',
+                  field: row => row.id
+                },
+                {
+                  name: 'thumbnail',
+                  required: true,
+                  label: 'تصویر',
+                  align: 'left',
+                  field: row => row.avatar
+                },
+                {
+                  name: 'first_name',
+                  required: true,
+                  label: 'نام',
+                  align: 'left',
+                  field: row => row.first_name
+                },
+                {
+                  name: 'last_name',
+                  required: true,
+                  label: 'نام خانوادگی',
+                  align: 'left',
+                  field: row => row.last_name
+                },
+                {
+                  name: 'email',
+                  required: true,
+                  label: 'ایمیل',
+                  align: 'left',
+                  field: row => row.email
+                },
+                {
+                  name: 'actions',
+                  required: true,
+                  label: '',
+                  align: 'left',
+                  field: ''
+                }
+              ],
+              data: []
+            },
+            inputs: [
+              { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
+              { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
+              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
+            ],
+            itemIndicatorKey: 'first_name',
+            itemIdentifyKey: 'id'
+          },
+          value: [],
+          selected: [],
+          col: 'col-md-12'
+        },
         {
           type: 'formBuilder',
           name: 'formBuilderCol',
@@ -65,7 +142,20 @@ export default {
         { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-6', disable: true },
         { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-4' },
         { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-4' },
-        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-4' }
+        { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-4' },
+        { type: 'tiptap-editor', name: 'tiptap', responseKey: 'data.tiptap', label: 'ادیتور پیشرفته', options: {
+            bubbleMenu: false,
+            floatingMenu: false,
+            poem: false,
+            reading: false,
+            persianKeyboard: true,
+            mathliveOptions: { smartFence: false },
+            uploadServer: {
+              url: 'imageUrl',
+              instantUpload: true,
+              headers: { Authorization: 'Bearer ' + '65465' }
+            }
+          }, col: 'col-md-12' },
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true
