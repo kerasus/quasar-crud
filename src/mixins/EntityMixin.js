@@ -11,13 +11,51 @@ const EntityMixin = {
     }
   },
   props: {
+    showSaveButton: {
+      default: true,
+      type: Boolean
+    },
     showExpandButton: {
       default: true,
       type: Boolean
     },
     showCloseButton: {
-      default: false,
+      default: true,
       type: Boolean
+    },
+    showReloadButton: {
+      default: true,
+      type: Boolean
+    },
+    showSearchButton: {
+      default: true,
+      type: Boolean
+    },
+    showIndexButton: {
+      default: true,
+      type: Boolean
+    },
+    showEditButton: {
+      default: true,
+      type: Boolean
+    },
+    onReloadButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onCancelButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSaveButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
     },
     beforeSendData: {
       default: () => {},

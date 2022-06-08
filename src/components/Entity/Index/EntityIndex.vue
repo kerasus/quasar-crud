@@ -4,7 +4,7 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="search" @click="search">
+      <q-btn v-if="showSearchButton" flat round icon="search" @click="search">
         <q-tooltip>
           جستجو
         </q-tooltip>
@@ -14,7 +14,7 @@
           جدید
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="cached" @click="reload">
+      <q-btn v-if="showReloadButton" flat round icon="cached" @click="reload">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
