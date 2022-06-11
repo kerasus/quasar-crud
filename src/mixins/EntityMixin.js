@@ -217,7 +217,7 @@ const EntityMixin = {
             input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
             return
           }
-          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected[input.indexConfig.itemIdentifyKey]) {
+          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
             input.value = input.selected[input.indexConfig.itemIdentifyKey]
           } else {
             console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
