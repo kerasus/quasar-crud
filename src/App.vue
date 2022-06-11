@@ -75,7 +75,9 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page style="padding-top: 60px" class="q-pa-md">
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>

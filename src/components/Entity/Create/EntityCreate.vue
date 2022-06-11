@@ -4,12 +4,12 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="check" @click="runNeededMethod(onSaveButton, createEntity)">
+      <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, createEntity)">
         <q-tooltip>
           ذخیره
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="close" @click="runNeededMethod(onCancelButton, goToIndexView)">
+      <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToIndexView)">
         <q-tooltip>
           لغو
         </q-tooltip>
@@ -45,7 +45,8 @@ export default {
   components: { EntityCrudFormBuilder, Portlet },
   mixins: [
     inputMixin,
-      EntityMixin],
+    EntityMixin
+  ],
   props: {
     value: {
       default: () => [],
@@ -97,15 +98,15 @@ export default {
       const formData = this.getFormData()
       this.beforeSendData(formData, this.setNewInputData)
       this.$axios.post(this.api, formData, { headers: this.getHeaders() })
-        .then((response) => {
-          this.loading = false
-          const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
-          this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
-        })
-        .catch(() => {
-          this.loading = false
-          this.getData()
-        })
+          .then((response) => {
+            this.loading = false
+            const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
+            this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
+          })
+          .catch(() => {
+            this.loading = false
+            this.getData()
+          })
     }
   }
 }

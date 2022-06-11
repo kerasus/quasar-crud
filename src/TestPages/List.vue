@@ -75,25 +75,38 @@
       </q-banner>
     </template>
   </entity-index>
+  <q-separator class="q-my-md" />
   <entity-attachment
-      v-model:crud-form-inputs="crudFormInputs"
+      v-model:value="crudFormInputs"
       expanded-default
-      :title="'افزودن یا حذف محصول از این بلاک'"
-      :button-label="'افزودن'"
-      :list-title="'لیست محصولات بلاک'"
+      :title="'entity attachment titile'"
+      :action-title="'attach action title'"
+      :list-title="'entity attached list'"
       :list-show-route-name="'Admin.BlockManagement.Show'"
       :attachment-list-api-address="api"
       :table="table"
       :table-keys="tableKeys"
   />
+  <q-separator class="q-my-md" />
+  <entity-action
+      v-model:value="crudFormInputs"
+      :form-title="'entity action'"
+      :action-title="'do some action'"
+      :action-method="'post'"
+      :action-api="'/api/action'"
+      :beforeDoAction="beforeDoAction"
+      @onActionSuccess="onActionSuccess"
+      @onActionError="onActionError"
+  />
 </template>
 
 <script>
 import EntityIndex from '../components/Entity/Index/EntityIndex'
+import EntityAction from '../components/Entity/EntityAction'
 import EntityAttachment from '../components/Entity/Attachment/EntityAttachment'
 export default {
   name: 'List',
-  components: { EntityAttachment, EntityIndex},
+  components: { EntityAttachment, EntityIndex, EntityAction},
   data () {
     return {
       expanded: true,
@@ -230,9 +243,11 @@ export default {
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
-            itemIndicatorKey: 'id'
+            itemIdentifyKey: 'id',
+            itemIndicatorKey: 'first_name',
           },
           value: [],
+          responseKey: '',
           selected: [],
           col: 'col-md-4'
         },
@@ -306,10 +321,12 @@ export default {
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
+            itemIdentifyKey: 'id',
             itemIndicatorKey: 'first_name',
             showTableItemsRouteName: 'Admin.BlockManagement.Show'
           },
           value: [],
+          responseKey: '',
           selected: [],
           col: 'col-md-4'
         },
@@ -383,10 +400,12 @@ export default {
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
-            itemIndicatorKey: 'id',
+            itemIdentifyKey: 'id',
+            itemIndicatorKey: 'first_name',
             showTableItemsRouteName: 'Admin.BlockManagement.Show'
           },
           value: [],
+          responseKey: '',
           selected: [],
           col: 'col-md-4'
         }
@@ -397,13 +416,16 @@ export default {
       afterIndexTable: true
     }
   },
-  // created () {
-  //   this.$axios.get('https://reqres.in/api/users')
-  //   .then( res=>{
-  //     console.log(res)
-  //   })
-  // },
   methods: {
+    beforeDoAction () {
+      console.log('beforeDoAction')
+    },
+    onActionSuccess (response) {
+      console.log('onActionSuccess: ',response)
+    },
+    onActionError (error) {
+      console.log('onActionError: ', error)
+    },
     getRemoveMessage (row) {
       const first_name = row.first_name
       const last_name = row.last_name

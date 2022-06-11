@@ -4,17 +4,17 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
+      <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
+      <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
         <q-tooltip>
           ذخیره
         </q-tooltip>
       </q-btn>
-      <q-btn flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
+      <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
         <q-tooltip>
           لغو
         </q-tooltip>
