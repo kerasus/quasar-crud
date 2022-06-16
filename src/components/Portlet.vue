@@ -11,8 +11,12 @@
         <slot name="toolbar"></slot>
       </div>
     </q-toolbar>
-    <q-separator />
-    <slot name="content"></slot>
+    <q-separator/>
+    <q-card-section>
+      <slot name="content"></slot>
+    </q-card-section>
+    <slot name="actions"/>
+    <slot name="afterActions"/>
   </q-card>
 </template>
 
@@ -29,6 +33,7 @@ export default {
   line-height: 1.75rem;
   letter-spacing: 0.00937em;
 }
+
 .doc-card-title {
   margin-left: -24px;
   padding: 2px 10px 2px 24px;
@@ -37,6 +42,7 @@ export default {
   position: relative;
   border-radius: 3px 5px 5px 0;
 }
+
 .doc-card-title:after {
   content: "";
   position: absolute;

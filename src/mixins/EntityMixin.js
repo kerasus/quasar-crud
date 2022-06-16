@@ -11,13 +11,51 @@ const EntityMixin = {
     }
   },
   props: {
+    showSaveButton: {
+      default: true,
+      type: Boolean
+    },
     showExpandButton: {
       default: true,
       type: Boolean
     },
     showCloseButton: {
-      default: false,
+      default: true,
       type: Boolean
+    },
+    showReloadButton: {
+      default: true,
+      type: Boolean
+    },
+    showSearchButton: {
+      default: true,
+      type: Boolean
+    },
+    showIndexButton: {
+      default: true,
+      type: Boolean
+    },
+    showEditButton: {
+      default: true,
+      type: Boolean
+    },
+    onReloadButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onCancelButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSaveButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
     },
     beforeSendData: {
       default: () => {},
@@ -109,18 +147,12 @@ const EntityMixin = {
           formData.append(item.name, item.value)
         } else {
           this.createChainedObject(formData, item.name, item.value)
-          // formData[item.name] = item.value
         }
       })
 
       return formData
     },
     createChainedObject (formData, chainedName, value) {
-      // const formData = {}
-      // const chainedName = 'a.b.c'
-      // const value = 'valll'
-      // getObject(formData, chainedName, value)
-
       let keysArray = chainedName
       if (typeof chainedName === 'string') {
         keysArray = chainedName.split('.')
@@ -162,7 +194,7 @@ const EntityMixin = {
           this.loading = false
         })
     },
-    loadInputData (responseData) {
+    loadInputData (responseData, inputs) {
       const that = this
       function setValueOfNestedInputData (responseData, inputs) {
         inputs.forEach(input => {
@@ -173,7 +205,7 @@ const EntityMixin = {
             setValueOfNestedInputData(responseData, input.value)
             return
           }
-          const validChainedObject = that.getValidChainedObject(responseData, input.responseKey.split('.'))
+          const validChainedObject = that.getValidChainedObject(responseData, input.responseKey)
           // if (!this.isEntityInput(input)) {
           if (input.type !== EntityInputComp.value) {
             input.value = validChainedObject
@@ -185,16 +217,19 @@ const EntityMixin = {
             input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
             return
           }
-          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected[input.indexConfig.itemIdentifyKey]) {
+          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
             input.value = input.selected[input.indexConfig.itemIdentifyKey]
           } else {
-            console.error('input.indexConfig.itemIdentifyKey not set: ', input)
+            console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
           }
 
         })
       }
 
-      setValueOfNestedInputData(responseData, this.inputData)
+      if (!inputs) {
+        inputs = this.inputData
+      }
+      setValueOfNestedInputData(responseData, inputs)
     },
     getValidChainedObject (object, keys) {
       if (!Array.isArray(keys) && typeof keys !== 'string') {
