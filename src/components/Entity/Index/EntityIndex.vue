@@ -1,5 +1,5 @@
 <template>
-  <portlet>
+  <portlet class="entity-index">
     <template #title>
       {{ title }}
     </template>
@@ -333,6 +333,6 @@ export default {
 </script>
 
 <style lang="sass">
-.q-expansion-item__container .q-item
+.entity-index .q-expansion-item__container .q-item
   display: none
 </style>
