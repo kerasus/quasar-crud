@@ -4,27 +4,29 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
-        <q-tooltip>
-          بارگذاری مجدد
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
-        <q-tooltip>
-          ذخیره
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
-        <q-tooltip>
-          لغو
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
-        <q-tooltip>
-          <span v-if="expanded">عدم نمایش فرم</span>
-          <span v-else>نمایش فرم</span>
-        </q-tooltip>
-      </q-btn>
+      <slot name="toolbar">
+        <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
+          <q-tooltip>
+            بارگذاری مجدد
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
+          <q-tooltip>
+            ذخیره
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
+          <q-tooltip>
+            لغو
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+          <q-tooltip>
+            <span v-if="expanded">عدم نمایش فرم</span>
+            <span v-else>نمایش فرم</span>
+          </q-tooltip>
+        </q-btn>
+      </slot>
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">

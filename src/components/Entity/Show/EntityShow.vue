@@ -4,27 +4,29 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
-        <q-tooltip>
-          بارگذاری مجدد
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showEditButton" flat round icon="edit" @click="runNeededMethod(onEditButton, goToEditView)">
-        <q-tooltip>
-          ویرایش
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showIndexButton" flat round icon="list" @click="runNeededMethod(onListButton, goToIndexView)">
-        <q-tooltip>
-          لیست
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
-        <q-tooltip>
-          <span v-if="expanded">عدم نمایش فرم</span>
-          <span v-else>نمایش فرم</span>
-        </q-tooltip>
-      </q-btn>
+      <slot name="toolbar">
+        <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
+          <q-tooltip>
+            بارگذاری مجدد
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showEditButton" flat round icon="edit" @click="runNeededMethod(onEditButton, goToEditView)">
+          <q-tooltip>
+            ویرایش
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showIndexButton" flat round icon="list" @click="runNeededMethod(onListButton, goToIndexView)">
+          <q-tooltip>
+            لیست
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+          <q-tooltip>
+            <span v-if="expanded">عدم نمایش فرم</span>
+            <span v-else>نمایش فرم</span>
+          </q-tooltip>
+        </q-btn>
+      </slot>
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
