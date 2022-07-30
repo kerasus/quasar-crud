@@ -1,35 +1,37 @@
 <template>
-  <portlet>
+  <portlet class="entity-index">
     <template #title>
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn v-if="showSearchButton" flat round icon="search" @click="search">
-        <q-tooltip>
-          جستجو
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="createRouteName" flat round icon="add" @click="runNeededMethod(onAddButton, goToCreatePage)">
-        <q-tooltip>
-          جدید
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showReloadButton" flat round icon="cached" @click="reload">
-        <q-tooltip>
-          بارگذاری مجدد
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showCloseButton" v-close-popup flat round icon="cancel">
-        <q-tooltip>
-          بستن
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
-        <q-tooltip>
-          <span v-if="expanded">عدم نمایش فرم</span>
-          <span v-else>نمایش فرم</span>
-        </q-tooltip>
-      </q-btn>
+      <slot name="toolbar">
+        <q-btn v-if="showSearchButton" flat round icon="search" @click="search">
+          <q-tooltip>
+            جستجو
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="createRouteName" flat round icon="add" @click="runNeededMethod(onAddButton, goToCreatePage)">
+          <q-tooltip>
+            جدید
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showReloadButton" flat round icon="cached" @click="reload">
+          <q-tooltip>
+            بارگذاری مجدد
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showCloseButton" v-close-popup flat round icon="cancel">
+          <q-tooltip>
+            بستن
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+          <q-tooltip>
+            <span v-if="expanded">عدم نمایش فرم</span>
+            <span v-else>نمایش فرم</span>
+          </q-tooltip>
+        </q-btn>
+      </slot>
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
@@ -333,6 +335,6 @@ export default {
 </script>
 
 <style lang="sass">
-.q-expansion-item__container .q-item
+.entity-index .q-expansion-item__container .q-item
   display: none
 </style>

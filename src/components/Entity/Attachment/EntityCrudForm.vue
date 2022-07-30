@@ -1,6 +1,5 @@
 <template>
     <q-card class="crud-form">
-      <slot name="before-form-builder"></slot>
       <q-btn
         push
         color="positive"
@@ -12,7 +11,6 @@
       <div class="col-12 no-padding">
         <form-builder v-model:value="computedCrudFormInputs" />
       </div>
-      <slot name="after-form-builder"></slot>
     </q-card>
 </template>
 
