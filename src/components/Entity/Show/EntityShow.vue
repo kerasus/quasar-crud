@@ -30,9 +30,13 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="true" />
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
@@ -128,4 +132,7 @@ export default {
 <style lang="sass">
 .entity-show .q-expansion-item__container .q-item
   display: none
+
+.entity-show .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
 </style>
