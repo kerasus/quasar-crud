@@ -1,5 +1,5 @@
 <template>
-  <portlet ref="portlet">
+  <portlet ref="portlet" class="entity-action">
     <template #title>
       {{ formTitle }}
     </template>
@@ -14,9 +14,13 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder ref="formBuilder" v-model:value="inputData" :disable="false"/>
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px"/>
         </q-inner-loading>
@@ -30,7 +34,9 @@
       </q-card-actions>
     </template>
     <template #afterActions>
-      <slot name="afterAction"/>
+      <div class="slot-wrapper">
+        <slot name="afterAction"/>
+      </div>
     </template>
   </portlet>
 </template>
@@ -115,3 +121,10 @@ export default {
   }
 }
 </script>
+<style lang="sass">
+.entity-action .q-expansion-item__container .q-item
+  display: none
+
+.entity-action .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
+</style>

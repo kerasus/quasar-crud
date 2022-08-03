@@ -4,32 +4,34 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn v-if="showSearchButton" flat round icon="search" @click="search">
-        <q-tooltip>
-          جستجو
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="createRouteName" flat round icon="add" @click="runNeededMethod(onAddButton, goToCreatePage)">
-        <q-tooltip>
-          جدید
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showReloadButton" flat round icon="cached" @click="reload">
-        <q-tooltip>
-          بارگذاری مجدد
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showCloseButton" v-close-popup flat round icon="cancel">
-        <q-tooltip>
-          بستن
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
-        <q-tooltip>
-          <span v-if="expanded">عدم نمایش فرم</span>
-          <span v-else>نمایش فرم</span>
-        </q-tooltip>
-      </q-btn>
+      <slot name="toolbar">
+        <q-btn v-if="showSearchButton" flat round icon="search" @click="search">
+          <q-tooltip>
+            جستجو
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="createRouteName" flat round icon="add" @click="runNeededMethod(onAddButton, goToCreatePage)">
+          <q-tooltip>
+            جدید
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showReloadButton" flat round icon="cached" @click="reload">
+          <q-tooltip>
+            بارگذاری مجدد
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showCloseButton" v-close-popup flat round icon="cancel">
+          <q-tooltip>
+            بستن
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+          <q-tooltip>
+            <span v-if="expanded">عدم نمایش فرم</span>
+            <span v-else>نمایش فرم</span>
+          </q-tooltip>
+        </q-btn>
+      </slot>
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
@@ -55,12 +57,18 @@
             </q-chip>
           </template>
         </slot>
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <div class="row">
           <div class="col">
-            <slot name="before-index-table"></slot>
+            <div class="slot-wrapper">
+              <slot name="before-index-table"></slot>
+            </div>
             <entity-index-table
                 v-model:value="tableData"
                 v-model:table-selected-values="tableChosenValues"
@@ -81,7 +89,9 @@
                 </slot>
               </template>
             </entity-index-table>
-            <slot name="after-index-table"></slot>
+            <div class="slot-wrapper">
+              <slot name="after-index-table"></slot>
+            </div>
           </div>
         </div>
       </q-expansion-item>
@@ -335,4 +345,7 @@ export default {
 <style lang="sass">
 .entity-index .q-expansion-item__container .q-item
   display: none
+
+.entity-index .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
 </style>

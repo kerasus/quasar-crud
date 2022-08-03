@@ -4,33 +4,39 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
-        <q-tooltip>
-          بارگذاری مجدد
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
-        <q-tooltip>
-          ذخیره
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
-        <q-tooltip>
-          لغو
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
-        <q-tooltip>
-          <span v-if="expanded">عدم نمایش فرم</span>
-          <span v-else>نمایش فرم</span>
-        </q-tooltip>
-      </q-btn>
+      <slot name="toolbar">
+        <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
+          <q-tooltip>
+            بارگذاری مجدد
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
+          <q-tooltip>
+            ذخیره
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
+          <q-tooltip>
+            لغو
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+          <q-tooltip>
+            <span v-if="expanded">عدم نمایش فرم</span>
+            <span v-else>نمایش فرم</span>
+          </q-tooltip>
+        </q-btn>
+      </slot>
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="false" />
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
@@ -118,4 +124,7 @@ export default {
 <style lang="sass">
 .entity-edit .q-expansion-item__container .q-item
   display: none
+
+.entity-edit .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
 </style>

@@ -4,33 +4,39 @@
       {{ title }}
     </template>
     <template #toolbar>
-      <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
-        <q-tooltip>
-          بارگذاری مجدد
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showEditButton" flat round icon="edit" @click="runNeededMethod(onEditButton, goToEditView)">
-        <q-tooltip>
-          ویرایش
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showIndexButton" flat round icon="list" @click="runNeededMethod(onListButton, goToIndexView)">
-        <q-tooltip>
-          لیست
-        </q-tooltip>
-      </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
-        <q-tooltip>
-          <span v-if="expanded">عدم نمایش فرم</span>
-          <span v-else>نمایش فرم</span>
-        </q-tooltip>
-      </q-btn>
+      <slot name="toolbar">
+        <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
+          <q-tooltip>
+            بارگذاری مجدد
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showEditButton" flat round icon="edit" @click="runNeededMethod(onEditButton, goToEditView)">
+          <q-tooltip>
+            ویرایش
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showIndexButton" flat round icon="list" @click="runNeededMethod(onListButton, goToIndexView)">
+          <q-tooltip>
+            لیست
+          </q-tooltip>
+        </q-btn>
+        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+          <q-tooltip>
+            <span v-if="expanded">عدم نمایش فرم</span>
+            <span v-else>نمایش فرم</span>
+          </q-tooltip>
+        </q-btn>
+      </slot>
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="true" />
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
@@ -126,4 +132,7 @@ export default {
 <style lang="sass">
 .entity-show .q-expansion-item__container .q-item
   display: none
+
+.entity-show .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
 </style>
