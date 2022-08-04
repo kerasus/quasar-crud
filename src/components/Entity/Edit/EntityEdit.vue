@@ -1,26 +1,46 @@
 <template>
-  <portlet ref="portlet" class="entity-edit">
+  <portlet v-if="defaultLayout" ref="portlet" class="entity-edit">
     <template #title>
-      {{ title }}
+      <slot name="title">
+        {{ title }}
+      </slot>
     </template>
     <template #toolbar>
       <slot name="toolbar">
-        <q-btn v-if="showReloadButton" flat round icon="cached" @click="runNeededMethod(onReloadButton, getData)">
-          <q-tooltip>
-            بارگذاری مجدد
-          </q-tooltip>
+        <q-btn
+          v-if="showReloadButton"
+          flat
+          round
+          icon="cached"
+          @click="runNeededMethod(onReloadButton, getData)"
+        >
+          <q-tooltip> بارگذاری مجدد </q-tooltip>
         </q-btn>
-        <q-btn v-if="showSaveButton" flat round icon="check" @click="runNeededMethod(onSaveButton, editEntity)">
-          <q-tooltip>
-            ذخیره
-          </q-tooltip>
+        <q-btn
+          v-if="showSaveButton"
+          flat
+          round
+          icon="check"
+          @click="runNeededMethod(onSaveButton, editEntity)"
+        >
+          <q-tooltip> ذخیره </q-tooltip>
         </q-btn>
-        <q-btn v-if="showCloseButton" flat round icon="close" @click="runNeededMethod(onCancelButton, goToShowView)">
-          <q-tooltip>
-            لغو
-          </q-tooltip>
+        <q-btn
+          v-if="showCloseButton"
+          flat
+          round
+          icon="close"
+          @click="runNeededMethod(onCancelButton, goToShowView)"
+        >
+          <q-tooltip> لغو </q-tooltip>
         </q-btn>
-        <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+        <q-btn
+          v-if="showExpandButton"
+          flat
+          round
+          :icon="expanded ? 'expand_less' : 'expand_more'"
+          @click="expanded = !expanded"
+        >
           <q-tooltip>
             <span v-if="expanded">عدم نمایش فرم</span>
             <span v-else>نمایش فرم</span>
@@ -30,26 +50,47 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <div class="slot-wrapper">
-          <slot name="before-form-builder"></slot>
-        </div>
-        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="false" />
-        <div class="slot-wrapper">
-          <slot name="after-form-builder"></slot>
-        </div>
+        <entity-crud-form-builder
+          :key="key"
+          ref="formBuilder"
+          v-model:value="inputData"
+          :disable="false"
+        >
+          <div class="slot-wrapper">
+            <slot name="before-form-builder"></slot>
+          </div>
+          <div class="slot-wrapper">
+            <slot name="after-form-builder"></slot>
+          </div>
+        </entity-crud-form-builder>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
       </q-expansion-item>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="false"
+    >
+      <div class="slot-wrapper">
+        <slot name="before-form-builder"></slot>
+      </div>
+      <div class="slot-wrapper">
+        <slot name="after-form-builder"></slot>
+      </div>
+    </entity-crud-form-builder>
+  </div>
 </template>
 
 <script>
-import Portlet from '../../../components/Portlet'
-import EntityMixin from '../../../mixins/EntityMixin'
-import { inputMixin } from 'quasar-form-builder'
-import EntityCrudFormBuilder from '../EntityCrudFormBuilder'
+import Portlet from '../../../components/Portlet';
+import EntityMixin from '../../../mixins/EntityMixin';
+import { inputMixin } from 'quasar-form-builder';
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder';
 
 export default {
   name: 'EntityEdit',
@@ -58,67 +99,69 @@ export default {
   props: {
     value: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     title: {
       default: '',
-      type: String
+      type: String,
     },
     api: {
       default: '',
-      type: String
+      type: String,
     },
     entityIdKey: {
       default: 'id',
-      type: String
+      type: String,
     },
     entityParamKey: {
       default: 'id',
-      type: String
+      type: String,
     },
     showRouteName: {
       default: '',
-      type: String
+      type: String,
     },
     beforeGetData: {
       default: () => {},
-      type: Function
+      type: Function,
     },
     table: {
       default: () => {
         return {
           columns: [],
-          data: []
-        }
+          data: [],
+        };
       },
-      type: Object
-    }
+      type: Object,
+    },
   },
-  data () {
+  data() {
     return {
       expanded: true,
-      loading: false
-    }
+      loading: false,
+      defaultLayout: false,
+    };
   },
-  async created () {
-    await this.beforeGetData()
-    this.getData()
-    this.key = Date.now()
+  async created() {
+    await this.beforeGetData();
+    this.getData();
+    this.key = Date.now();
   },
   methods: {
-    editEntity () {
-      const formData = this.getFormData()
-      this.beforeSendData(formData, this.setNewInputData)
-      this.$axios.put(this.api, formData, { headers: this.getHeaders() })
-          .then(() => {
-            this.goToShowView()
-          })
-          .catch(() => {
-            this.getData()
-          })
-    }
-  }
-}
+    editEntity() {
+      const formData = this.getFormData();
+      this.beforeSendData(formData, this.setNewInputData);
+      this.$axios
+        .put(this.api, formData, { headers: this.getHeaders() })
+        .then(() => {
+          this.goToShowView();
+        })
+        .catch(() => {
+          this.getData();
+        });
+    },
+  },
+};
 </script>
 
 <style lang="sass">

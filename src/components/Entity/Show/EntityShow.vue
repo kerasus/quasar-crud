@@ -1,7 +1,9 @@
 <template>
   <portlet ref="portlet" class="entity-show">
     <template #title>
-      {{ title }}
+      <slot name="title">
+        {{ title }}
+      </slot>
     </template>
     <template #toolbar>
       <slot name="toolbar">

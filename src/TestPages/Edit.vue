@@ -7,6 +7,7 @@
       :entity-param-key="entityParamKey"
       :show-route-name="showRouteName"
       :before-send-data="beforeSendData"
+      :defaultLayout="false"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
