@@ -134,12 +134,15 @@ export default {
       },
       type: Object,
     },
+    defaultLayout: {
+      default: true,
+      type: Boolean
+    }
   },
   data() {
     return {
       expanded: true,
       loading: false,
-      defaultLayout: false,
     };
   },
   async created() {
