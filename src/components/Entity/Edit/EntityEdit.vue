@@ -56,12 +56,16 @@
           v-model:value="inputData"
           :disable="false"
         >
-          <div class="slot-wrapper">
-            <slot name="before-form-builder"></slot>
-          </div>
-          <div class="slot-wrapper">
-            <slot name="after-form-builder"></slot>
-          </div>
+          <template #before-form-builder>
+            <div class="slot-wrapper">
+              <slot name="before-form-builder"></slot>
+            </div>
+          </template>
+          <template #after-form-builder>
+            <div class="slot-wrapper">
+              <slot name="after-form-builder"></slot>
+            </div>
+          </template>
         </entity-crud-form-builder>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
@@ -76,12 +80,16 @@
       v-model:value="inputData"
       :disable="false"
     >
-      <div class="slot-wrapper">
-        <slot name="before-form-builder"></slot>
-      </div>
-      <div class="slot-wrapper">
-        <slot name="after-form-builder"></slot>
-      </div>
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
     </entity-crud-form-builder>
   </div>
 </template>
@@ -136,8 +144,8 @@ export default {
     },
     defaultLayout: {
       default: true,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data() {
     return {
