@@ -1,7 +1,9 @@
 <template>
   <portlet class="entity-index">
     <template #title>
+      <slot name="title">
       {{ title }}
+      </slot>
     </template>
     <template #toolbar>
       <slot name="toolbar">

@@ -2,7 +2,9 @@
   {{computedCrudFormInputs[0].tableSelectedValues}}
   <portlet>
     <template #title>
-      {{ title }}
+      <slot name="title">
+        {{ title }}
+      </slot>
     </template>
     <template #toolbar>
       <q-btn flat round icon="cached" @click="reload">

@@ -1,5 +1,11 @@
 <template>
+  <div class="slot-wrapper">
+    <slot name="before-form-builder"></slot>
+  </div>
   <form-builder ref="formBuilder" v-model:value="computedInputs" :disable="disable" />
+  <div class="slot-wrapper">
+    <slot name="after-form-builder"></slot>
+  </div>
 </template>
 
 <script>

@@ -1,7 +1,9 @@
 <template>
   <portlet ref="portlet" class="entity-action">
     <template #title>
-      {{ formTitle }}
+      <slot name="title">
+        {{ formTitle }}
+      </slot>
     </template>
     <template #toolbar>
       <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'"
