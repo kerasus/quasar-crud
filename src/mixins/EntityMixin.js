@@ -209,7 +209,6 @@ const EntityMixin = {
           }
           
           const validChainedObject = that.getValidChainedObject(responseData, input.responseKey)
-          console.log(validChainedObject);
           // if (!this.isEntityInput(input)) {
           if (input.type !== EntityInputComp.value) {
             input.value = validChainedObject
