@@ -1,4 +1,5 @@
 <template>
+{{inputData}}
   <portlet v-if="defaultLayout" ref="portlet" class="entity-edit">
     <template #title>
       <slot name="title">
