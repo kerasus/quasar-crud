@@ -1,5 +1,5 @@
 <template>
-  <portlet ref="portlet" class="entity-show">
+  <portlet   v-if="defaultLayout" ref="portlet" class="entity-show">
     <template #title>
       <slot name="title">
         {{ title }}
@@ -45,6 +45,25 @@
       </q-expansion-item>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="true"
+    >
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
+    </entity-crud-form-builder>
+  </div>
 </template>
 
 <script>
@@ -110,6 +129,10 @@ export default {
         return false
       },
       type: [Function, Boolean]
+    },
+    defaultLayout: {
+      default: true,
+      type: Boolean,
     },
   },
   data () {

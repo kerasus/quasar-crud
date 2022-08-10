@@ -1,5 +1,5 @@
 <template>
-  <portlet class="entity-index">
+  <portlet  v-if="defaultLayout"  class="entity-index">
     <template #title>
       <slot name="title">
       {{ title }}
@@ -111,6 +111,25 @@
       </q-dialog>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="false"
+    >
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
+    </entity-crud-form-builder>
+  </div>
 </template>
 
 <script>
@@ -190,7 +209,11 @@ export default {
     rowKey: {
       default: 'id',
       type: String
-    }
+    },
+    defaultLayout: {
+      default: true,
+      type: Boolean,
+    },
   },
   emits: [
     'onPageChanged',
