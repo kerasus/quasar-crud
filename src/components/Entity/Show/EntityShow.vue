@@ -97,10 +97,6 @@ export default {
       default: 'id',
       type: String
     },
-    beforeGetData: {
-      default: () => {},
-      type: Function
-    },
     editRouteName: {
       default: '',
       type: String
@@ -145,6 +141,7 @@ export default {
     await this.beforeGetData()
     this.getData()
     this.key = Date.now()
+    await this.afterGetData()
   },
   methods: {
     goToEditView () {

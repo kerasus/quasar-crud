@@ -129,14 +129,6 @@ export default {
       default: '',
       type: String,
     },
-    beforeGetData: {
-      default: () => {},
-      type: Function,
-    },
-    afterGetData:{
-      default: () => {},
-      type: Function
-    },
     table: {
       default: () => {
         return {

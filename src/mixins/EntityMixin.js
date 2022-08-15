@@ -57,10 +57,7 @@ const EntityMixin = {
       },
       type: [Function, Boolean]
     },
-    beforeSendData: {
-      default: () => {},
-      type: Function
-    },
+    
     beforeLoadInputData: {
       default: () => {},
       type: Function
@@ -74,6 +71,10 @@ const EntityMixin = {
       type: Function,
     },
     afterGetData:{
+      default: () => {},
+      type: Function
+    },
+    beforeSendData: {
       default: () => {},
       type: Function
     },

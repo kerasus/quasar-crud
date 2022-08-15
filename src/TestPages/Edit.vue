@@ -66,26 +66,26 @@ export default {
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true,
-      defaultLayout: false
+      defaultLayout: true
     }
   },
   created () {
     this.api += '/' + this.$route.params.id
   },
   methods: {
+    beforeGetData(){
+      console.log('before get data: ');
+    },
+    afterGetData(){
+      console.log('after get data: ');
+    },
     beforeSendData (formData/* , setNewInputData */) {
       console.log('formData before send data: ', formData)
     },
     afterSendData(d){
       console.log('response after send data: ',d);
     },
-    beforeGetData(){
-      console.log('before get data: ');
-    },
-    afterGetData(){
-      console.log('after get data: ');
-
-    },
+    
   }
 }
 </script>

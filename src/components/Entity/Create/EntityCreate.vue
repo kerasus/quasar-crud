@@ -133,6 +133,7 @@ export default {
           .then((response) => {
             this.loading = false
             const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
+            this.afterSendData(response)
             this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
           })
           .catch(() => {
