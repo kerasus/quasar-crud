@@ -1,5 +1,5 @@
 <template>
-  <portlet ref="portlet" class="entity-create">
+  <portlet   v-if="defaultLayout" ref="portlet" class="entity-create">
     <template #title>
       <slot name="title">
         {{ title }}
@@ -40,6 +40,26 @@
       </q-expansion-item>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="false"
+    >
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
+    </entity-crud-form-builder>
+  </div>
+
 </template>
 
 <script>
@@ -92,7 +112,11 @@ export default {
         }
       },
       type: Object
-    }
+    },
+     defaultLayout: {
+      default: true,
+      type: Boolean,
+    },
   },
   data () {
     return {
@@ -109,6 +133,7 @@ export default {
           .then((response) => {
             this.loading = false
             const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
+            this.afterSendData(response)
             this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
           })
           .catch(() => {

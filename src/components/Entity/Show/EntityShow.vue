@@ -1,5 +1,5 @@
 <template>
-  <portlet ref="portlet" class="entity-show">
+  <portlet   v-if="defaultLayout" ref="portlet" class="entity-show">
     <template #title>
       <slot name="title">
         {{ title }}
@@ -45,6 +45,25 @@
       </q-expansion-item>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="true"
+    >
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
+    </entity-crud-form-builder>
+  </div>
 </template>
 
 <script>
@@ -78,10 +97,6 @@ export default {
       default: 'id',
       type: String
     },
-    beforeGetData: {
-      default: () => {},
-      type: Function
-    },
     editRouteName: {
       default: '',
       type: String
@@ -111,6 +126,10 @@ export default {
       },
       type: [Function, Boolean]
     },
+    defaultLayout: {
+      default: true,
+      type: Boolean,
+    },
   },
   data () {
     return {
@@ -122,6 +141,7 @@ export default {
     await this.beforeGetData()
     this.getData()
     this.key = Date.now()
+    await this.afterGetData()
   },
   methods: {
     goToEditView () {

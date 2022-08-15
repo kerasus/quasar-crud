@@ -9,6 +9,7 @@
       :table-selection-mode="'multiple'"
       :item-indicator-key="'first_name'"
       :create-route-name="'User.Create'"
+      :default-layout="false"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
       <q-td :props="inputData.props">

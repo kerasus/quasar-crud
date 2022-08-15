@@ -129,10 +129,6 @@ export default {
       default: '',
       type: String,
     },
-    beforeGetData: {
-      default: () => {},
-      type: Function,
-    },
     table: {
       default: () => {
         return {
@@ -157,6 +153,7 @@ export default {
     await this.beforeGetData();
     this.getData();
     this.key = Date.now();
+    await this.afterGetData()
   },
   methods: {
     editEntity() {
@@ -164,7 +161,8 @@ export default {
       this.beforeSendData(formData, this.setNewInputData);
       this.$axios
         .put(this.api, formData, { headers: this.getHeaders() })
-        .then(() => {
+        .then((d) => {
+          this.afterSendData(d);
           this.goToShowView();
         })
         .catch(() => {

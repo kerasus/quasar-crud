@@ -7,6 +7,8 @@
       :entity-param-key="entityParamKey"
       :edit-route-name="editRouteName"
       :index-route-name="indexRouteName"
+      :before-get-data="beforeGetData"
+      :after-get-data="afterGetData"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -69,6 +71,16 @@ export default {
   created () {
     this.api += '/' + this.$route.params.id
   },
+  methods:{
+    // since there is no setData in show page,
+    // beforeSetData and afterSetData are removed.
+    beforeGetData(){
+      console.log('before get data: ');
+    },
+    afterGetData(){
+      console.log('after get data: ');
+    },
+  }
 }
 </script>
 

@@ -7,7 +7,10 @@
       :entity-param-key="entityParamKey"
       :show-route-name="showRouteName"
       :before-send-data="beforeSendData"
-      :defaultLayout="false"
+      :after-send-data="afterSendData"
+      :before-get-data="beforeGetData"
+      :after-get-data="afterGetData"
+      :defaultLayout="defaultLayout"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -62,16 +65,27 @@ export default {
         }
       ],
       beforeFormBuilder: true,
-      afterFormBuilder: true
+      afterFormBuilder: true,
+      defaultLayout: true
     }
   },
   created () {
     this.api += '/' + this.$route.params.id
   },
   methods: {
+    beforeGetData(){
+      console.log('before get data: ');
+    },
+    afterGetData(){
+      console.log('after get data: ');
+    },
     beforeSendData (formData/* , setNewInputData */) {
       console.log('formData before send data: ', formData)
-    }
+    },
+    afterSendData(d){
+      console.log('response after send data: ',d);
+    },
+    
   }
 }
 </script>
