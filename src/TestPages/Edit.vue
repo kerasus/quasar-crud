@@ -7,6 +7,9 @@
       :entity-param-key="entityParamKey"
       :show-route-name="showRouteName"
       :before-send-data="beforeSendData"
+      :after-send-data="afterSendData"
+      :before-get-data="beforeGetData"
+      :after-get-data="afterGetData"
       :defaultLayout="defaultLayout"
   >
     <template #before-form-builder>
@@ -72,7 +75,17 @@ export default {
   methods: {
     beforeSendData (formData/* , setNewInputData */) {
       console.log('formData before send data: ', formData)
-    }
+    },
+    afterSendData(d){
+      console.log('response after send data: ',d);
+    },
+    beforeGetData(){
+      console.log('before get data: ');
+    },
+    afterGetData(){
+      console.log('after get data: ');
+
+    },
   }
 }
 </script>

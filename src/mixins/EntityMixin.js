@@ -68,6 +68,18 @@ const EntityMixin = {
     afterLoadInputData: {
       default: () => {},
       type: Function
+    },
+    beforeGetData: {
+      default: () => {},
+      type: Function,
+    },
+    afterGetData:{
+      default: () => {},
+      type: Function
+    },
+    afterSendData: {
+      default: () => {},
+      type: Function
     }
   },
   created () {
