@@ -94,6 +94,7 @@ export default {
       default: '',
       type: String
     },
+    
     beforeDoAction: {
       default: () => {},
       type: Function
