@@ -198,13 +198,16 @@ const EntityMixin = {
       const that = this
       function setValueOfNestedInputData (responseData, inputs) {
         inputs.forEach(input => {
-          if (typeof input.responseKey === 'undefined' || input.responseKey === null) {
-            return
-          }
+          // since formBuilder has no responseKey for itself, but its children have one,
+          // we have to check it before second if, in order to check them.
           if (input.type === 'formBuilder') {
             setValueOfNestedInputData(responseData, input.value)
             return
           }
+          if (typeof input.responseKey === 'undefined' || input.responseKey === null) {
+            return
+          }
+          
           const validChainedObject = that.getValidChainedObject(responseData, input.responseKey)
           // if (!this.isEntityInput(input)) {
           if (input.type !== EntityInputComp.value) {

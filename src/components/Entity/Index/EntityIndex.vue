@@ -1,7 +1,9 @@
 <template>
   <portlet class="entity-index">
     <template #title>
+      <slot name="title">
       {{ title }}
+      </slot>
     </template>
     <template #toolbar>
       <slot name="toolbar">
@@ -57,12 +59,18 @@
             </q-chip>
           </template>
         </slot>
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <div class="row">
           <div class="col">
-            <slot name="before-index-table"></slot>
+            <div class="slot-wrapper">
+              <slot name="before-index-table"></slot>
+            </div>
             <entity-index-table
                 v-model:value="tableData"
                 v-model:table-selected-values="tableChosenValues"
@@ -83,7 +91,9 @@
                 </slot>
               </template>
             </entity-index-table>
-            <slot name="after-index-table"></slot>
+            <div class="slot-wrapper">
+              <slot name="after-index-table"></slot>
+            </div>
           </div>
         </div>
       </q-expansion-item>
@@ -337,4 +347,7 @@ export default {
 <style lang="sass">
 .entity-index .q-expansion-item__container .q-item
   display: none
+
+.entity-index .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
 </style>

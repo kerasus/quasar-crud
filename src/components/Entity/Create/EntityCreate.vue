@@ -1,7 +1,9 @@
 <template>
   <portlet ref="portlet" class="entity-create">
     <template #title>
-      {{ title }}
+      <slot name="title">
+        {{ title }}
+      </slot>
     </template>
     <template #toolbar>
       <slot name="toolbar">
@@ -25,9 +27,13 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <slot name="before-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
         <entity-crud-form-builder ref="formBuilder" v-model:value="inputData" :disable="false" />
-        <slot name="after-form-builder"></slot>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
         <q-inner-loading :showing="loading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
@@ -117,4 +123,7 @@ export default {
 <style lang="sass">
 .entity-create .q-expansion-item__container .q-item
   display: none
+
+.entity-create .slot-wrapper .q-expansion-item__container .q-item
+  display: flex
 </style>
