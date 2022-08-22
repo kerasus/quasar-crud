@@ -151,7 +151,7 @@ export default {
   },
   async created() {
     await this.beforeGetData();
-    this.getData();
+    await this.getData();
     this.key = Date.now();
     await this.afterGetData()
   },
