@@ -194,10 +194,11 @@ const EntityMixin = {
     isEntityInput (input) {
       return input.type === EntityInputComp.value
     },
-    getData () {
+    async getData () {
       this.loading = true
-      this.$axios.get(this.api)
+      await this.$axios.get(this.api)
         .then(response => {
+          console.log('here');
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
           this.afterLoadInputData(response.data, this.setNewInputData)
