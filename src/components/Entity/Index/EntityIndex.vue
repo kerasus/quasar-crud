@@ -1,5 +1,5 @@
 <template>
-  <portlet  v-if="defaultLayout"  class="entity-index">
+  <portlet v-if="defaultLayout" class="entity-index">
     <template #title>
       <slot name="title">
       {{ title }}
@@ -129,6 +129,32 @@
         </div>
       </template>
     </entity-crud-form-builder>
+    <div class="slot-wrapper">
+      <slot name="before-index-table"></slot>
+    </div>
+    <entity-index-table
+        v-model:value="tableData"
+        v-model:table-selected-values="tableChosenValues"
+        :table-selection-mode="tableSelectionMode"
+        :columns="table.columns"
+        :title="title"
+        :row-key="rowKey"
+        :loading="loading"
+        :change-page="changePage"
+        @update:table-selected-values="updateSelectedValues"
+        @search="search"
+    >
+      <template #entity-index-table-cell="{inputData}">
+        <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
+          <q-td :props="inputData.props">
+            {{ inputData.props.value }}
+          </q-td>
+        </slot>
+      </template>
+    </entity-index-table>
+    <div class="slot-wrapper">
+      <slot name="after-index-table"></slot>
+    </div>
   </div>
 </template>
 

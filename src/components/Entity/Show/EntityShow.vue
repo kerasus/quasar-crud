@@ -1,5 +1,5 @@
 <template>
-  <portlet   v-if="defaultLayout" ref="portlet" class="entity-show">
+  <portlet v-if="defaultLayout" ref="portlet" class="entity-show">
     <template #title>
       <slot name="title">
         {{ title }}
