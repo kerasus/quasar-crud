@@ -62,7 +62,12 @@
         <div class="slot-wrapper">
           <slot name="before-form-builder"></slot>
         </div>
-        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
+        <entity-crud-form-builder :key="key"
+                                  ref="formBuilder"
+                                  v-model:value="inputData"
+                                  :copy-on-click="copyOnClick"
+                                  @onInputClick="onInputClick"
+                                  @onCopyToClipboard="onCopyToClipboard"/>
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
@@ -117,6 +122,9 @@
       ref="formBuilder"
       v-model:value="inputData"
       :disable="false"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">

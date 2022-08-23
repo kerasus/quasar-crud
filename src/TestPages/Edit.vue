@@ -44,7 +44,7 @@ export default {
       showRouteName: 'User.Show',
       inputs: [
         { type: 'file', name: 'avatar', responseKey: 'data.avatar', col: 'col-md-3' },
-        { type: 'space', name: 'space', col: 'col-md-12' },
+        { type: 'space', col: 'col-md-12' },
         {
           type: 'formBuilder',
           name: 'formBuilderCol',
@@ -85,7 +85,7 @@ export default {
     afterSendData(d){
       console.log('response after send data: ',d);
     },
-    
+
   }
 }
 </script>

@@ -29,7 +29,13 @@
             </q-btn>
           </q-bar>
           <q-card-section>
-            <entity-crud-form-builder ref="formBuilder" v-model:value="dialogFormInputData" :disable="false"/>
+            <entity-crud-form-builder ref="formBuilder"
+                                      v-model:value="dialogFormInputData"
+                                      :disable="false"
+                                      :copy-on-click="copyOnClick"
+                                      @onInputClick="onInputClick"
+                                      @onCopyToClipboard="onCopyToClipboard"
+            />
           </q-card-section>
         </q-card>
       </q-dialog>

@@ -55,6 +55,9 @@
           ref="formBuilder"
           v-model:value="inputData"
           :disable="false"
+          :copy-on-click="copyOnClick"
+          @onInputClick="onInputClick"
+          @onCopyToClipboard="onCopyToClipboard"
         >
           <template #before-form-builder>
             <div class="slot-wrapper">
@@ -79,6 +82,9 @@
       ref="formBuilder"
       v-model:value="inputData"
       :disable="false"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">

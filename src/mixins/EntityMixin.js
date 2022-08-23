@@ -57,7 +57,10 @@ const EntityMixin = {
       },
       type: [Function, Boolean]
     },
-    
+    copyOnClick: {
+      default: false,
+      type: Boolean
+    },
     beforeLoadInputData: {
       default: () => {},
       type: Function
@@ -89,6 +92,12 @@ const EntityMixin = {
     }
   },
   methods: {
+    onInputClick (data) {
+      this.$emit('onInputClick', data)
+    },
+    onCopyToClipboard (data) {
+      this.$emit('onCopyToClipboard', data)
+    },
     runNeededMethod (substituteMethod, callBackMethod) {
       if (!!substituteMethod && substituteMethod()){
         substituteMethod()
@@ -198,7 +207,6 @@ const EntityMixin = {
       this.loading = true
       await this.$axios.get(this.api)
         .then(response => {
-          console.log('here');
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
           this.afterLoadInputData(response.data, this.setNewInputData)
@@ -221,7 +229,7 @@ const EntityMixin = {
           if (typeof input.responseKey === 'undefined' || input.responseKey === null) {
             return
           }
-          
+
           const validChainedObject = that.getValidChainedObject(responseData, input.responseKey)
           // if (!this.isEntityInput(input)) {
           if (input.type !== EntityInputComp.value) {

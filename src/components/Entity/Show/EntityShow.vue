@@ -35,7 +35,13 @@
         <div class="slot-wrapper">
           <slot name="before-form-builder"></slot>
         </div>
-        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="true" />
+        <entity-crud-form-builder :key="key" ref="formBuilder"
+                                  v-model:value="inputData"
+                                  :readonly="true"
+                                  :copy-on-click="copyOnClick"
+                                  @onInputClick="onInputClick"
+                                  @onCopyToClipboard="onCopyToClipboard"
+        />
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
@@ -51,6 +57,9 @@
       ref="formBuilder"
       v-model:value="inputData"
       :disable="true"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">
@@ -131,6 +140,7 @@ export default {
       type: Boolean,
     },
   },
+  emits: ['onInputClick'],
   data () {
     return {
       expanded: true,
@@ -138,12 +148,22 @@ export default {
     }
   },
   async created () {
+    // this.disabledAllInputs(this.inputData)
     await this.beforeGetData()
     this.getData()
     this.key = Date.now()
     await this.afterGetData()
   },
   methods: {
+    disabledAllInputs (inputs) {
+      inputs.forEach(input=>{
+        if (input.type === 'formBuilder') {
+          this.disabledAllInputs(input.value)
+        } else {
+          input.disable = true
+        }
+      })
+    },
     goToEditView () {
       this.$router.push({ name: this.editRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     }

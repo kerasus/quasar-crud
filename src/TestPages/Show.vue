@@ -9,6 +9,9 @@
       :index-route-name="indexRouteName"
       :before-get-data="beforeGetData"
       :after-get-data="afterGetData"
+      :copy-on-click="true"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -31,6 +34,7 @@
 
 <script>
 import EntityShow from '../components/Entity/Show/EntityShow'
+
 export default {
   name: 'Show',
   components: {EntityShow},
@@ -42,7 +46,8 @@ export default {
       editRouteName: 'User.Edit',
       indexRouteName: 'User.Index',
       inputs: [
-        { type: 'avatar', name: 'avatar', responseKey: 'data.avatar', size: '200px', col: 'col-md-12' },
+        { type: 'file', name: 'avatar', responseKey: 'data.avatar', size: '200px', col: 'col-md-3' },
+        { type: 'space', col: 'col-md-12' },
 
         {
           type: 'formBuilder',
@@ -72,6 +77,13 @@ export default {
     this.api += '/' + this.$route.params.id
   },
   methods:{
+    onInputClick (data) {
+      console.log('onInputClick: ', data)
+    },
+    onCopyToClipboard (data) {
+      console.log('onCopyToClipboard: ', data)
+      alert('onCopyToClipboard: ' + data.event.target.value)
+    },
     // since there is no setData in show page,
     // beforeSetData and afterSetData are removed.
     beforeGetData(){

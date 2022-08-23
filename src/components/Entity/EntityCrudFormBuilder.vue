@@ -2,7 +2,12 @@
   <div class="slot-wrapper">
     <slot name="before-form-builder"></slot>
   </div>
-  <form-builder ref="formBuilder" v-model:value="computedInputs" :disable="disable" />
+  <form-builder ref="formBuilder"
+                v-model:value="computedInputs"
+                :disable="disable"
+                :readonly="readonly"
+                @onClick="onInputClick"
+  />
   <div class="slot-wrapper">
     <slot name="after-form-builder"></slot>
   </div>
@@ -10,9 +15,10 @@
 
 <script>
 import { shallowRef } from 'vue'
+import { copyToClipboard } from 'quasar'
 import EntityMixin from '../../mixins/EntityMixin'
-import { FormBuilder, inputMixin } from 'quasar-form-builder'
 import EntityInput from './Attachment/EntityInput'
+import { FormBuilder, inputMixin } from 'quasar-form-builder'
 
 const EntityInputComp = shallowRef(EntityInput)
 export default {
@@ -27,10 +33,20 @@ export default {
     disable: {
       default: false,
       type: Boolean
+    },
+    readonly: {
+      default: false,
+      type: Boolean
+    },
+    copyOnClick: {
+      default: false,
+      type: Boolean
     }
   },
   emits: [
-    'update:value'
+    'update:value',
+    'onInputClick',
+    'onCopyToClipboard'
   ],
   data () {
     return {
@@ -101,6 +117,16 @@ export default {
   },
   watch: {},
   methods: {
+    onInputClick (data) {
+      const targetValue = data?.event?.target?.value
+      if (this.copyOnClick && targetValue) {
+        copyToClipboard(targetValue)
+            .then(() => {
+              this.$emit('onCopyToClipboard', data)
+            })
+      }
+      this.$emit('onInputClick', data)
+    },
     getItemIdentifyKey (input) {
       if (typeof input.indexConfig.itemIdentifyKey === 'string') {
         return input.indexConfig.itemIdentifyKey
