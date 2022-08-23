@@ -140,7 +140,6 @@ export default {
       type: Boolean,
     },
   },
-  emits: ['onInputClick'],
   data () {
     return {
       expanded: true,
