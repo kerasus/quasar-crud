@@ -1,5 +1,5 @@
 <template>
-  <portlet ref="portlet" class="entity-show">
+  <portlet v-if="defaultLayout" ref="portlet" class="entity-show">
     <template #title>
       <slot name="title">
         {{ title }}
@@ -35,7 +35,13 @@
         <div class="slot-wrapper">
           <slot name="before-form-builder"></slot>
         </div>
-        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" :disable="true" />
+        <entity-crud-form-builder :key="key" ref="formBuilder"
+                                  v-model:value="inputData"
+                                  :readonly="true"
+                                  :copy-on-click="copyOnClick"
+                                  @onInputClick="onInputClick"
+                                  @onCopyToClipboard="onCopyToClipboard"
+        />
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
@@ -45,6 +51,28 @@
       </q-expansion-item>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="true"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
+    >
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
+    </entity-crud-form-builder>
+  </div>
 </template>
 
 <script>
@@ -78,10 +106,6 @@ export default {
       default: 'id',
       type: String
     },
-    beforeGetData: {
-      default: () => {},
-      type: Function
-    },
     editRouteName: {
       default: '',
       type: String
@@ -111,6 +135,10 @@ export default {
       },
       type: [Function, Boolean]
     },
+    defaultLayout: {
+      default: true,
+      type: Boolean,
+    },
   },
   data () {
     return {
@@ -119,11 +147,22 @@ export default {
     }
   },
   async created () {
+    // this.disabledAllInputs(this.inputData)
     await this.beforeGetData()
     this.getData()
     this.key = Date.now()
+    await this.afterGetData()
   },
   methods: {
+    disabledAllInputs (inputs) {
+      inputs.forEach(input=>{
+        if (input.type === 'formBuilder') {
+          this.disabledAllInputs(input.value)
+        } else {
+          input.disable = true
+        }
+      })
+    },
     goToEditView () {
       this.$router.push({ name: this.editRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     }

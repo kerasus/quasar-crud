@@ -9,6 +9,7 @@
       :table-selection-mode="'multiple'"
       :item-indicator-key="'first_name'"
       :create-route-name="'User.Create'"
+      :default-layout="true"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
       <q-td :props="inputData.props">
@@ -243,9 +244,9 @@ export default {
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
-            itemIdentifyKey: 'id',
-            itemIndicatorKey: 'first_name',
           },
+          itemIdentifyKey: 'id',
+          itemIndicatorKey: 'first_name',
           value: [],
           responseKey: '',
           selected: [],
@@ -322,9 +323,9 @@ export default {
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
             itemIdentifyKey: 'id',
-            itemIndicatorKey: 'first_name',
-            showTableItemsRouteName: 'Admin.BlockManagement.Show'
           },
+          itemIdentifyKey: 'id',
+          itemIndicatorKey: 'first_name',
           value: [],
           responseKey: '',
           selected: [],
@@ -401,9 +402,9 @@ export default {
               { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
             ],
             itemIdentifyKey: 'id',
-            itemIndicatorKey: 'first_name',
-            showTableItemsRouteName: 'Admin.BlockManagement.Show'
           },
+          itemIdentifyKey: 'id',
+          itemIndicatorKey: 'first_name',
           value: [],
           responseKey: '',
           selected: [],

@@ -1,5 +1,5 @@
 <template>
-  <portlet class="entity-index">
+  <portlet v-if="defaultLayout" class="entity-index">
     <template #title>
       <slot name="title">
       {{ title }}
@@ -62,7 +62,12 @@
         <div class="slot-wrapper">
           <slot name="before-form-builder"></slot>
         </div>
-        <entity-crud-form-builder :key="key" ref="formBuilder" v-model:value="inputData" />
+        <entity-crud-form-builder :key="key"
+                                  ref="formBuilder"
+                                  v-model:value="inputData"
+                                  :copy-on-click="copyOnClick"
+                                  @onInputClick="onInputClick"
+                                  @onCopyToClipboard="onCopyToClipboard"/>
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
@@ -111,6 +116,54 @@
       </q-dialog>
     </template>
   </portlet>
+  <div v-else>
+    <entity-crud-form-builder
+      :key="key"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="false"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
+    >
+      <template #before-form-builder>
+        <div class="slot-wrapper">
+          <slot name="before-form-builder"></slot>
+        </div>
+      </template>
+      <template #after-form-builder>
+        <div class="slot-wrapper">
+          <slot name="after-form-builder"></slot>
+        </div>
+      </template>
+    </entity-crud-form-builder>
+    <div class="slot-wrapper">
+      <slot name="before-index-table"></slot>
+    </div>
+    <entity-index-table
+        v-model:value="tableData"
+        v-model:table-selected-values="tableChosenValues"
+        :table-selection-mode="tableSelectionMode"
+        :columns="table.columns"
+        :title="title"
+        :row-key="rowKey"
+        :loading="loading"
+        :change-page="changePage"
+        @update:table-selected-values="updateSelectedValues"
+        @search="search"
+    >
+      <template #entity-index-table-cell="{inputData}">
+        <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
+          <q-td :props="inputData.props">
+            {{ inputData.props.value }}
+          </q-td>
+        </slot>
+      </template>
+    </entity-index-table>
+    <div class="slot-wrapper">
+      <slot name="after-index-table"></slot>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -190,7 +243,11 @@ export default {
     rowKey: {
       default: 'id',
       type: String
-    }
+    },
+    defaultLayout: {
+      default: true,
+      type: Boolean,
+    },
   },
   emits: [
     'onPageChanged',
