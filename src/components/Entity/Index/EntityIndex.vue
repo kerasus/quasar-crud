@@ -2,7 +2,7 @@
   <portlet v-if="defaultLayout" class="entity-index">
     <template #title>
       <slot name="title">
-      {{ title }}
+        {{ title }}
       </slot>
     </template>
     <template #toolbar>
@@ -118,13 +118,13 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-      :key="key"
-      ref="formBuilder"
-      v-model:value="inputData"
-      :disable="false"
-      :copy-on-click="copyOnClick"
-      @onInputClick="onInputClick"
-      @onCopyToClipboard="onCopyToClipboard"
+        :key="key"
+        ref="formBuilder"
+        v-model:value="inputData"
+        :disable="false"
+        :copy-on-click="copyOnClick"
+        @onInputClick="onInputClick"
+        @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">
@@ -149,6 +149,7 @@
         :row-key="rowKey"
         :loading="loading"
         :change-page="changePage"
+        :table-grid-size="tableGridSize"
         @update:table-selected-values="updateSelectedValues"
         @search="search"
     >
@@ -157,6 +158,10 @@
           <q-td :props="inputData.props">
             {{ inputData.props.value }}
           </q-td>
+        </slot>
+      </template>
+      <template #entity-index-table-item-cell="{inputData}">
+        <slot name="table-item-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
         </slot>
       </template>
     </entity-index-table>
@@ -248,6 +253,12 @@ export default {
       default: true,
       type: Boolean,
     },
+    tableGridSize: {
+      type: [String, Boolean],
+      default () {
+        return false
+      }
+    }
   },
   emits: [
     'onPageChanged',

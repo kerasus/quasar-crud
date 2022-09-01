@@ -4,7 +4,7 @@
         ref="table"
         v-model:pagination="inputData.pagination"
         v-model:selected="tableChosenValues"
-        :grid="$q.screen.lt.sm"
+        :grid="tableGridSize"
         :rows="inputData.data"
         :columns="columns"
         :loading="loading"
@@ -66,6 +66,11 @@
           <q-td :props="props">
             {{ props.value }}
           </q-td>
+        </slot>
+      </template>
+
+      <template v-slot:item="props">
+        <slot name="entity-index-table-item-cell" :inputData="{props}">
         </slot>
       </template>
 
@@ -159,6 +164,13 @@ export default {
       default () {
         return 'none'
       }
+    },
+    tableGridSize: {
+      type: [String, Boolean],
+      // default: $q.screen.lt.sm
+      default () {
+        return false
+      }
     }
   },
   emits: [
@@ -187,6 +199,9 @@ export default {
     },
     crrPage () {
       return this.inputData.pagination.page ? this.inputData.pagination.page : 1
+    },
+    getTableGridSize() {
+      return this.$q.screen.lt.sm
     }
   },
   mounted () {
