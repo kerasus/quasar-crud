@@ -1,4 +1,8 @@
 import axios from 'axios'
+import { shallowRef } from 'vue'
+import EntityInput from '../components/Entity/Attachment/EntityInput'
+
+const EntityInputComp = shallowRef(EntityInput)
 
 const EntityMixin = {
   data () {
@@ -7,15 +11,77 @@ const EntityMixin = {
     }
   },
   props: {
-    beforeSendData: {
-      default: () => {},
-      type: Function
+    showSaveButton: {
+      default: true,
+      type: Boolean
+    },
+    showExpandButton: {
+      default: true,
+      type: Boolean
+    },
+    showCloseButton: {
+      default: true,
+      type: Boolean
+    },
+    showReloadButton: {
+      default: true,
+      type: Boolean
+    },
+    showSearchButton: {
+      default: true,
+      type: Boolean
+    },
+    showIndexButton: {
+      default: true,
+      type: Boolean
+    },
+    showEditButton: {
+      default: true,
+      type: Boolean
+    },
+    onReloadButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onCancelButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    onSaveButton: {
+      default () {
+        return false
+      },
+      type: [Function, Boolean]
+    },
+    copyOnClick: {
+      default: false,
+      type: Boolean
     },
     beforeLoadInputData: {
       default: () => {},
       type: Function
     },
     afterLoadInputData: {
+      default: () => {},
+      type: Function
+    },
+    beforeGetData: {
+      default: () => {},
+      type: Function,
+    },
+    afterGetData:{
+      default: () => {},
+      type: Function
+    },
+    beforeSendData: {
+      default: () => {},
+      type: Function
+    },
+    afterSendData: {
       default: () => {},
       type: Function
     }
@@ -25,14 +91,28 @@ const EntityMixin = {
       this.$axios = axios
     }
   },
+  emits: ['onInputClick', 'onCopyToClipboard'],
   methods: {
+    onInputClick (data) {
+      this.$emit('onInputClick', data)
+    },
+    onCopyToClipboard (data) {
+      this.$emit('onCopyToClipboard', data)
+    },
+    runNeededMethod (substituteMethod, callBackMethod) {
+      if (!!substituteMethod && substituteMethod()){
+        substituteMethod()
+        return
+      }
+      callBackMethod()
+    },
     getEntityId () {
 
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]
           if (input.type !== 'formBuilder') {
-            if (input.name.toString() === entityIdKey) {
+            if (input.name && input.name.toString() === entityIdKey) {
               return input
             }
           } else {
@@ -90,18 +170,12 @@ const EntityMixin = {
           formData.append(item.name, item.value)
         } else {
           this.createChainedObject(formData, item.name, item.value)
-          // formData[item.name] = item.value
         }
       })
 
       return formData
     },
     createChainedObject (formData, chainedName, value) {
-      // const formData = {}
-      // const chainedName = 'a.b.c'
-      // const value = 'valll'
-      // getObject(formData, chainedName, value)
-
       let keysArray = chainedName
       if (typeof chainedName === 'string') {
         keysArray = chainedName.split('.')
@@ -127,9 +201,12 @@ const EntityMixin = {
           console.error(err)
         })
     },
-    getData () {
+    isEntityInput (input) {
+      return input.type === EntityInputComp.value
+    },
+    async getData () {
       this.loading = true
-      this.$axios.get(this.api)
+      await this.$axios.get(this.api)
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
@@ -140,21 +217,45 @@ const EntityMixin = {
           this.loading = false
         })
     },
-    loadInputData (responseData) {
+    loadInputData (responseData, inputs) {
       const that = this
       function setValueOfNestedInputData (responseData, inputs) {
         inputs.forEach(input => {
-          if (input.type !== 'formBuilder') {
-            if (typeof input.responseKey !== 'undefined' && input.responseKey !== null) {
-              input.value = that.getValidChainedObject(responseData, input.responseKey.split('.'))
-            }
-          } else {
+          // since formBuilder has no responseKey for itself, but its children have one,
+          // we have to check it before second if, in order to check them.
+          if (input.type === 'formBuilder') {
             setValueOfNestedInputData(responseData, input.value)
+            return
           }
+          if (typeof input.responseKey === 'undefined' || input.responseKey === null) {
+            return
+          }
+
+          const validChainedObject = that.getValidChainedObject(responseData, input.responseKey)
+          // if (!this.isEntityInput(input)) {
+          if (input.type !== EntityInputComp.value) {
+            input.value = validChainedObject
+            return
+          }
+
+          input.selected = validChainedObject
+          if (Array.isArray(input.selected)) {
+            input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
+            return
+          }
+          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
+            input.value = input.selected[input.indexConfig.itemIdentifyKey]
+          } else {
+            console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
+          }
+
         })
       }
 
-      setValueOfNestedInputData(responseData, this.inputData)
+      if (!inputs) {
+        inputs = this.inputData
+      }
+      setValueOfNestedInputData(responseData, inputs)
     },
     getValidChainedObject (object, keys) {
       if (!Array.isArray(keys) && typeof keys !== 'string') {
@@ -172,7 +273,7 @@ const EntityMixin = {
       }
 
       if (keysArray.length === 1) {
-        if (typeof object[keysArray[0]] === 'undefined') {
+        if (!object || typeof object[keysArray[0]] === 'undefined') {
           return null
         }
         return object[keysArray[0]]

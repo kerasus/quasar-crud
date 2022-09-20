@@ -3,13 +3,15 @@
     <q-table
         ref="table"
         v-model:pagination="inputData.pagination"
-        :grid="$q.screen.lt.sm"
-        title="Treats"
+        v-model:selected="tableChosenValues"
+        :grid="tableGridSize"
         :rows="inputData.data"
         :columns="columns"
         :loading="loading"
-        row-key="name"
+        :row-key="rowKey"
         :rows-per-page-options="[]"
+        :selected-rows-label="getSelectedString"
+        :selection="tableSelectionMode"
         @request="onChangePage"
     >
       <template #top="props">
@@ -67,6 +69,11 @@
         </slot>
       </template>
 
+      <template v-slot:item="props">
+        <slot name="entity-index-table-item-cell" :inputData="{props}">
+        </slot>
+      </template>
+
       <template v-slot:pagination>
         <div>{{'صفحه ' + crrPage + ' از ' + pagesNumber }}</div>
       </template>
@@ -76,7 +83,7 @@
           v-model="targetPage"
           color="black"
           :max="pagesNumber"
-          :max-pages="5"
+          :max-pages="6"
           direction-links
       />
     </div>
@@ -138,25 +145,63 @@ export default {
       default: () => [],
       type: Array
     },
+    rowKey: {
+      default: 'id',
+      type: String
+    },
     changePage: {
       default: () => {},
       type: Function
+    },
+    tableSelectedValues: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    tableSelectionMode: {
+      type: String,
+      default () {
+        return 'none'
+      }
+    },
+    tableGridSize: {
+      type: [String, Boolean],
+      // default: $q.screen.lt.sm
+      default () {
+        return false
+      }
     }
   },
-  emits: ['search'],
+  emits: [
+    'search',
+    'update:tableSelectedValues'
+  ],
   data () {
     return {
+      selected: [],
       visibleColumns: [],
       tableKey: Date.now(),
       targetPage: 1
     }
   },
   computed: {
+    tableChosenValues: {
+      get () {
+        return this.tableSelectedValues
+      },
+      set (value) {
+        this.$emit('update:tableSelectedValues', value)
+      }
+    },
     pagesNumber () {
       return this.inputData.pagination.rowsNumber? Math.ceil(this.inputData.pagination.rowsNumber / this.inputData.pagination.rowsPerPage) : 1
     },
     crrPage () {
       return this.inputData.pagination.page ? this.inputData.pagination.page : 1
+    },
+    getTableGridSize() {
+      return this.$q.screen.lt.sm
     }
   },
   mounted () {
@@ -184,6 +229,15 @@ export default {
     }
   },
   methods: {
+    getSelectedString () {
+      if (this.$q.lang.isoName === 'fa') {
+        return this.tableChosenValues.length === 0 ? '' : this.tableChosenValues.length + ' انتخاب از ' + this.inputData.data.length + ' مورد'
+      }
+      else if (!this.$q.lang.rtl) {
+        return this.tableChosenValues.length === 0 ? '' : this.tableChosenValues.length + ' record' + (this.tableChosenValues.length > 1 ? 's' : '') + ' selected of ' + this.inputData.data.length
+      }
+      return this.tableChosenValues.length === 0 ? '' : this.inputData.data.length + '/' + this.tableChosenValues.length
+    },
     searchEvent () {
       this.$emit('search')
     },
