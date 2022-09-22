@@ -149,13 +149,14 @@ export default {
     getEntityInput (input) {
       input.type = EntityInputComp
 
-      input.props = input.indexConfig
-      input.props.selectionMode = input.selectionMode
-      input.props.label = input.label || input.name
-      input.props.buttonBadgeColor = input.buttonBadgeColor
-      input.props.buttonTextColor = input.buttonTextColor
-      input.props.buttonColor = input.buttonColor
-
+      input.type = EntityInputComp
+      const indexConfig = input.indexConfig
+      Object.assign(input, indexConfig)
+      // input.props.selectionMode = input.selectionMode
+      // input.props.label = input.label || input.name
+      // input.props.buttonBadgeColor = input.buttonBadgeColor
+      // input.props.buttonTextColor = input.buttonTextColor
+      // input.props.buttonColor = input.buttonColor
       if (typeof input.selected !== 'undefined') {
         return input
       }

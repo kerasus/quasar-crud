@@ -247,7 +247,7 @@ export default {
     },
     rowKey: {
       default: 'id',
-      type: String
+      type: [String, Function]
     },
     defaultLayout: {
       default: true,
@@ -395,6 +395,7 @@ export default {
       return params
     },
     updateSelectedValues(value) {
+      console.log('tableSelectedValues', value)
       this.$emit('update:tableSelectedValues', value)
     },
     deselectItem (item) {
