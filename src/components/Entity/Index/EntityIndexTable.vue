@@ -147,7 +147,7 @@ export default {
     },
     rowKey: {
       default: 'id',
-      type: String
+      type: [String, Function]
     },
     changePage: {
       default: () => {},
