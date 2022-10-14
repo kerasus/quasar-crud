@@ -8,38 +8,38 @@
     <template #toolbar>
       <slot name="toolbar">
         <q-btn
-          v-if="showReloadButton"
-          flat
-          round
-          icon="cached"
-          @click="runNeededMethod(onReloadButton, getData)"
+            v-if="showReloadButton"
+            flat
+            round
+            icon="cached"
+            @click="runNeededMethod(onReloadButton, getData)"
         >
           <q-tooltip> بارگذاری مجدد </q-tooltip>
         </q-btn>
         <q-btn
-          v-if="showSaveButton"
-          flat
-          round
-          icon="check"
-          @click="runNeededMethod(onSaveButton, editEntity)"
+            v-if="showSaveButton"
+            flat
+            round
+            icon="check"
+            @click="runNeededMethod(onSaveButton, editEntity)"
         >
           <q-tooltip> ذخیره </q-tooltip>
         </q-btn>
         <q-btn
-          v-if="showCloseButton"
-          flat
-          round
-          icon="close"
-          @click="runNeededMethod(onCancelButton, goToShowView)"
+            v-if="showCloseButton"
+            flat
+            round
+            icon="close"
+            @click="runNeededMethod(onCancelButton, goToShowView)"
         >
           <q-tooltip> لغو </q-tooltip>
         </q-btn>
         <q-btn
-          v-if="showExpandButton"
-          flat
-          round
-          :icon="expanded ? 'expand_less' : 'expand_more'"
-          @click="expanded = !expanded"
+            v-if="showExpandButton"
+            flat
+            round
+            :icon="expanded ? 'expand_less' : 'expand_more'"
+            @click="expanded = !expanded"
         >
           <q-tooltip>
             <span v-if="expanded">عدم نمایش فرم</span>
@@ -51,13 +51,13 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <entity-crud-form-builder
-          :key="key"
-          ref="formBuilder"
-          v-model:value="inputData"
-          :disable="false"
-          :copy-on-click="copyOnClick"
-          @onInputClick="onInputClick"
-          @onCopyToClipboard="onCopyToClipboard"
+            :key="key"
+            ref="formBuilder"
+            v-model:value="inputData"
+            :disable="false"
+            :copy-on-click="copyOnClick"
+            @onInputClick="onInputClick"
+            @onCopyToClipboard="onCopyToClipboard"
         >
           <template #before-form-builder>
             <div class="slot-wrapper">
@@ -78,13 +78,13 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-      :key="key"
-      ref="formBuilder"
-      v-model:value="inputData"
-      :disable="false"
-      :copy-on-click="copyOnClick"
-      @onInputClick="onInputClick"
-      @onCopyToClipboard="onCopyToClipboard"
+        :key="key"
+        ref="formBuilder"
+        v-model:value="inputData"
+        :disable="false"
+        :copy-on-click="copyOnClick"
+        @onInputClick="onInputClick"
+        @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">
@@ -162,18 +162,22 @@ export default {
     await this.afterGetData()
   },
   methods: {
-    editEntity() {
+    editEntity(goToShowView) {
+      this.loading = true
       const formData = this.getFormData();
       this.beforeSendData(formData, this.setNewInputData);
       this.$axios
-        .put(this.api, formData, { headers: this.getHeaders() })
-        .then((d) => {
-          this.afterSendData(d);
-          this.goToShowView();
-        })
-        .catch(() => {
-          this.getData();
-        });
+          .put(this.api, formData, { headers: this.getHeaders() })
+          .then((d) => {
+            this.afterSendData(d);
+            if (typeof goToShowView === 'undefined' || goToShowView === true) {
+              this.goToShowView();
+            }
+            this.loading = false
+          })
+          .catch(() => {
+            this.getData();
+          });
     },
   },
 };
