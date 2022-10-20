@@ -135,6 +135,10 @@ export default {
       default: '',
       type: String,
     },
+    redirectAfterEdit: {
+      default: true,
+      type: Boolean,
+    },
     table: {
       default: () => {
         return {
@@ -170,7 +174,7 @@ export default {
           .put(this.api, formData, { headers: this.getHeaders() })
           .then((d) => {
             this.afterSendData(d);
-            if (typeof goToShowView === 'undefined' || goToShowView === true) {
+            if (typeof goToShowView === 'undefined' || goToShowView === true || this.redirectAfterEdit) {
               this.goToShowView();
             }
             this.loading = false
