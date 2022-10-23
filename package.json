@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.2.63",
+  "version": "0.2.64",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "serve": "vue-cli-service serve",
