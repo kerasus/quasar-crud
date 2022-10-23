@@ -167,21 +167,25 @@ export default {
   },
   methods: {
     editEntity(goToShowView) {
-      this.loading = true
-      const formData = this.getFormData();
-      this.beforeSendData(formData, this.setNewInputData);
-      this.$axios
-          .put(this.api, formData, { headers: this.getHeaders() })
-          .then((d) => {
-            this.afterSendData(d);
-            if ((typeof goToShowView === 'undefined' || goToShowView === true) && this.redirectAfterEdit) {
-              this.goToShowView();
-            }
-            this.loading = false
-          })
-          .catch(() => {
-            this.getData();
-          });
+      return new Promise((resolve, reject) => {
+        this.loading = true
+        const formData = this.getFormData();
+        this.beforeSendData(formData, this.setNewInputData);
+        this.$axios
+            .put(this.api, formData, { headers: this.getHeaders() })
+            .then((d) => {
+              this.afterSendData(d);
+              if ((typeof goToShowView === 'undefined' || goToShowView === true) && this.redirectAfterEdit) {
+                this.goToShowView();
+              }
+              this.loading = false
+              resolve(d)
+            })
+            .catch((err) => {
+              this.getData();
+              reject(err)
+            });
+      })
     },
   },
 };
