@@ -147,9 +147,9 @@ export default {
               this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
             }
             this.loading = false
-            resolve(d)
+            resolve(response)
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading = false
             this.getData()
             reject(err)
