@@ -382,7 +382,8 @@ export default {
             typeof item.name !== 'undefined' &&
             item.name !== null &&
             typeof item.value !== 'undefined' &&
-            item.value !== null
+            item.value !== null &&
+            item.value !== ''
         ) {
           params[item.name] = item.value
         }

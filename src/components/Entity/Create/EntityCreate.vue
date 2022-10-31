@@ -134,21 +134,27 @@ export default {
     }
   },
   methods: {
-    createEntity () {
+    createEntity (goToShowView) {
+      return new Promise((resolve, reject) => {
       this.loading = true
       const formData = this.getFormData()
       this.beforeSendData(formData, this.setNewInputData)
       this.$axios.post(this.api, formData, { headers: this.getHeaders() })
           .then((response) => {
-            this.loading = false
             const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
             this.afterSendData(response)
-            this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
+            if (typeof goToShowView === 'undefined' || goToShowView === true) {
+              this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
+            }
+            this.loading = false
+            resolve(response)
           })
-          .catch(() => {
+          .catch((err) => {
             this.loading = false
             this.getData()
+            reject(err)
           })
+      })
     }
   }
 }
