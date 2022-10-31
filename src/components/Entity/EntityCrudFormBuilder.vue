@@ -116,6 +116,14 @@ export default {
     }
   },
   watch: {},
+  mounted() {
+    if (this.readonly){
+      this.$refs.formBuilder.readonlyAllInputs()
+    }
+    if (this.disable){
+      this.$refs.formBuilder.disableAllInputs()
+    }
+  },
   methods: {
     onInputClick (data) {
       const targetValue = data?.event?.target?.value
