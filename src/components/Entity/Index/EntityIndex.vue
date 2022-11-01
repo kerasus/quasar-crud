@@ -83,7 +83,7 @@
                 :columns="table.columns"
                 :title="title"
                 :row-key="rowKey"
-                :loading="loading"
+                :loading="entityLoading"
                 :change-page="changePage"
                 @update:table-selected-values="updateSelectedValues"
                 @search="search"
@@ -147,7 +147,7 @@
         :columns="table.columns"
         :title="title"
         :row-key="rowKey"
-        :loading="loading"
+        :loading="entityLoading"
         :change-page="changePage"
         :table-grid-size="tableGridSize"
         @update:table-selected-values="updateSelectedValues"
@@ -272,7 +272,7 @@ export default {
       confirmRemoveMessage: 'false',
       selectedItemToRemove: null,
       expanded: true,
-      loading: false,
+      entityLoading: false,
       tableFlatData:null,
       tableData: {
         data: [],
@@ -326,13 +326,13 @@ export default {
       }
 
       const that = this
-      this.loading = true
+      this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
           .then(() => {
             that.reload()
           })
           .catch(() => {
-            that.loading = false
+            that.entityLoading = false
           })
     },
     changePage (page) {
@@ -351,7 +351,7 @@ export default {
     },
     getData (address, page) {
       const that = this
-      this.loading = true
+      this.entityLoading = true
       if (!address) {
         address = this.api
       }
@@ -360,7 +360,7 @@ export default {
         params: that.createParams(page)
       })
           .then((response) => {
-            that.loading = false
+            that.entityLoading = false
 
             that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
             that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
@@ -371,7 +371,7 @@ export default {
             this.key = Date.now()
           })
           .catch(error => {
-            that.loading = false
+            that.entityLoading = false
             that.$emit('catchError', error)
           })
     },

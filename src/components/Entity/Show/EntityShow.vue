@@ -45,7 +45,7 @@
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
-        <q-inner-loading :showing="loading">
+        <q-inner-loading :showing="entityLoading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
       </q-expansion-item>
@@ -143,7 +143,7 @@ export default {
   data () {
     return {
       expanded: true,
-      loading: false
+      entityLoading: false
     }
   },
   async created () {

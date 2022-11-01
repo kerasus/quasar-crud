@@ -205,16 +205,16 @@ const EntityMixin = {
       return input.type === EntityInputComp.value
     },
     async getData () {
-      this.loading = true
+      this.entityLoading = true
       await this.$axios.get(this.api)
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
           this.afterLoadInputData(response.data, this.setNewInputData)
-          this.loading = false
+          this.entityLoading = false
         })
         .catch(() => {
-          this.loading = false
+          this.entityLoading = false
         })
     },
     loadInputData (responseData, inputs) {

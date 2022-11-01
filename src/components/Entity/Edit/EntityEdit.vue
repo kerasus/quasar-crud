@@ -70,7 +70,7 @@
             </div>
           </template>
         </entity-crud-form-builder>
-        <q-inner-loading :showing="loading">
+        <q-inner-loading :showing="entityLoading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
       </q-expansion-item>
@@ -156,7 +156,7 @@ export default {
   data() {
     return {
       expanded: true,
-      loading: false,
+      entityLoading: false,
     };
   },
   async created() {
@@ -168,7 +168,7 @@ export default {
   methods: {
     editEntity(goToShowView) {
       return new Promise((resolve, reject) => {
-        this.loading = true
+        this.entityLoading = true
         const formData = this.getFormData();
         this.beforeSendData(formData, this.setNewInputData);
         this.$axios
@@ -178,7 +178,7 @@ export default {
               if ((typeof goToShowView === 'undefined' || goToShowView === true) && this.redirectAfterEdit) {
                 this.goToShowView();
               }
-              this.loading = false
+              this.entityLoading = false
               resolve(d)
             })
             .catch((err) => {

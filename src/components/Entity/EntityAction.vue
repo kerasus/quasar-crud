@@ -32,14 +32,14 @@
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
-        <q-inner-loading :showing="loading">
+        <q-inner-loading :showing="entityLoading">
           <q-spinner-ball color="primary" size="50px"/>
         </q-inner-loading>
       </q-expansion-item>
     </template>
     <template #actions>
       <q-card-actions>
-        <q-btn color="primary" :loading="loading" :disable="loading" @click="doAction">
+        <q-btn color="primary" :loading="entityLoading" :disable="entityLoading" @click="doAction">
           {{ actionTitle }}
         </q-btn>
       </q-card-actions>
@@ -119,12 +119,12 @@ export default {
   data () {
     return {
       expanded: true,
-      loading: false
+      entityLoading: false
     }
   },
   methods: {
     doAction () {
-      this.loading = true
+      this.entityLoading = true
       const formData = this.getFormData()
       this.beforeDoAction(formData, this.setNewInputData)
       const axiosPromise = this.getAxiosPromise(this.actionMethod, this.actionApi, formData)
@@ -133,11 +133,11 @@ export default {
           }
       axiosPromise
           .then((response) => {
-            this.loading = false
+            this.entityLoading = false
             this.$emit('onActionSuccess', response)
           })
           .catch((error) => {
-            this.loading = false
+            this.entityLoading = false
             this.$emit('onActionError', error)
           })
     },

@@ -40,7 +40,7 @@
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
-        <q-inner-loading :showing="loading">
+        <q-inner-loading :showing="entityLoading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
       </q-expansion-item>
@@ -130,13 +130,13 @@ export default {
   data () {
     return {
       expanded: true,
-      loading: false
+      entityLoading: false
     }
   },
   methods: {
     createEntity (goToShowView) {
       return new Promise((resolve, reject) => {
-      this.loading = true
+      this.entityLoading = true
       const formData = this.getFormData()
       this.beforeSendData(formData, this.setNewInputData)
       this.$axios.post(this.api, formData, { headers: this.getHeaders() })
@@ -146,11 +146,11 @@ export default {
             if (typeof goToShowView === 'undefined' || goToShowView === true) {
               this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
             }
-            this.loading = false
+            this.entityLoading = false
             resolve(response)
           })
           .catch((err) => {
-            this.loading = false
+            this.entityLoading = false
             this.getData()
             reject(err)
           })
