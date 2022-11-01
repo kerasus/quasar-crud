@@ -28,7 +28,7 @@ export default {
   props: {
     value: {
       default: () => [],
-      type: Array
+      type: [Array, Object]
     },
     disable: {
       default: false,
