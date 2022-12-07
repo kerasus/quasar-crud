@@ -14,16 +14,16 @@
 </template>
 
 <script>
-import { shallowRef } from 'vue'
-import { copyToClipboard } from 'quasar'
+import {shallowRef} from 'vue'
+import {copyToClipboard} from 'quasar'
 import EntityMixin from '../../mixins/EntityMixin'
 import EntityInput from './Attachment/EntityInput'
-import { FormBuilder, inputMixin } from 'quasar-form-builder'
+import {FormBuilder, inputMixin} from 'quasar-form-builder'
 
 const EntityInputComp = shallowRef(EntityInput)
 export default {
   name: 'EntityCrudFormBuilder',
-  components: { FormBuilder },
+  components: {FormBuilder},
   mixins: [inputMixin, EntityMixin],
   props: {
     value: {
@@ -48,14 +48,14 @@ export default {
     'onInputClick',
     'onCopyToClipboard'
   ],
-  data () {
+  data() {
     return {
       entityInput: []
     }
   },
   computed: {
     computedInputs: {
-      get () {
+      get() {
         return this.value.map(input => {
           if (input.type !== 'entity') {
             return input
@@ -63,7 +63,7 @@ export default {
           return this.getEntityInput(input)
         })
       },
-      set (inputs) {
+      set(inputs) {
         inputs.forEach(input => {
           if (!this.isEntityInput(input)) {
             return
@@ -87,9 +87,9 @@ export default {
             return
           }
           // check value is not an array of objects
-          if (Array.isArray(input.value) && input.value.length > 0 && typeof input.value[0] !== 'object') {
-            return
-          }
+          // if (Array.isArray(input.value) && input.value.length > 0 && typeof input.value[0] !== 'object') {
+          //   return
+          // }
 
           if (selectionMode !== 'multiple') {
             input.selected = input.value
@@ -99,7 +99,7 @@ export default {
 
           let selected = (selectionMode === 'multiple') ? [] : null
           let values = (selectionMode === 'multiple') ? [] : null
-          input.value.forEach( value => {
+          input.value.forEach(value => {
             if (!value[identifyKey]) {
               value = null
               return
@@ -117,15 +117,15 @@ export default {
   },
   watch: {},
   mounted() {
-    if (this.readonly){
+    if (this.readonly) {
       this.$refs.formBuilder.readonlyAllInputs()
     }
-    if (this.disable){
+    if (this.disable) {
       this.$refs.formBuilder.disableAllInputs()
     }
   },
   methods: {
-    onInputClick (data) {
+    onInputClick(data) {
       const targetValue = data?.event?.target?.value
       if (this.copyOnClick && targetValue) {
         copyToClipboard(targetValue)
@@ -135,7 +135,7 @@ export default {
       }
       this.$emit('onInputClick', data)
     },
-    getItemIdentifyKey (input) {
+    getItemIdentifyKey(input) {
       if (typeof input.indexConfig.itemIdentifyKey === 'string') {
         return input.indexConfig.itemIdentifyKey
       } else if (typeof input.indexConfig.itemIdentifyKey === 'function') {
@@ -144,20 +144,19 @@ export default {
         return EntityInputComp.value.props.itemIdentifyKey.default
       }
     },
-    getInputSelectionMode (input) {
+    getInputSelectionMode(input) {
       if (typeof input.selectionMode !== 'undefined') {
         return input.selectionMode
       } else {
         return EntityInputComp.value.props.selectionMode.default
       }
     },
-    getValues () {
+    getValues() {
       return this.$refs.formBuilder.getValues()
     },
     getEntityInput (input) {
       input.type = EntityInputComp
 
-      input.type = EntityInputComp
       const indexConfig = input.indexConfig
       Object.assign(input, indexConfig)
       // input.props.selectionMode = input.selectionMode
@@ -174,7 +173,6 @@ export default {
       } else {
         input.selected = null
       }
-
       return input
     }
   }

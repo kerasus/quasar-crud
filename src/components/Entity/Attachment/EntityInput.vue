@@ -5,20 +5,20 @@
       <q-badge v-else-if="!Array.isArray(value) && typeof value !== 'undefined' && value !== null" :color="buttonBadgeColor" floating>1</q-badge>
     </q-btn>
     <q-dialog v-model="dialog" full-width full-height>
-      <entity-index
-          v-model:table-selected-values="selected"
-          :value="inputs"
-          :title="tableTitle"
-          :api="apiAddress"
-          :table="table"
-          :table-keys="tableKeys"
-          :table-selection-mode="selectionMode"
-          :show-close-button="true"
-          :show-expand-button="false"
-          :row-key="itemIdentifyKey"
-          :item-indicator-key="itemIndicatorKey"
-          @update:table-selected-values="onSelectedUpdate"
-      />
+        <entity-index
+            v-model:table-selected-values="selected"
+            :value="inputs"
+            :title="tableTitle"
+            :api="apiAddress"
+            :table="table"
+            :table-keys="tableKeys"
+            :table-selection-mode="selectionMode"
+            :show-close-button="true"
+            :show-expand-button="false"
+            :row-key="itemIdentifyKey"
+            :item-indicator-key="itemIndicatorKey"
+            @update:table-selected-values="onSelectedUpdate"
+        />
     </q-dialog>
   </div>
 </template>
@@ -33,16 +33,8 @@ export default {
   components: {
     EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
   },
-  watch: {
-    value () {
-      this.selected = this.input.selected
-    }
-  },
   props: {
     value: {
-      default: null
-    },
-    input: {
       default: null
     },
     name: {
@@ -51,7 +43,7 @@ export default {
     },
     buttonName: {
       type: String,
-      default: 'ali'
+      default: ''
     },
     buttonColor: {
       type: String,
@@ -140,7 +132,7 @@ export default {
     return {
       expanded: true,
       selected: [],
-      dialog: false
+      dialog: null
     }
   },
   methods: {

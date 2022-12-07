@@ -62,7 +62,7 @@
         <div class="slot-wrapper">
           <slot name="before-form-builder"></slot>
         </div>
-        <entity-crud-form-builder :key="key"
+        <entity-crud-form-builder
                                   ref="formBuilder"
                                   v-model:value="inputData"
                                   :copy-on-click="copyOnClick"
@@ -118,7 +118,6 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-        :key="key"
         ref="formBuilder"
         v-model:value="inputData"
         :disable="false"
@@ -368,7 +367,7 @@ export default {
             that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
             that.$emit('onPageChanged', response)
-            this.key = Date.now()
+            //this.key = Date.now()
           })
           .catch(error => {
             that.entityLoading = false
@@ -396,7 +395,7 @@ export default {
       return params
     },
     updateSelectedValues(value) {
-      console.log('tableSelectedValues', value)
+
       this.$emit('update:tableSelectedValues', value)
     },
     deselectItem (item) {

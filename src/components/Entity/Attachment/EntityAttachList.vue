@@ -117,7 +117,6 @@ export default {
           that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
           that.$emit('onPageChanged', response)
-          this.key = Date.now()
         })
         .catch(error => {
           that.entityLoading = false

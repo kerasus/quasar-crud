@@ -149,8 +149,7 @@ export default {
   async created () {
     // this.disabledAllInputs(this.inputData)
     await this.beforeGetData()
-    this.getData()
-    this.key = Date.now()
+    await this.getData()
     await this.afterGetData()
   },
   methods: {

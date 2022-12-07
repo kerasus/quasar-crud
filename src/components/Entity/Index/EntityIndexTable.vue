@@ -181,7 +181,6 @@ export default {
     return {
       selected: [],
       visibleColumns: [],
-      tableKey: Date.now(),
       targetPage: 1
     }
   },
