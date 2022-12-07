@@ -5,11 +5,6 @@ import EntityInput from '../components/Entity/Attachment/EntityInput'
 const EntityInputComp = shallowRef(EntityInput)
 
 const EntityMixin = {
-  data () {
-    return {
-      key: Date.now()
-    }
-  },
   props: {
     showSaveButton: {
       default: true,

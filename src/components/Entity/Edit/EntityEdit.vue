@@ -51,7 +51,6 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <entity-crud-form-builder
-            :key="key"
             ref="formBuilder"
             v-model:value="inputData"
             :disable="false"
@@ -78,7 +77,6 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-        :key="key"
         ref="formBuilder"
         v-model:value="inputData"
         :disable="false"
@@ -162,7 +160,6 @@ export default {
   async created() {
     await this.beforeGetData();
     await this.getData();
-    this.key = Date.now();
     await this.afterGetData()
   },
   methods: {

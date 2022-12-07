@@ -52,7 +52,6 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-      :key="key"
       ref="formBuilder"
       v-model:value="inputData"
       :disable="false"
