@@ -133,9 +133,18 @@ const EntityMixin = {
     goToShowView () {
       this.$router.push({ name: this.showRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     },
-    formHasFileInput () {
-      const target = this.inputData.find(item => item.type === 'file')
-      return !!target
+    formHasFileInput (inputData) {
+      let has = false
+      const inputs = inputData ? inputData : this.inputData
+      inputs.forEach( input => {
+        if (input.type === 'file') {
+          has = true
+        } else if (input.type === 'formBuilder') {
+          has = this.formHasFileInput(input.value)
+        }
+      })
+
+      return has
     },
     getHeaders () {
       if (this.formHasFileInput()) {
