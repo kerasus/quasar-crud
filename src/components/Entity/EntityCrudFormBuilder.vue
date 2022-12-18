@@ -7,6 +7,7 @@
                 :disable="disable"
                 :readonly="readonly"
                 @onClick="onInputClick"
+                @onKeyPress="onInputKeyPress"
   />
   <div class="slot-wrapper">
     <slot name="after-form-builder"></slot>
@@ -134,6 +135,9 @@ export default {
             })
       }
       this.$emit('onInputClick', data)
+    },
+    onInputKeyPress(data) {
+      this.$emit('onInputKeyPress', data)
     },
     getItemIdentifyKey(input) {
       if (typeof input.indexConfig.itemIdentifyKey === 'string') {
