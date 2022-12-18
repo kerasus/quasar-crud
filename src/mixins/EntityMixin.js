@@ -91,6 +91,9 @@ const EntityMixin = {
     onInputClick (data) {
       this.$emit('onInputClick', data)
     },
+    onInputKeyPress(data) {
+      this.$emit('onInputKeyPress', data)
+    },
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)
     },

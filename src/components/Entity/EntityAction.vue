@@ -83,7 +83,6 @@ export default {
   name: 'EntityAction',
   components: { EntityCrudFormBuilder, Portlet },
   mixins: [inputMixin, EntityMixin],
-  emits: ['onActionSuccess', 'onActionError'],
   props: {
     value: {
       default: () => [],
@@ -115,6 +114,7 @@ export default {
       type: Boolean,
     },
   },
+  emits: ['onActionSuccess', 'onActionError'],
   data () {
     return {
       expanded: true,
