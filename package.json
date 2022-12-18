@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.2.65",
+  "version": "0.2.68",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,13 +10,13 @@
   "main": "index.js",
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",
-    "@quasar/extras": "^1.15.3",
-    "axios": "^0.27.2",
-    "core-js": "^3.25.2",
+    "@quasar/extras": "^1.15.7",
+    "axios": "^1.2.1",
+    "core-js": "^3.26.1",
     "moment-jalaali": "^0.9.6",
-    "quasar": "^2.8.3",
-    "quasar-form-builder": "^0.1.53",
-    "vue": "^3.2.39"
+    "quasar": "^2.10.2",
+    "quasar-form-builder": "^0.1.55",
+    "vue": "^3.2.45"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.4",
@@ -28,7 +28,7 @@
     "eslint": "^8.17.0",
     "eslint-plugin-vue": "^7.20.0",
     "postcss": "^7.0.39",
-    "postcss-rtl": "^0.0.3",
+    "postcss-rtl": "^2.0.0",
     "sass": "1.52.3",
     "sass-loader": "^13.0.0",
     "vue-cli-plugin-quasar": "~5.0.1",

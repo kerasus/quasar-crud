@@ -209,7 +209,6 @@ export default {
       confirmRemoveMessage: 'false',
       selectedItemToRemove: null,
       expanded: true,
-      loading: false,
       tableData: {
         data: [],
         pagination: {

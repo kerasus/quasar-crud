@@ -3,7 +3,7 @@
     v-model:value="tableData"
     :columns="table.columns"
     :title="listTitle"
-    :loading="loading"
+    :loading="entityLoading"
     :change-page="changePage"
     @search="search"
   >
@@ -83,7 +83,7 @@ export default {
           rowsNumber: 0
         }
       },
-      loading: false
+      entityLoading: false
 
     }
   },
@@ -100,7 +100,7 @@ export default {
     },
     getData (address, page) {
       const that = this
-      this.loading = true
+      this.entityLoading = true
       if (!address) {
         address = this.api
       }
@@ -109,7 +109,7 @@ export default {
         params: that.createParams(page)
       })
         .then((response) => {
-          that.loading = false
+          that.entityLoading = false
 
           that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
           that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
@@ -117,10 +117,9 @@ export default {
           that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
           that.$emit('onPageChanged', response)
-          this.key = Date.now()
         })
         .catch(error => {
-          that.loading = false
+          that.entityLoading = false
           that.$emit('catchError', error)
         })
     },
@@ -138,13 +137,13 @@ export default {
       }
 
       const that = this
-      this.loading = true
+      this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
         .then(() => {
           that.reload()
         })
         .catch(() => {
-          that.loading = false
+          that.entityLoading = false
         })
     },
     showConfirmRemoveDialog (item, idKey, label) {

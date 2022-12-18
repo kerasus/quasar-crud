@@ -5,11 +5,6 @@ import EntityInput from '../components/Entity/Attachment/EntityInput'
 const EntityInputComp = shallowRef(EntityInput)
 
 const EntityMixin = {
-  data () {
-    return {
-      key: Date.now()
-    }
-  },
   props: {
     showSaveButton: {
       default: true,
@@ -138,9 +133,18 @@ const EntityMixin = {
     goToShowView () {
       this.$router.push({ name: this.showRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     },
-    formHasFileInput () {
-      const target = this.inputData.find(item => item.type === 'file')
-      return !!target
+    formHasFileInput (inputData) {
+      let has = false
+      const inputs = inputData ? inputData : this.inputData
+      inputs.forEach( input => {
+        if (input.type === 'file') {
+          has = true
+        } else if (input.type === 'formBuilder') {
+          has = this.formHasFileInput(input.value)
+        }
+      })
+
+      return has
     },
     getHeaders () {
       if (this.formHasFileInput()) {
@@ -205,16 +209,16 @@ const EntityMixin = {
       return input.type === EntityInputComp.value
     },
     async getData () {
-      this.loading = true
+      this.entityLoading = true
       await this.$axios.get(this.api)
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
           this.afterLoadInputData(response.data, this.setNewInputData)
-          this.loading = false
+          this.entityLoading = false
         })
         .catch(() => {
-          this.loading = false
+          this.entityLoading = false
         })
     },
     loadInputData (responseData, inputs) {

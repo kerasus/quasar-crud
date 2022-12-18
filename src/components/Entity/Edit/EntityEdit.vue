@@ -51,7 +51,6 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <entity-crud-form-builder
-            :key="key"
             ref="formBuilder"
             v-model:value="inputData"
             :disable="false"
@@ -70,7 +69,7 @@
             </div>
           </template>
         </entity-crud-form-builder>
-        <q-inner-loading :showing="loading">
+        <q-inner-loading :showing="entityLoading">
           <q-spinner-ball color="primary" size="50px" />
         </q-inner-loading>
       </q-expansion-item>
@@ -78,7 +77,6 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-        :key="key"
         ref="formBuilder"
         v-model:value="inputData"
         :disable="false"
@@ -156,19 +154,18 @@ export default {
   data() {
     return {
       expanded: true,
-      loading: false,
+      entityLoading: false,
     };
   },
   async created() {
     await this.beforeGetData();
     await this.getData();
-    this.key = Date.now();
     await this.afterGetData()
   },
   methods: {
     editEntity(goToShowView) {
       return new Promise((resolve, reject) => {
-        this.loading = true
+        this.entityLoading = true
         const formData = this.getFormData();
         this.beforeSendData(formData, this.setNewInputData);
         this.$axios
@@ -178,7 +175,7 @@ export default {
               if ((typeof goToShowView === 'undefined' || goToShowView === true) && this.redirectAfterEdit) {
                 this.goToShowView();
               }
-              this.loading = false
+              this.entityLoading = false
               resolve(d)
             })
             .catch((err) => {
