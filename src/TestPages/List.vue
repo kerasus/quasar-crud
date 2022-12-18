@@ -1,25 +1,25 @@
 <template>
   <entity-index
-      v-model:value="inputs"
-      v-model:table-selected-values="selected"
-      title="لیست کاربران"
-      :api="api"
-      :table="table"
-      :table-keys="tableKeys"
-      :table-selection-mode="'multiple'"
-      :item-indicator-key="'first_name'"
-      :create-route-name="'User.Create'"
-      :default-layout="true"
+    v-model:value="inputs"
+    v-model:table-selected-values="selected"
+    title="لیست کاربران"
+    :api="api"
+    :table="table"
+    :table-keys="tableKeys"
+    :table-selection-mode="'multiple'"
+    :item-indicator-key="'first_name'"
+    :create-route-name="'User.Create'"
+    :default-layout="true"
   >
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
       <q-td :props="inputData.props">
         <template v-if="inputData.props.col.name === 'thumbnail'">
           <q-avatar>
             <q-img
-                :src="inputData.props.value"
-                placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
-                spinner-color="white"
-                style="height: 50px; max-width: 50px"
+              :src="inputData.props.value"
+              placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
+              spinner-color="white"
+              style="height: 50px; max-width: 50px"
             />
           </q-avatar>
         </template>
@@ -78,26 +78,26 @@
   </entity-index>
   <q-separator class="q-my-md" />
   <entity-attachment
-      v-model:value="crudFormInputs"
-      expanded-default
-      :title="'entity attachment titile'"
-      :action-title="'attach action title'"
-      :list-title="'entity attached list'"
-      :list-show-route-name="'Admin.BlockManagement.Show'"
-      :attachment-list-api-address="api"
-      :table="table"
-      :table-keys="tableKeys"
+    v-model:value="crudFormInputs"
+    expanded-default
+    :title="'entity attachment titile'"
+    :action-title="'attach action title'"
+    :list-title="'entity attached list'"
+    :list-show-route-name="'Admin.BlockManagement.Show'"
+    :attachment-list-api-address="api"
+    :table="table"
+    :table-keys="tableKeys"
   />
   <q-separator class="q-my-md" />
   <entity-action
-      v-model:value="crudFormInputs"
-      :form-title="'entity action'"
-      :action-title="'do some action'"
-      :action-method="'post'"
-      :action-api="'/api/action'"
-      :beforeDoAction="beforeDoAction"
-      @onActionSuccess="onActionSuccess"
-      @onActionError="onActionError"
+    v-model:value="crudFormInputs"
+    :form-title="'entity action'"
+    :action-title="'do some action'"
+    :action-method="'post'"
+    :action-api="'/api/action'"
+    :beforeDoAction="beforeDoAction"
+    @onActionSuccess="onActionSuccess"
+    @onActionError="onActionError"
   />
 </template>
 

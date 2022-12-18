@@ -4,22 +4,22 @@
   <slot v-if="currentComponent === 'entity-edit'" name="before-entity-edit"></slot>
   <slot v-if="currentComponent === 'entity-index'" name="before-entity-index"></slot>
   <component
-      :is="currentComponent"
-      v-model:value="getNeededInputs"
-      v-model:table-selected-values="tableChosenValues"
-      :table-selection-mode="getTableSelectionMode"
-      v-bind="neededConfig"
-      ref="entityComponent"
-      :before-load-input-data="getNeededProp('beforeLoad','InputData')"
-      :after-load-input-data="getNeededProp('afterLoad','InputData')"
-      :before-get-data="getNeededProp('beforeGet','Data')"
-      :on-add-button="getNeededProp('on','AddButton')"
-      :on-cancel-button="getNeededProp('on','CancelButton')"
-      :on-save-button="getNeededProp('on','SaveButton')"
-      :on-reload-button="getNeededProp('on','ReloadButton')"
-      :on-search-button="getNeededProp('on','SearchButton')"
-      :on-edit-button="getNeededProp('on','EditButton')"
-      :on-list-button="getNeededProp('on','ListButton')"
+    :is="currentComponent"
+    v-bind="neededConfig"
+    ref="entityComponent"
+    v-model:value="getNeededInputs"
+    v-model:table-selected-values="tableChosenValues"
+    :table-selection-mode="getTableSelectionMode"
+    :before-load-input-data="getNeededProp('beforeLoad','InputData')"
+    :after-load-input-data="getNeededProp('afterLoad','InputData')"
+    :before-get-data="getNeededProp('beforeGet','Data')"
+    :on-add-button="getNeededProp('on','AddButton')"
+    :on-cancel-button="getNeededProp('on','CancelButton')"
+    :on-save-button="getNeededProp('on','SaveButton')"
+    :on-reload-button="getNeededProp('on','ReloadButton')"
+    :on-search-button="getNeededProp('on','SearchButton')"
+    :on-edit-button="getNeededProp('on','EditButton')"
+    :on-list-button="getNeededProp('on','ListButton')"
   >
     <template v-slot:before-form-builder>
       <slot v-if="currentComponent === 'entity-create'" name="entity-create-before-form-builder"></slot>
@@ -232,16 +232,16 @@ export default {
       return this.$route.path
     }
   },
-  created () {
-    this.getComponent()
-  },
-  mounted () {},
   watch: {
     getRouteChange () {
       // to, from
       this.getComponent()
     }
   },
+  created () {
+    this.getComponent()
+  },
+  mounted () {},
   methods: {
     getComponent () {
       const cName = this.getRoutesMode()
