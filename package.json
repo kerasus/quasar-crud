@@ -10,12 +10,12 @@
   "main": "index.js",
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",
-    "@quasar/extras": "^1.15.7",
+    "@quasar/extras": "^1.15.8",
     "axios": "^1.2.1",
     "core-js": "^3.26.1",
     "moment-jalaali": "^0.9.6",
-    "quasar": "^2.10.2",
-    "quasar-form-builder": "^0.1.55",
+    "quasar": "^2.11.0",
+    "quasar-form-builder": "^0.1.56",
     "vue": "^3.2.45"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^8.17.0",
     "eslint-plugin-vue": "^7.20.0",
-    "postcss": "^7.0.39",
+    "postcss": "^8.4.20",
     "postcss-rtl": "^2.0.0",
     "sass": "1.52.3",
     "sass-loader": "^13.0.0",
@@ -47,7 +47,9 @@
       "parser": "@babel/eslint-parser"
     },
     "rules": {
-      "vue/attributes-order": "warn",
+      "vue/attributes-order": "error",
+      "vue/order-in-components": "error",
+      "vue/html-indent": "error",
       "vue/this-in-template": "error",
       "vue/arrow-spacing": "error",
       "vue/block-spacing": "error",
