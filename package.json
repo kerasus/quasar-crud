@@ -9,16 +9,16 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@babel/eslint-parser": "^7.19.1",
     "@quasar/extras": "^1.15.8",
     "axios": "^1.2.1",
     "core-js": "^3.26.1",
     "moment-jalaali": "^0.9.6",
-    "quasar": "^2.11.0",
+    "quasar": "^2.11.1",
     "quasar-form-builder": "^0.1.57",
     "vue": "^3.2.45"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "@vue/cli-plugin-babel": "~5.0.4",
     "@vue/cli-plugin-eslint": "~5.0.4",
     "@vue/cli-service": "~5.0.4",
