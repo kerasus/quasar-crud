@@ -14,7 +14,7 @@
     "core-js": "^3.26.1",
     "moment-jalaali": "^0.9.6",
     "quasar": "^2.11.1",
-    "quasar-form-builder": "^0.1.57",
+    "quasar-form-builder": "^0.1.58",
     "vue": "^3.2.45"
   },
   "devDependencies": {
