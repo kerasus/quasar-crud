@@ -91,8 +91,8 @@
 </template>
 
 <script>
-import { inputMixin } from 'quasar-form-builder'
 import { exportFile } from 'quasar'
+import { inputMixin } from 'quasar-form-builder'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = (typeof formatFn !== 'undefined')

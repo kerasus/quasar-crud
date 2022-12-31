@@ -86,11 +86,11 @@
 </template>
 
 <script>
+import EntityAction from '../EntityAction.vue'
 import { inputMixin } from 'quasar-form-builder'
-import EntityAttachList from '../Attachment/EntityAttachList'
-import EntityCrudFormBuilder from '../EntityCrudFormBuilder'
-import EntityAction from '../EntityAction'
-import EntityMixin from '../../../mixins/EntityMixin'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
+import EntityAttachList from '../Attachment/EntityAttachList.vue'
 
 export default {
   name: 'EntityAttachment',

@@ -9,12 +9,12 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@quasar/extras": "^1.15.8",
-    "axios": "^1.2.1",
-    "core-js": "^3.27.0",
+    "@quasar/extras": "^1.15.9",
+    "axios": "^1.2.2",
+    "core-js": "^3.27.1",
     "moment-jalaali": "^0.9.6",
-    "quasar": "^2.11.2",
-    "quasar-form-builder": "^0.1.59",
+    "quasar": "^2.11.3",
+    "quasar-form-builder": "^0.1.60",
     "vue": "^3.2.45"
   },
   "devDependencies": {

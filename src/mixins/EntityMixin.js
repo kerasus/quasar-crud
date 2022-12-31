@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { shallowRef } from 'vue'
-import EntityInput from '../components/Entity/Attachment/EntityInput'
+import EntityInput from '../components/Entity/Attachment/EntityInput.vue'
 
 const EntityInputComp = shallowRef(EntityInput)
 

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import EntityCreate from '@/components/Entity/Create/EntityCreate'
+import EntityCreate from '@/components/Entity/Create/EntityCreate.vue'
 export default {
   name: 'Edit',
   components: { EntityCreate },
@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     // since creation has not involved in getData
-    // before getData and after getData are not present on 
+    // before getData and after getData are not present on
     // create entity
     // for those functionalities you can use created option instead of these two
     beforeSendData (formData/* , setNewInputData */) {

@@ -81,11 +81,11 @@
 </template>
 
 <script>
-import  Portlet  from '../../../components/Portlet'
 import { inputMixin } from 'quasar-form-builder'
-import EntityCrudForm from '../Attachment/EntityCrudForm'
-import EntityAttachList from '../Attachment/EntityAttachList'
-import EntityMixin from '../../../mixins/EntityMixin'
+import  Portlet  from '../../../components/Portlet.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudForm from '../Attachment/EntityCrudForm.vue'
+import EntityAttachList from '../Attachment/EntityAttachList.vue'
 export default {
   name: 'EntityAttachment',
   components: {

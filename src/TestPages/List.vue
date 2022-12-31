@@ -102,9 +102,9 @@
 </template>
 
 <script>
-import EntityIndex from '../components/Entity/Index/EntityIndex'
-import EntityAction from '../components/Entity/EntityAction'
-import EntityAttachment from '../components/Entity/Attachment/EntityAttachment'
+import EntityAction from '../components/Entity/EntityAction.vue'
+import EntityIndex from '../components/Entity/Index/EntityIndex.vue'
+import EntityAttachment from '../components/Entity/Attachment/EntityAttachment.vue'
 export default {
   name: 'List',
   components: { EntityAttachment, EntityIndex, EntityAction},

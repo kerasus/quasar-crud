@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import EntityShow from '../components/Entity/Show/EntityShow'
+import EntityShow from '../components/Entity/Show/EntityShow.vue'
 
 export default {
   name: 'Show',

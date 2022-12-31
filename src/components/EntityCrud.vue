@@ -50,7 +50,8 @@
 </template>
 
 <script>
-import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from 'quasar-crud'
+import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from '../index.js'
+
 const allEntities = {
   EntityEdit,
   EntityCreate,

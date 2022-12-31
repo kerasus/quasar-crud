@@ -99,10 +99,10 @@
 </template>
 
 <script>
-import Portlet from '../../../components/Portlet';
-import EntityMixin from '../../../mixins/EntityMixin';
-import { inputMixin } from 'quasar-form-builder';
-import EntityCrudFormBuilder from '../EntityCrudFormBuilder';
+import { inputMixin } from 'quasar-form-builder'
+import Portlet from '../../../components/Portlet.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
 
 export default {
   name: 'EntityEdit',

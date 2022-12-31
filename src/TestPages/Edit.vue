@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import EntityEdit from '../components/Entity/Edit/EntityEdit'
+import EntityEdit from '../components/Entity/Edit/EntityEdit.vue'
 export default {
   name: 'Edit',
   components: { EntityEdit },
