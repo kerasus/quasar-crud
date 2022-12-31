@@ -51,13 +51,16 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from '../../index.js'
+import EntityEditComponent from './Entity/Edit/EntityEdit.vue'
+import EntityCreateComponent from './Entity/Create/EntityCreate.vue'
+import EntityIndexComponent from './Entity/Index/EntityIndex.vue'
+import EntityShowComponent from './Entity/Show/EntityShow.vue'
 
 const allEntities = {
-  EntityEdit,
-  EntityCreate,
-  EntityIndex,
-  EntityShow
+  EntityEdit: EntityEditComponent,
+  EntityCreate: EntityCreateComponent,
+  EntityIndex: EntityIndexComponent,
+  EntityShow: EntityShowComponent
 }
 function capitalizeFirstLetter (word) {
   if (!word) {
