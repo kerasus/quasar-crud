@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from '../../index.js'
 
 const allEntities = {
@@ -103,10 +104,10 @@ const crudProps = {
 export default {
   name: 'EntityCrud',
   components: {
-    EntityEdit,
-    EntityCreate,
-    EntityIndex,
-    EntityShow
+    EntityShow: defineAsyncComponent(() => import('./Entity/Show/EntityShow.vue')),
+    EntityEdit: defineAsyncComponent(() => import('./Entity/Edit/EntityEdit.vue')),
+    EntityIndex: defineAsyncComponent(() => import('./Entity/Index/EntityIndex.vue')),
+    EntityCreate: defineAsyncComponent(() => import('./Entity/Create/EntityCreate.vue'))
   },
   props: {
     ...crudProps,
