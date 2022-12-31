@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from '../index.js'
+import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from '../../index.js'
 
 const allEntities = {
   EntityEdit,
