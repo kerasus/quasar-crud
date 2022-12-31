@@ -10,16 +10,5 @@ const EntityIndexTable = require('./src/components/Entity/Index/EntityIndexTable
 const EntityCrudFormBuilder = require('./src/components/Entity/EntityCrudFormBuilder.vue').default
 const EntityCrudObject = { EntityCreate, EntityShow, EntityEdit, EntityIndex, EntityCrud, Portlet, EntityIndexTable, EntityInput, EntityCrudFormBuilder, EntityAction }
 
-export {
-  EntityCrudObject as default,
-  EntityCreate,
-  EntityShow,
-  EntityEdit,
-  EntityIndex,
-  EntityCrud,
-  Portlet,
-  EntityIndexTable,
-  EntityInput,
-  EntityCrudFormBuilder,
-  EntityAction
-}
+module.exports = EntityCrudObject
+module.exports.default = EntityCrudObject
