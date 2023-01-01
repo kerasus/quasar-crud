@@ -5,20 +5,20 @@
       <q-badge v-else-if="!Array.isArray(value) && typeof value !== 'undefined' && value !== null" :color="buttonBadgeColor" floating>1</q-badge>
     </q-btn>
     <q-dialog v-model="dialog" full-width full-height>
-        <entity-index
-            v-model:table-selected-values="selected"
-            :value="inputs"
-            :title="tableTitle"
-            :api="apiAddress"
-            :table="table"
-            :table-keys="tableKeys"
-            :table-selection-mode="selectionMode"
-            :show-close-button="true"
-            :show-expand-button="false"
-            :row-key="itemIdentifyKey"
-            :item-indicator-key="itemIndicatorKey"
-            @update:table-selected-values="onSelectedUpdate"
-        />
+      <entity-index
+        v-model:table-selected-values="selected"
+        :value="inputs"
+        :title="tableTitle"
+        :api="apiAddress"
+        :table="table"
+        :table-keys="tableKeys"
+        :table-selection-mode="selectionMode"
+        :show-close-button="true"
+        :show-expand-button="false"
+        :row-key="itemIdentifyKey"
+        :item-indicator-key="itemIndicatorKey"
+        @update:table-selected-values="onSelectedUpdate"
+      />
     </q-dialog>
   </div>
 </template>
@@ -29,10 +29,10 @@ import { inputMixin } from 'quasar-form-builder'
 
 export default {
   name: 'EntityInput',
-  mixins: [inputMixin],
   components: {
-    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
+    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex.vue')),
   },
+  mixins: [inputMixin],
   props: {
     value: {
       default: null

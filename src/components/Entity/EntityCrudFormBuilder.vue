@@ -7,6 +7,7 @@
                 :disable="disable"
                 :readonly="readonly"
                 @onClick="onInputClick"
+                @onKeyPress="onInputKeyPress"
   />
   <div class="slot-wrapper">
     <slot name="after-form-builder"></slot>
@@ -16,8 +17,8 @@
 <script>
 import {shallowRef} from 'vue'
 import {copyToClipboard} from 'quasar'
-import EntityMixin from '../../mixins/EntityMixin'
-import EntityInput from './Attachment/EntityInput'
+import EntityMixin from '../../mixins/EntityMixin.js'
+import EntityInput from './Attachment/EntityInput.vue'
 import {FormBuilder, inputMixin} from 'quasar-form-builder'
 
 const EntityInputComp = shallowRef(EntityInput)
@@ -134,6 +135,9 @@ export default {
             })
       }
       this.$emit('onInputClick', data)
+    },
+    onInputKeyPress(data) {
+      this.$emit('onInputKeyPress', data)
     },
     getItemIdentifyKey(input) {
       if (typeof input.indexConfig.itemIdentifyKey === 'string') {

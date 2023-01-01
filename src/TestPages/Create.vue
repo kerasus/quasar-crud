@@ -1,14 +1,14 @@
 <template>
   <entity-create
-      v-model:value="inputs"
-      title="ساخت کاربر جدید"
-      :api="api"
-      :entity-id-key="entityIdKey"
-      :entity-param-key="entityParamKey"
-      :show-route-name="showRouteName"
-      :index-route-name="indexRouteName"
-      :before-send-data="beforeSendData"
-      :after-send-data="afterSendData"
+    v-model:value="inputs"
+    title="ساخت کاربر جدید"
+    :api="api"
+    :entity-id-key="entityIdKey"
+    :entity-param-key="entityParamKey"
+    :show-route-name="showRouteName"
+    :index-route-name="indexRouteName"
+    :before-send-data="beforeSendData"
+    :after-send-data="afterSendData"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import EntityCreate from '@/components/Entity/Create/EntityCreate'
+import EntityCreate from '@/components/Entity/Create/EntityCreate.vue'
 export default {
   name: 'Edit',
   components: { EntityCreate },
@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     // since creation has not involved in getData
-    // before getData and after getData are not present on 
+    // before getData and after getData are not present on
     // create entity
     // for those functionalities you can use created option instead of these two
     beforeSendData (formData/* , setNewInputData */) {

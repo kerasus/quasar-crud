@@ -23,30 +23,30 @@
       <q-expansion-item v-model="expanded">
         <div class="attach-modal-btn-box">
           <q-btn
-              push
-              color="primary"
-              text-color="white"
-              :label="buttonLabel"
-              class="attach-modal-btn"
-              @click="openCloseModal"
+            push
+            color="primary"
+            text-color="white"
+            :label="buttonLabel"
+            class="attach-modal-btn"
+            @click="openCloseModal"
           />
         </div>
         <entity-attach-list
-            ref="EntityAttachList"
-            :list-title="listTitle"
-            :table="table"
-            :table-keys="tableKeys"
-            :api="attachmentListApiAddress"
+          ref="EntityAttachList"
+          :list-title="listTitle"
+          :table="table"
+          :table-keys="tableKeys"
+          :api="attachmentListApiAddress"
         >
           <template v-slot:table-cell="{inputData, showConfirmRemoveDialog}">
             <q-td :props="inputData.props">
               <template v-if="inputData.props.col.name === 'photo'">
                 <q-avatar>
                   <q-img
-                      :src="inputData.props.value"
-                      placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
-                      spinner-color="white"
-                      style="height: 50px; max-width: 50px"
+                    :src="inputData.props.value"
+                    placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
+                    spinner-color="white"
+                    style="height: 50px; max-width: 50px"
                   />
                 </q-avatar>
               </template>
@@ -72,8 +72,8 @@
       </q-expansion-item>
       <q-dialog v-model="entityCrudFormDialog">
         <entity-crud-form
-            v-model:crud-form-inputs="computedCrudFormInputs"
-            @data-set="attachEntity"
+          v-model:crud-form-inputs="computedCrudFormInputs"
+          @data-set="attachEntity"
         />
       </q-dialog>
     </template>
@@ -81,11 +81,11 @@
 </template>
 
 <script>
-import  Portlet  from '../../../components/Portlet'
 import { inputMixin } from 'quasar-form-builder'
-import EntityCrudForm from '../Attachment/EntityCrudForm'
-import EntityAttachList from '../Attachment/EntityAttachList'
-import EntityMixin from '../../../mixins/EntityMixin'
+import  Portlet  from '../../../components/Portlet.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudForm from '../Attachment/EntityCrudForm.vue'
+import EntityAttachList from '../Attachment/EntityAttachList.vue'
 export default {
   name: 'EntityAttachment',
   components: {
@@ -195,6 +195,16 @@ export default {
       }
     }
   },
+  computed: {
+    computedCrudFormInputs: {
+      get () {
+        return this.crudFormInputs
+      },
+      set (value) {
+        this.$emit('update:crudFormInputs', value)
+      }
+    }
+  },
   created () {
     this.expanded = this.expandedDefault
   },
@@ -236,16 +246,6 @@ export default {
       //   position: 'top'
       // })
       // this.entityCrudFormDialog = false
-    }
-  },
-  computed: {
-    computedCrudFormInputs: {
-      get () {
-        return this.crudFormInputs
-      },
-      set (value) {
-        this.$emit('update:crudFormInputs', value)
-      }
     }
   }
 }

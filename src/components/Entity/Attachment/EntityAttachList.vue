@@ -30,9 +30,9 @@
 </template>
 
 <script>
-import  EntityIndexTable from '../../Entity/Index/EntityIndexTable'
 import { inputMixin } from 'quasar-form-builder'
-import EntityMixin from '../../../mixins/EntityMixin'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import  EntityIndexTable from '../../Entity/Index/EntityIndexTable.vue'
 export default {
   name: 'EntityAttachList',
   components: { EntityIndexTable },

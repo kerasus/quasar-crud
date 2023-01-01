@@ -1,17 +1,17 @@
 <template>
   <entity-show
-      v-model:value="inputs"
-      title="اطلاعات کاربر"
-      :api="api"
-      :entity-id-key="entityIdKey"
-      :entity-param-key="entityParamKey"
-      :edit-route-name="editRouteName"
-      :index-route-name="indexRouteName"
-      :before-get-data="beforeGetData"
-      :after-get-data="afterGetData"
-      :copy-on-click="true"
-      @onInputClick="onInputClick"
-      @onCopyToClipboard="onCopyToClipboard"
+    v-model:value="inputs"
+    title="اطلاعات کاربر"
+    :api="api"
+    :entity-id-key="entityIdKey"
+    :entity-param-key="entityParamKey"
+    :edit-route-name="editRouteName"
+    :index-route-name="indexRouteName"
+    :before-get-data="beforeGetData"
+    :after-get-data="afterGetData"
+    :copy-on-click="true"
+    @onInputClick="onInputClick"
+    @onCopyToClipboard="onCopyToClipboard"
   >
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import EntityShow from '../components/Entity/Show/EntityShow'
+import EntityShow from '../components/Entity/Show/EntityShow.vue'
 
 export default {
   name: 'Show',

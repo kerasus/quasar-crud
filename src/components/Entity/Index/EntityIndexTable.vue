@@ -1,59 +1,59 @@
 <template>
   <div class="quasar-crud-index-table q-pa-md">
     <q-table
-        ref="table"
-        v-model:pagination="inputData.pagination"
-        v-model:selected="tableChosenValues"
-        :grid="tableGridSize"
-        :rows="inputData.data"
-        :columns="columns"
-        :loading="loading"
-        :row-key="rowKey"
-        :rows-per-page-options="[]"
-        :selected-rows-label="getSelectedString"
-        :selection="tableSelectionMode"
-        @request="onChangePage"
+      ref="table"
+      v-model:pagination="inputData.pagination"
+      v-model:selected="tableChosenValues"
+      :grid="tableGridSize"
+      :rows="inputData.data"
+      :columns="columns"
+      :loading="loading"
+      :row-key="rowKey"
+      :rows-per-page-options="[]"
+      :selected-rows-label="getSelectedString"
+      :selection="tableSelectionMode"
+      @request="onChangePage"
     >
       <template #top="props">
         <div class="col-2 q-table__title">{{ title }}</div>
         <q-space />
         <q-select
-            v-if="false"
-            v-model="visibleColumns"
-            multiple
-            dense
-            options-dense
-            :display-value="$q.lang.table.columns"
-            emit-value
-            map-options
-            :options="columns"
-            option-value="name"
-            style="min-width: 150px"
+          v-if="false"
+          v-model="visibleColumns"
+          multiple
+          dense
+          options-dense
+          :display-value="$q.lang.table.columns"
+          emit-value
+          map-options
+          :options="columns"
+          option-value="name"
+          style="min-width: 150px"
         />
         <q-btn
-            flat round dense
-            icon="search"
-            no-caps
-            @click="searchEvent"
+          flat round dense
+          icon="search"
+          no-caps
+          @click="searchEvent"
         >
           <q-tooltip>
             جستجو
           </q-tooltip>
         </q-btn>
         <q-btn
-            flat round dense
-            icon="archive"
-            no-caps
-            @click="exportTable"
+          flat round dense
+          icon="archive"
+          no-caps
+          @click="exportTable"
         >
           <q-tooltip>
             خروجی اکسل
           </q-tooltip>
         </q-btn>
         <q-btn
-            flat round dense
-            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-            @click="props.toggleFullscreen"
+          flat round dense
+          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+          @click="props.toggleFullscreen"
         >
           <q-tooltip>
             تمام صفحه
@@ -80,19 +80,19 @@
     </q-table>
     <div v-if="pagesNumber > 1" class="q-pa-lg flex flex-center">
       <q-pagination
-          v-model="targetPage"
-          color="black"
-          :max="pagesNumber"
-          :max-pages="6"
-          direction-links
+        v-model="targetPage"
+        color="black"
+        :max="pagesNumber"
+        :max-pages="6"
+        direction-links
       />
     </div>
   </div>
 </template>
 
 <script>
-import { inputMixin } from 'quasar-form-builder'
 import { exportFile } from 'quasar'
+import { inputMixin } from 'quasar-form-builder'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = (typeof formatFn !== 'undefined')
@@ -203,6 +203,15 @@ export default {
       return this.$q.screen.lt.sm
     }
   },
+  watch: {
+    targetPage(){
+      if(this.targetPage <= this.pagesNumber){
+        setTimeout(()=> {
+          this.changePage(this.targetPage)
+        }, 1000)
+      }
+    }
+  },
   mounted () {
     // :visible-columns="visibleColumns"
     // console.log('table', this.$refs.table.visibleColumns)
@@ -217,15 +226,6 @@ export default {
     //     console.log('tableKey', that.tableKey)
     //   }, 1000)
     // })
-  },
-  watch: {
-    targetPage(){
-      if(this.targetPage <= this.pagesNumber){
-        setTimeout(()=> {
-          this.changePage(this.targetPage)
-        }, 1000)
-      }
-    }
   },
   methods: {
     getSelectedString () {

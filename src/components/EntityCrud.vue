@@ -4,22 +4,22 @@
   <slot v-if="currentComponent === 'entity-edit'" name="before-entity-edit"></slot>
   <slot v-if="currentComponent === 'entity-index'" name="before-entity-index"></slot>
   <component
-      :is="currentComponent"
-      v-model:value="getNeededInputs"
-      v-model:table-selected-values="tableChosenValues"
-      :table-selection-mode="getTableSelectionMode"
-      v-bind="neededConfig"
-      ref="entityComponent"
-      :before-load-input-data="getNeededProp('beforeLoad','InputData')"
-      :after-load-input-data="getNeededProp('afterLoad','InputData')"
-      :before-get-data="getNeededProp('beforeGet','Data')"
-      :on-add-button="getNeededProp('on','AddButton')"
-      :on-cancel-button="getNeededProp('on','CancelButton')"
-      :on-save-button="getNeededProp('on','SaveButton')"
-      :on-reload-button="getNeededProp('on','ReloadButton')"
-      :on-search-button="getNeededProp('on','SearchButton')"
-      :on-edit-button="getNeededProp('on','EditButton')"
-      :on-list-button="getNeededProp('on','ListButton')"
+    :is="currentComponent"
+    v-bind="neededConfig"
+    ref="entityComponent"
+    v-model:value="getNeededInputs"
+    v-model:table-selected-values="tableChosenValues"
+    :table-selection-mode="getTableSelectionMode"
+    :before-load-input-data="getNeededProp('beforeLoad','InputData')"
+    :after-load-input-data="getNeededProp('afterLoad','InputData')"
+    :before-get-data="getNeededProp('beforeGet','Data')"
+    :on-add-button="getNeededProp('on','AddButton')"
+    :on-cancel-button="getNeededProp('on','CancelButton')"
+    :on-save-button="getNeededProp('on','SaveButton')"
+    :on-reload-button="getNeededProp('on','ReloadButton')"
+    :on-search-button="getNeededProp('on','SearchButton')"
+    :on-edit-button="getNeededProp('on','EditButton')"
+    :on-list-button="getNeededProp('on','ListButton')"
   >
     <template v-slot:before-form-builder>
       <slot v-if="currentComponent === 'entity-create'" name="entity-create-before-form-builder"></slot>
@@ -50,12 +50,17 @@
 </template>
 
 <script>
-import { EntityEdit, EntityCreate, EntityIndex, EntityShow } from 'quasar-crud'
+import { defineAsyncComponent } from 'vue'
+import EntityEditComponent from './Entity/Edit/EntityEdit.vue'
+import EntityCreateComponent from './Entity/Create/EntityCreate.vue'
+import EntityIndexComponent from './Entity/Index/EntityIndex.vue'
+import EntityShowComponent from './Entity/Show/EntityShow.vue'
+
 const allEntities = {
-  EntityEdit,
-  EntityCreate,
-  EntityIndex,
-  EntityShow
+  EntityEdit: EntityEditComponent,
+  EntityCreate: EntityCreateComponent,
+  EntityIndex: EntityIndexComponent,
+  EntityShow: EntityShowComponent
 }
 function capitalizeFirstLetter (word) {
   if (!word) {
@@ -102,10 +107,10 @@ const crudProps = {
 export default {
   name: 'EntityCrud',
   components: {
-    EntityEdit,
-    EntityCreate,
-    EntityIndex,
-    EntityShow
+    EntityShow: defineAsyncComponent(() => import('./Entity/Show/EntityShow.vue')),
+    EntityEdit: defineAsyncComponent(() => import('./Entity/Edit/EntityEdit.vue')),
+    EntityIndex: defineAsyncComponent(() => import('./Entity/Index/EntityIndex.vue')),
+    EntityCreate: defineAsyncComponent(() => import('./Entity/Create/EntityCreate.vue'))
   },
   props: {
     ...crudProps,
@@ -232,16 +237,16 @@ export default {
       return this.$route.path
     }
   },
-  created () {
-    this.getComponent()
-  },
-  mounted () {},
   watch: {
     getRouteChange () {
       // to, from
       this.getComponent()
     }
   },
+  created () {
+    this.getComponent()
+  },
+  mounted () {},
   methods: {
     getComponent () {
       const cName = this.getRoutesMode()

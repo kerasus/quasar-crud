@@ -74,16 +74,15 @@
 </template>
 
 <script>
-import Portlet from '../../components/Portlet'
-import EntityMixin from '../../mixins/EntityMixin'
 import { inputMixin } from 'quasar-form-builder'
-import EntityCrudFormBuilder from './EntityCrudFormBuilder'
+import Portlet from '../../components/Portlet.vue'
+import EntityMixin from '../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from './EntityCrudFormBuilder.vue'
 
 export default {
   name: 'EntityAction',
   components: { EntityCrudFormBuilder, Portlet },
   mixins: [inputMixin, EntityMixin],
-  emits: ['onActionSuccess', 'onActionError'],
   props: {
     value: {
       default: () => [],
@@ -115,6 +114,7 @@ export default {
       type: Boolean,
     },
   },
+  emits: ['onActionSuccess', 'onActionError'],
   data () {
     return {
       expanded: true,

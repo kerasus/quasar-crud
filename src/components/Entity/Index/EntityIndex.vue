@@ -40,20 +40,20 @@
         <slot name="chip-area">
           <template v-if="Array.isArray(tableSelectedValues)">
             <q-chip
-                v-for="(item, index) in tableSelectedValues"
-                :key="index"
-                clickable
-                removable
-                @remove="deselectItem(item)"
+              v-for="(item, index) in tableSelectedValues"
+              :key="index"
+              clickable
+              removable
+              @remove="deselectItem(item)"
             >
               {{ getChipTitle(item) }}
             </q-chip>
           </template>
           <template v-else>
             <q-chip
-                clickable
-                removable
-                @remove="deselectItem(tableSelectedValues)"
+              clickable
+              removable
+              @remove="deselectItem(tableSelectedValues)"
             >
               {{ getChipTitle(tableSelectedValues) }}
             </q-chip>
@@ -63,11 +63,12 @@
           <slot name="before-form-builder"></slot>
         </div>
         <entity-crud-form-builder
-                                  ref="formBuilder"
-                                  v-model:value="inputData"
-                                  :copy-on-click="copyOnClick"
-                                  @onInputClick="onInputClick"
-                                  @onCopyToClipboard="onCopyToClipboard"/>
+          ref="formBuilder"
+          v-model:value="inputData"
+          :copy-on-click="copyOnClick"
+          @onInputClick="onInputClick"
+          @onInputKeyPress="onInputKeyPress"
+          @onCopyToClipboard="onCopyToClipboard"/>
         <div class="slot-wrapper">
           <slot name="after-form-builder"></slot>
         </div>
@@ -77,16 +78,16 @@
               <slot name="before-index-table"></slot>
             </div>
             <entity-index-table
-                v-model:value="tableData"
-                v-model:table-selected-values="tableChosenValues"
-                :table-selection-mode="tableSelectionMode"
-                :columns="table.columns"
-                :title="title"
-                :row-key="rowKey"
-                :loading="entityLoading"
-                :change-page="changePage"
-                @update:table-selected-values="updateSelectedValues"
-                @search="search"
+              v-model:value="tableData"
+              v-model:table-selected-values="tableChosenValues"
+              :table-selection-mode="tableSelectionMode"
+              :columns="table.columns"
+              :title="title"
+              :row-key="rowKey"
+              :loading="entityLoading"
+              :change-page="changePage"
+              @update:table-selected-values="updateSelectedValues"
+              @search="search"
             >
               <template #entity-index-table-cell="{inputData}">
                 <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
@@ -118,12 +119,13 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-        ref="formBuilder"
-        v-model:value="inputData"
-        :disable="false"
-        :copy-on-click="copyOnClick"
-        @onInputClick="onInputClick"
-        @onCopyToClipboard="onCopyToClipboard"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="false"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onInputKeyPress="onInputKeyPress"
+      @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">
@@ -140,17 +142,17 @@
       <slot name="before-index-table"></slot>
     </div>
     <entity-index-table
-        v-model:value="tableData"
-        v-model:table-selected-values="tableChosenValues"
-        :table-selection-mode="tableSelectionMode"
-        :columns="table.columns"
-        :title="title"
-        :row-key="rowKey"
-        :loading="entityLoading"
-        :change-page="changePage"
-        :table-grid-size="tableGridSize"
-        @update:table-selected-values="updateSelectedValues"
-        @search="search"
+      v-model:value="tableData"
+      v-model:table-selected-values="tableChosenValues"
+      :table-selection-mode="tableSelectionMode"
+      :columns="table.columns"
+      :title="title"
+      :row-key="rowKey"
+      :loading="entityLoading"
+      :change-page="changePage"
+      :table-grid-size="tableGridSize"
+      @update:table-selected-values="updateSelectedValues"
+      @search="search"
     >
       <template #entity-index-table-cell="{inputData}">
         <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
@@ -171,11 +173,11 @@
 </template>
 
 <script>
-import Portlet from '../../../components/Portlet'
-import EntityMixin from '../../../mixins/EntityMixin'
 import { inputMixin } from 'quasar-form-builder'
-import EntityCrudFormBuilder from '../EntityCrudFormBuilder'
-import EntityIndexTable from '../../../components/Entity/Index/EntityIndexTable'
+import Portlet from '../../Portlet.vue'
+import EntityIndexTable from './EntityIndexTable.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
 
 export default {
   name: 'EntityIndex',
@@ -286,9 +288,6 @@ export default {
       }
     }
   },
-  mounted () {
-    this.search()
-  },
   computed: {
     tableChosenValues: {
       get () {
@@ -300,7 +299,15 @@ export default {
       set () {}
     }
   },
+  mounted () {
+    this.search()
+  },
   methods: {
+    onInputKeyPress(data) {
+      if (data.key === 'Enter' || data.keyCode === 13) {
+        this.search()
+      }
+    },
     getChipTitle (item) {
       const value = this.getValidChainedObject(item, this.itemIndicatorKey)
       return value ? value : '_'

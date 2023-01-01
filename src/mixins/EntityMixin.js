@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { shallowRef } from 'vue'
-import EntityInput from '../components/Entity/Attachment/EntityInput'
+import EntityInput from '../components/Entity/Attachment/EntityInput.vue'
 
 const EntityInputComp = shallowRef(EntityInput)
 
@@ -90,6 +90,9 @@ const EntityMixin = {
   methods: {
     onInputClick (data) {
       this.$emit('onInputClick', data)
+    },
+    onInputKeyPress(data) {
+      this.$emit('onInputKeyPress', data)
     },
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)

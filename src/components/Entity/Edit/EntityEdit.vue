@@ -8,38 +8,38 @@
     <template #toolbar>
       <slot name="toolbar">
         <q-btn
-            v-if="showReloadButton"
-            flat
-            round
-            icon="cached"
-            @click="runNeededMethod(onReloadButton, getData)"
+          v-if="showReloadButton"
+          flat
+          round
+          icon="cached"
+          @click="runNeededMethod(onReloadButton, getData)"
         >
           <q-tooltip> بارگذاری مجدد </q-tooltip>
         </q-btn>
         <q-btn
-            v-if="showSaveButton"
-            flat
-            round
-            icon="check"
-            @click="runNeededMethod(onSaveButton, editEntity)"
+          v-if="showSaveButton"
+          flat
+          round
+          icon="check"
+          @click="runNeededMethod(onSaveButton, editEntity)"
         >
           <q-tooltip> ذخیره </q-tooltip>
         </q-btn>
         <q-btn
-            v-if="showCloseButton"
-            flat
-            round
-            icon="close"
-            @click="runNeededMethod(onCancelButton, goToShowView)"
+          v-if="showCloseButton"
+          flat
+          round
+          icon="close"
+          @click="runNeededMethod(onCancelButton, goToShowView)"
         >
           <q-tooltip> لغو </q-tooltip>
         </q-btn>
         <q-btn
-            v-if="showExpandButton"
-            flat
-            round
-            :icon="expanded ? 'expand_less' : 'expand_more'"
-            @click="expanded = !expanded"
+          v-if="showExpandButton"
+          flat
+          round
+          :icon="expanded ? 'expand_less' : 'expand_more'"
+          @click="expanded = !expanded"
         >
           <q-tooltip>
             <span v-if="expanded">عدم نمایش فرم</span>
@@ -51,12 +51,12 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <entity-crud-form-builder
-            ref="formBuilder"
-            v-model:value="inputData"
-            :disable="false"
-            :copy-on-click="copyOnClick"
-            @onInputClick="onInputClick"
-            @onCopyToClipboard="onCopyToClipboard"
+          ref="formBuilder"
+          v-model:value="inputData"
+          :disable="false"
+          :copy-on-click="copyOnClick"
+          @onInputClick="onInputClick"
+          @onCopyToClipboard="onCopyToClipboard"
         >
           <template #before-form-builder>
             <div class="slot-wrapper">
@@ -77,12 +77,12 @@
   </portlet>
   <div v-else>
     <entity-crud-form-builder
-        ref="formBuilder"
-        v-model:value="inputData"
-        :disable="false"
-        :copy-on-click="copyOnClick"
-        @onInputClick="onInputClick"
-        @onCopyToClipboard="onCopyToClipboard"
+      ref="formBuilder"
+      v-model:value="inputData"
+      :disable="false"
+      :copy-on-click="copyOnClick"
+      @onInputClick="onInputClick"
+      @onCopyToClipboard="onCopyToClipboard"
     >
       <template #before-form-builder>
         <div class="slot-wrapper">
@@ -99,10 +99,10 @@
 </template>
 
 <script>
-import Portlet from '../../../components/Portlet';
-import EntityMixin from '../../../mixins/EntityMixin';
-import { inputMixin } from 'quasar-form-builder';
-import EntityCrudFormBuilder from '../EntityCrudFormBuilder';
+import { inputMixin } from 'quasar-form-builder'
+import Portlet from '../../../components/Portlet.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
 
 export default {
   name: 'EntityEdit',
