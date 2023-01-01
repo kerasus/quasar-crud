@@ -30,7 +30,7 @@ import { inputMixin } from 'quasar-form-builder'
 export default {
   name: 'EntityInput',
   components: {
-    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
+    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex.vue')),
   },
   mixins: [inputMixin],
   props: {

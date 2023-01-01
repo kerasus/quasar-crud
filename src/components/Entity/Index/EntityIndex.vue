@@ -174,10 +174,10 @@
 
 <script>
 import { inputMixin } from 'quasar-form-builder'
-import Portlet from '../../../components/Portlet.vue'
+import Portlet from '../../Portlet.vue'
+import EntityIndexTable from './EntityIndexTable.vue'
 import EntityMixin from '../../../mixins/EntityMixin.js'
 import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
-import EntityIndexTable from '../../../components/Entity/Index/EntityIndexTable.vue'
 
 export default {
   name: 'EntityIndex',
