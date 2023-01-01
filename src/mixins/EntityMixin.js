@@ -86,7 +86,7 @@ const EntityMixin = {
       this.$axios = axios
     }
   },
-  emits: ['onInputClick', 'onCopyToClipboard'],
+  emits: ['onInputClick', 'onCopyToClipboard', 'onInputKeyPress'],
   methods: {
     onInputClick (data) {
       this.$emit('onInputClick', data)

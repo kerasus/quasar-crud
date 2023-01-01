@@ -47,7 +47,8 @@ export default {
   emits: [
     'update:value',
     'onInputClick',
-    'onCopyToClipboard'
+    'onCopyToClipboard',
+    'onInputKeyPress'
   ],
   data() {
     return {
