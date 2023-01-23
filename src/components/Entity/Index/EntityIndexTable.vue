@@ -4,6 +4,8 @@
       ref="table"
       v-model:pagination="inputData.pagination"
       v-model:selected="tableChosenValues"
+      class="wrap"
+      :wrap-cells="true"
       :grid="tableGridSize"
       :rows="inputData.data"
       :columns="columns"
