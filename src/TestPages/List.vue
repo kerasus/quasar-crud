@@ -2,6 +2,7 @@
   <entity-index v-model:value="inputs"
                 v-model:table-selected-values="selected"
                 title="لیست کاربران"
+                show-no-entity-slot
                 :api="api"
                 :table="table"
                 :table-keys="tableKeys"
@@ -9,6 +10,9 @@
                 :item-indicator-key="'first_name'"
                 :create-route-name="'User.Create'"
                 :default-layout="true">
+    <template #no-entity>
+        THERE IS NOTHING TO SHOW RIGHT NOW.
+    </template>
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
       <q-td :props="inputData.props">
         <template v-if="inputData.props.col.name === 'thumbnail'">
