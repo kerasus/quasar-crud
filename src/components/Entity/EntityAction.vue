@@ -1,15 +1,17 @@
 <template>
   <portlet v-if="defaultLayout"
            ref="portlet"
-           class="entity-action"
-  >
+           class="entity-action">
     <template #title>
       <slot name="title">
         {{ formTitle }}
       </slot>
     </template>
     <template #toolbar>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'"
+      <q-btn v-if="showExpandButton"
+             flat
+             round
+             :icon="(expanded) ? 'expand_less' : 'expand_more'"
              @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
@@ -20,53 +22,54 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <div class="slot-wrapper">
-          <slot name="before-form-builder"></slot>
+          <slot name="before-form-builder" />
         </div>
         <entity-crud-form-builder ref="formBuilder"
                                   v-model:value="inputData"
                                   :disable="false"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
-                                  @onCopyToClipboard="onCopyToClipboard"
-        />
+                                  @onCopyToClipboard="onCopyToClipboard" />
         <div class="slot-wrapper">
-          <slot name="after-form-builder"></slot>
+          <slot name="after-form-builder" />
         </div>
         <q-inner-loading :showing="entityLoading">
-          <q-spinner-ball color="primary" size="50px"/>
+          <q-spinner-ball color="primary"
+                          size="50px" />
         </q-inner-loading>
       </q-expansion-item>
     </template>
     <template #actions>
       <q-card-actions>
-        <q-btn color="primary" :loading="entityLoading" :disable="entityLoading" @click="doAction">
+        <q-btn color="primary"
+               :loading="entityLoading"
+               :disable="entityLoading"
+               @click="doAction">
           {{ actionTitle }}
         </q-btn>
       </q-card-actions>
     </template>
     <template #afterActions>
       <div class="slot-wrapper">
-        <slot name="afterAction"/>
+        <slot name="afterAction" />
       </div>
     </template>
   </portlet>
   <div v-else>
-    <entity-crud-form-builder
-      ref="formBuilder"
-      v-model:value="inputData"
-      :disable="false"
-      :copy-on-click="copyOnClick"
-      @onInputClick="onInputClick"
-      @onCopyToClipboard="onCopyToClipboard"
-    >
+    <entity-crud-form-builder ref="formBuilder"
+                              v-model:value="inputData"
+                              :disable="false"
+                              :copy-on-click="copyOnClick"
+                              @onInputClick="onInputClick"
+                              @onCopyToClipboard="onCopyToClipboard">
       <template #before-form-builder>
         <div class="slot-wrapper">
-          <slot name="before-form-builder"></slot>
+          <slot name="before-form-builder" />
         </div>
       </template>
       <template #after-form-builder>
         <div class="slot-wrapper">
-          <slot name="after-form-builder"></slot>
+          <slot name="after-form-builder" />
         </div>
       </template>
     </entity-crud-form-builder>
@@ -111,8 +114,8 @@ export default {
     },
     defaultLayout: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   emits: ['onActionSuccess', 'onActionError'],
   data () {
@@ -127,18 +130,18 @@ export default {
       const formData = this.getFormData()
       this.beforeDoAction(formData, this.setNewInputData)
       const axiosPromise = this.getAxiosPromise(this.actionMethod, this.actionApi, formData)
-          if (!axiosPromise) {
-            return
-          }
+      if (!axiosPromise) {
+        return
+      }
       axiosPromise
-          .then((response) => {
-            this.entityLoading = false
-            this.$emit('onActionSuccess', response)
-          })
-          .catch((error) => {
-            this.entityLoading = false
-            this.$emit('onActionError', error)
-          })
+        .then((response) => {
+          this.entityLoading = false
+          this.$emit('onActionSuccess', response)
+        })
+        .catch((error) => {
+          this.entityLoading = false
+          this.$emit('onActionError', error)
+        })
     },
     getAxiosPromise (actionMethod, address, data) {
       switch (actionMethod) {
@@ -151,7 +154,7 @@ export default {
         case 'delete':
           return this.$axios.delete(address, { headers: this.getHeaders() })
         default:
-            return false
+          return false
       }
     }
 

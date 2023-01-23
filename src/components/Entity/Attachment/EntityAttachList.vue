@@ -1,29 +1,39 @@
 <template>
-  <entity-index-table
-    v-model:value="tableData"
-    :columns="table.columns"
-    :title="listTitle"
-    :loading="entityLoading"
-    :change-page="changePage"
-    @search="search"
-  >
+  <entity-index-table v-model:value="tableData"
+                      :columns="table.columns"
+                      :title="listTitle"
+                      :loading="entityLoading"
+                      :change-page="changePage"
+                      @search="search">
     <template #entity-index-table-cell="{inputData}">
-      <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
+      <slot name="table-cell"
+            :inputData="inputData"
+            :showConfirmRemoveDialog="showConfirmRemoveDialog">
         <q-td :props="inputData.props">
           {{ inputData.props.value }}
         </q-td>
       </slot>
     </template>
   </entity-index-table>
-  <q-dialog v-model="confirmRemoveDialog" persistent>
+  <q-dialog v-model="confirmRemoveDialog"
+            persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <q-icon name="warning" color="primary" size="md"/>
+        <q-icon name="warning"
+                color="primary"
+                size="md" />
         <span class="q-ml-sm">{{ confirmRemoveMessage }}</span>
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn v-close-popup flat label="انصراف" color="primary" />
-        <q-btn v-close-popup flat label="تایید" color="primary" @click="removeItem" />
+        <q-btn v-close-popup
+               flat
+               label="انصراف"
+               color="primary" />
+        <q-btn v-close-popup
+               flat
+               label="تایید"
+               color="primary"
+               @click="removeItem" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -32,7 +42,7 @@
 <script>
 import { inputMixin } from 'quasar-form-builder'
 import EntityMixin from '../../../mixins/EntityMixin.js'
-import  EntityIndexTable from '../../Entity/Index/EntityIndexTable.vue'
+import EntityIndexTable from '../../Entity/Index/EntityIndexTable.vue'
 export default {
   name: 'EntityAttachList',
   components: { EntityIndexTable },

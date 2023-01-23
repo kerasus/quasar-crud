@@ -1,30 +1,29 @@
 <template>
   <div class="slot-wrapper">
-    <slot name="before-form-builder"></slot>
+    <slot name="before-form-builder" />
   </div>
   <form-builder ref="formBuilder"
                 v-model:value="computedInputs"
                 :disable="disable"
                 :readonly="readonly"
                 @onClick="onInputClick"
-                @onKeyPress="onInputKeyPress"
-  />
+                @onKeyPress="onInputKeyPress" />
   <div class="slot-wrapper">
-    <slot name="after-form-builder"></slot>
+    <slot name="after-form-builder" />
   </div>
 </template>
 
 <script>
-import {shallowRef} from 'vue'
-import {copyToClipboard} from 'quasar'
+import { shallowRef } from 'vue'
+import { copyToClipboard } from 'quasar'
 import EntityMixin from '../../mixins/EntityMixin.js'
 import EntityInput from './Attachment/EntityInput.vue'
-import {FormBuilder, inputMixin} from 'quasar-form-builder'
+import { FormBuilder, inputMixin } from 'quasar-form-builder'
 
 const EntityInputComp = shallowRef(EntityInput)
 export default {
   name: 'EntityCrudFormBuilder',
-  components: {FormBuilder},
+  components: { FormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
     value: {
@@ -99,8 +98,8 @@ export default {
             return
           }
 
-          let selected = (selectionMode === 'multiple') ? [] : null
-          let values = (selectionMode === 'multiple') ? [] : null
+          const selected = (selectionMode === 'multiple') ? [] : null
+          const values = (selectionMode === 'multiple') ? [] : null
           input.value.forEach(value => {
             if (!value[identifyKey]) {
               value = null
@@ -131,9 +130,9 @@ export default {
       const targetValue = data?.event?.target?.value
       if (this.copyOnClick && targetValue) {
         copyToClipboard(targetValue)
-            .then(() => {
-              this.$emit('onCopyToClipboard', data)
-            })
+          .then(() => {
+            this.$emit('onCopyToClipboard', data)
+          })
       }
       this.$emit('onInputClick', data)
     },

@@ -1,13 +1,12 @@
 <template>
   <q-card class="crud-form">
-    <q-btn
-      push
-      color="positive"
-      text-color="white"
-      :label="'ثبت'"
-      align="right"
-      class="form-button"
-      @click="attachData"/>
+    <q-btn push
+           color="positive"
+           text-color="white"
+           :label="'ثبت'"
+           align="right"
+           class="form-button"
+           @click="attachData" />
     <div class="col-12 no-padding">
       <form-builder v-model:value="computedCrudFormInputs" />
     </div>

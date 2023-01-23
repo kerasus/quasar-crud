@@ -66,9 +66,9 @@ const EntityMixin = {
     },
     beforeGetData: {
       default: () => {},
-      type: Function,
+      type: Function
     },
-    afterGetData:{
+    afterGetData: {
       default: () => {},
       type: Function
     },
@@ -98,14 +98,13 @@ const EntityMixin = {
       this.$emit('onCopyToClipboard', data)
     },
     runNeededMethod (substituteMethod, callBackMethod) {
-      if (!!substituteMethod && substituteMethod()){
+      if (!!substituteMethod && substituteMethod()) {
         substituteMethod()
         return
       }
       callBackMethod()
     },
     getEntityId () {
-
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]
@@ -138,8 +137,8 @@ const EntityMixin = {
     },
     formHasFileInput (inputData) {
       let has = false
-      const inputs = inputData ? inputData : this.inputData
-      inputs.forEach( input => {
+      const inputs = inputData || this.inputData
+      inputs.forEach(input => {
         if (input.type === 'file') {
           has = true
         } else if (input.type === 'formBuilder') {
@@ -247,7 +246,7 @@ const EntityMixin = {
 
           input.selected = validChainedObject
           if (Array.isArray(input.selected)) {
-            input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
+            input.value = input.selected.map(selected => selected[input.itemIdentifyKey])
             return
           }
           if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
@@ -255,7 +254,6 @@ const EntityMixin = {
           } else {
             console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
           }
-
         })
       }
 
@@ -266,6 +264,7 @@ const EntityMixin = {
     },
     getValidChainedObject (object, keys) {
       if (!Array.isArray(keys) && typeof keys !== 'string') {
+        // eslint-disable-next-line
         console.warn('keys must be array or string')
         return false
       }

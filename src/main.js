@@ -1,5 +1,5 @@
-import { createApp } from 'vue'
 import App from './App.vue'
+import { createApp } from 'vue'
 import { Quasar } from 'quasar'
 import quasarUserOptions from './quasar-user-options.js'
 import { createRouter, createWebHistory } from 'vue-router'

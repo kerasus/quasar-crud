@@ -1,52 +1,71 @@
 <template>
-  <slot v-if="currentComponent === 'entity-create'" name="before-entity-create"></slot>
-  <slot v-if="currentComponent === 'entity-show'" name="before-entity-show"></slot>
-  <slot v-if="currentComponent === 'entity-edit'" name="before-entity-edit"></slot>
-  <slot v-if="currentComponent === 'entity-index'" name="before-entity-index"></slot>
-  <component
-    :is="currentComponent"
-    v-bind="neededConfig"
-    ref="entityComponent"
-    v-model:value="getNeededInputs"
-    v-model:table-selected-values="tableChosenValues"
-    :table-selection-mode="getTableSelectionMode"
-    :before-load-input-data="getNeededProp('beforeLoad','InputData')"
-    :after-load-input-data="getNeededProp('afterLoad','InputData')"
-    :before-get-data="getNeededProp('beforeGet','Data')"
-    :on-add-button="getNeededProp('on','AddButton')"
-    :on-cancel-button="getNeededProp('on','CancelButton')"
-    :on-save-button="getNeededProp('on','SaveButton')"
-    :on-reload-button="getNeededProp('on','ReloadButton')"
-    :on-search-button="getNeededProp('on','SearchButton')"
-    :on-edit-button="getNeededProp('on','EditButton')"
-    :on-list-button="getNeededProp('on','ListButton')"
-  >
+  <slot v-if="currentComponent === 'entity-create'"
+        name="before-entity-create" />
+  <slot v-if="currentComponent === 'entity-show'"
+        name="before-entity-show" />
+  <slot v-if="currentComponent === 'entity-edit'"
+        name="before-entity-edit" />
+  <slot v-if="currentComponent === 'entity-index'"
+        name="before-entity-index" />
+  <component :is="currentComponent"
+             v-bind="neededConfig"
+             ref="entityComponent"
+             v-model:value="getNeededInputs"
+             v-model:table-selected-values="tableChosenValues"
+             :table-selection-mode="getTableSelectionMode"
+             :before-load-input-data="getNeededProp('beforeLoad','InputData')"
+             :after-load-input-data="getNeededProp('afterLoad','InputData')"
+             :before-get-data="getNeededProp('beforeGet','Data')"
+             :on-add-button="getNeededProp('on','AddButton')"
+             :on-cancel-button="getNeededProp('on','CancelButton')"
+             :on-save-button="getNeededProp('on','SaveButton')"
+             :on-reload-button="getNeededProp('on','ReloadButton')"
+             :on-search-button="getNeededProp('on','SearchButton')"
+             :on-edit-button="getNeededProp('on','EditButton')"
+             :on-list-button="getNeededProp('on','ListButton')">
     <template v-slot:before-form-builder>
-      <slot v-if="currentComponent === 'entity-create'" name="entity-create-before-form-builder"></slot>
-      <slot v-if="currentComponent === 'entity-show'" name="entity-show-before-form-builder"></slot>
-      <slot v-if="currentComponent === 'entity-edit'" name="entity-edit-before-form-builder"></slot>
-      <slot v-if="currentComponent === 'entity-index'" name="entity-index-before-form-builder"></slot>
+      <slot v-if="currentComponent === 'entity-create'"
+            name="entity-create-before-form-builder" />
+      <slot v-if="currentComponent === 'entity-show'"
+            name="entity-show-before-form-builder" />
+      <slot v-if="currentComponent === 'entity-edit'"
+            name="entity-edit-before-form-builder" />
+      <slot v-if="currentComponent === 'entity-index'"
+            name="entity-index-before-form-builder" />
     </template>
     <template v-slot:after-form-builder>
-      <slot v-if="currentComponent === 'entity-create'" name="entity-create-after-form-builder"></slot>
-      <slot v-if="currentComponent === 'entity-show'" name="entity-show-after-form-builder"></slot>
-      <slot v-if="currentComponent === 'entity-edit'" name="entity-edit-after-form-builder"></slot>
-      <slot v-if="currentComponent === 'entity-index'" name="entity-index-after-form-builder"></slot>
+      <slot v-if="currentComponent === 'entity-create'"
+            name="entity-create-after-form-builder" />
+      <slot v-if="currentComponent === 'entity-show'"
+            name="entity-show-after-form-builder" />
+      <slot v-if="currentComponent === 'entity-edit'"
+            name="entity-edit-after-form-builder" />
+      <slot v-if="currentComponent === 'entity-index'"
+            name="entity-index-after-form-builder" />
     </template>
     <template v-slot:before-index-table>
-      <slot v-if="currentComponent === 'entity-index'" name="entity-crud-before-index-table"></slot>
+      <slot v-if="currentComponent === 'entity-index'"
+            name="entity-crud-before-index-table" />
     </template>
     <template v-slot:after-index-table>
-      <slot v-if="currentComponent === 'entity-index'" name="entity-crud-after-index-table"></slot>
+      <slot v-if="currentComponent === 'entity-index'"
+            name="entity-crud-after-index-table" />
     </template>
     <template v-slot:table-cell="{inputData, showConfirmRemoveDialog}">
-      <slot v-if="currentComponent === 'entity-index'" name="entity-crud-table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog"></slot>
+      <slot v-if="currentComponent === 'entity-index'"
+            name="entity-crud-table-cell"
+            :inputData="inputData"
+            :showConfirmRemoveDialog="showConfirmRemoveDialog" />
     </template>
   </component>
-  <slot v-if="currentComponent === 'entity-create'" name="after-entity-create"></slot>
-  <slot v-if="currentComponent === 'entity-show'" name="after-entity-show"></slot>
-  <slot v-if="currentComponent === 'entity-edit'" name="after-entity-edit"></slot>
-  <slot v-if="currentComponent === 'entity-index'" name="after-entity-index"></slot>
+  <slot v-if="currentComponent === 'entity-create'"
+        name="after-entity-create" />
+  <slot v-if="currentComponent === 'entity-show'"
+        name="after-entity-show" />
+  <slot v-if="currentComponent === 'entity-edit'"
+        name="after-entity-edit" />
+  <slot v-if="currentComponent === 'entity-index'"
+        name="after-entity-index" />
 </template>
 
 <script>

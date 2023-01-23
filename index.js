@@ -23,4 +23,3 @@ export {
   EntityCrudFormBuilder,
   EntityAction
 }
-
