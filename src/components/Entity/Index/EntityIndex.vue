@@ -93,8 +93,14 @@
             <div class="slot-wrapper">
               <slot name="before-index-table" />
             </div>
+            <div class="slot-wrapper no-entity"
+                 v-if="isNoEntityModeSet"
+            >
+              <slot name="no-entity" />
+            </div>
             <entity-index-table v-model:value="tableData"
                                 v-model:table-selected-values="tableChosenValues"
+                                v-if="!isNoEntityModeSet"
                                 :table-selection-mode="tableSelectionMode"
                                 :columns="table.columns"
                                 :title="title"
@@ -209,6 +215,10 @@ export default {
   components: { Portlet, EntityIndexTable, EntityCrudFormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
+    showNoEntitySlot: {
+      default: false,
+      type: Boolean
+    },
     showCloseButton: {
       default: false,
       type: Boolean
@@ -322,6 +332,9 @@ export default {
         return [this.tableSelectedValues]
       },
       set () {}
+    },
+    isNoEntityModeSet () {
+       return (this.showNoEntitySlot && this.tableData.data.length === 0)
     }
   },
   mounted () {
