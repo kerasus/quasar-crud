@@ -1,13 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { Quasar } from 'quasar'
-import quasarUserOptions from './quasar-user-options'
+import quasarUserOptions from './quasar-user-options.js'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import List from './TestPages/List'
-import Show from './TestPages/Show'
-import Create from './TestPages/Create'
-import Edit from './TestPages/Edit'
+import List from './TestPages/List.vue'
+import Show from './TestPages/Show.vue'
+import Create from './TestPages/Create.vue'
+import Edit from './TestPages/Edit.vue'
 
 const routes = [
   { name: 'User.Index', path: '/', component: List },
