@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as shvl from 'shvl'
 import { shallowRef } from 'vue'
 import EntityInput from '../components/Entity/Attachment/EntityInput.vue'
 
@@ -152,6 +153,8 @@ const EntityMixin = {
       if (this.formHasFileInput()) {
         return { 'Content-Type': 'multipart/form-data' }
       }
+
+      return {}
     },
     isFile (file) {
       return file instanceof File
@@ -175,26 +178,11 @@ const EntityMixin = {
         if (formHasFileInput) {
           formData.append(item.name, item.value)
         } else {
-          this.createChainedObject(formData, item.name, item.value)
+          shvl.set(formData, item.name, item.value)
         }
       })
 
       return formData
-    },
-    createChainedObject (formData, chainedName, value) {
-      let keysArray = chainedName
-      if (typeof chainedName === 'string') {
-        keysArray = chainedName.split('.')
-      }
-      if (keysArray.length === 1) {
-        formData[keysArray[0]] = value
-      } else {
-        if (typeof formData[keysArray[0]] === 'undefined') {
-          formData[keysArray[0]] = {}
-        }
-        const newKeysArray = keysArray.filter((item, index) => index !== 0)
-        this.createChainedObject(formData[keysArray[0]], newKeysArray, value)
-      }
     },
     toggleFullscreen () {
       const target = this.$refs.portlet
@@ -249,11 +237,19 @@ const EntityMixin = {
             input.value = input.selected.map(selected => selected[input.itemIdentifyKey])
             return
           }
-          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
-            input.value = input.selected[input.indexConfig.itemIdentifyKey]
-          } else {
-            console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
+
+          if (!input.indexConfig || !input.indexConfig.itemIdentifyKey) {
+            console.error('input.indexConfig.itemIdentifyKey not set: ', input)
+            return
           }
+
+          const selectedVal = shvl.get(input.selected, input.indexConfig.itemIdentifyKey)
+          if (!input.selected || !selectedVal) {
+            console.error('input.selected[input.indexConfig.itemIdentifyKey] does not exist: ', input)
+            return
+          }
+
+          input.value = selectedVal
         })
       }
 
