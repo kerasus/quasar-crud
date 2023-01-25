@@ -49,10 +49,34 @@
                                   :disable="false"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
-                                  @onCopyToClipboard="onCopyToClipboard" />
-        <div class="slot-wrapper">
-          <slot name="after-form-builder" />
-        </div>
+                                  @onCopyToClipboard="onCopyToClipboard">
+          <template #entity-index-table-cell="slotProps">
+            <slot name="entity-index-table-cell"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-body="slotProps">
+            <slot name="entity-index-table-body"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-selection-cell="slotProps">
+            <slot name="entity-index-table-selection-cell"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-expanded-row="slotProps">
+            <slot name="entity-index-table-expanded-row"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #before-form-builder>
+            <div class="slot-wrapper">
+              <slot name="before-form-builder" />
+            </div>
+          </template>
+          <template #after-form-builder>
+            <div class="slot-wrapper">
+              <slot name="after-form-builder" />
+            </div>
+          </template>
+        </entity-crud-form-builder>
         <q-inner-loading :showing="entityLoading">
           <q-spinner-ball color="primary"
                           size="50px" />
@@ -67,6 +91,22 @@
                               :copy-on-click="copyOnClick"
                               @onInputClick="onInputClick"
                               @onCopyToClipboard="onCopyToClipboard">
+      <template #entity-index-table-cell="slotProps">
+        <slot name="entity-index-table-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-body="slotProps">
+        <slot name="entity-index-table-body"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-selection-cell="slotProps">
+        <slot name="entity-index-table-selection-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-expanded-row="slotProps">
+        <slot name="entity-index-table-expanded-row"
+              v-bind="slotProps || {}" />
+      </template>
       <template #before-form-builder>
         <div class="slot-wrapper">
           <slot name="before-form-builder" />

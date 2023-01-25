@@ -84,7 +84,24 @@
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
                                   @onInputKeyPress="onInputKeyPress"
-                                  @onCopyToClipboard="onCopyToClipboard" />
+                                  @onCopyToClipboard="onCopyToClipboard">
+          <template #entity-index-table-cell="slotProps">
+            <slot name="entity-index-table-cell"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-body="slotProps">
+            <slot name="entity-index-table-body"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-selection-cell="slotProps">
+            <slot name="entity-index-table-selection-cell"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-expanded-row="slotProps">
+            <slot name="entity-index-table-expanded-row"
+                  v-bind="slotProps || {}" />
+          </template>
+        </entity-crud-form-builder>
         <div class="slot-wrapper">
           <slot name="after-form-builder" />
         </div>
@@ -93,15 +110,16 @@
             <div class="slot-wrapper">
               <slot name="before-index-table" />
             </div>
-            <div class="slot-wrapper no-entity"
-                 v-if="isNoEntityModeSet"
-            >
+            <div v-if="isNoEntityModeSet"
+                 class="slot-wrapper no-entity">
               <slot name="no-entity" />
             </div>
-            <entity-index-table v-model:value="tableData"
+            <entity-index-table v-if="!isNoEntityModeSet"
+                                v-model:value="tableData"
                                 v-model:table-selected-values="tableChosenValues"
-                                v-if="!isNoEntityModeSet"
                                 :table-selection-mode="tableSelectionMode"
+                                :table-row-expandable="tableRowExpandable"
+                                :table-row-default-expand-action="tableRowDefaultExpandAction"
                                 :columns="table.columns"
                                 :title="title"
                                 :row-key="rowKey"
@@ -109,14 +127,26 @@
                                 :change-page="changePage"
                                 @update:table-selected-values="updateSelectedValues"
                                 @search="search">
-              <template #entity-index-table-cell="{inputData}">
+              <template #table-cell="slotProps">
                 <slot name="table-cell"
-                      :inputData="inputData"
+                      :inputData="slotProps"
                       :showConfirmRemoveDialog="showConfirmRemoveDialog">
                   <q-td :props="inputData.props">
-                    {{ inputData.props.value }}
+                    {{ slotProps.col.value }}
                   </q-td>
                 </slot>
+              </template>
+              <template #entity-index-table-body="slotProps">
+                <slot name="entity-index-table-body"
+                      v-bind="slotProps || {}" />
+              </template>
+              <template #entity-index-table-selection-cell="slotProps">
+                <slot name="entity-index-table-selection-cell"
+                      v-bind="slotProps || {}" />
+              </template>
+              <template #entity-index-table-expanded-row="slotProps">
+                <slot name="entity-index-table-expanded-row"
+                      v-bind="slotProps || {}" />
               </template>
             </entity-index-table>
             <div class="slot-wrapper">
@@ -157,6 +187,22 @@
                               @onInputClick="onInputClick"
                               @onInputKeyPress="onInputKeyPress"
                               @onCopyToClipboard="onCopyToClipboard">
+      <template #entity-index-table-cell="slotProps">
+        <slot name="entity-index-table-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-body="slotProps">
+        <slot name="entity-index-table-body"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-selection-cell="slotProps">
+        <slot name="entity-index-table-selection-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-expanded-row="slotProps">
+        <slot name="entity-index-table-expanded-row"
+              v-bind="slotProps || {}" />
+      </template>
       <template #before-form-builder>
         <div class="slot-wrapper">
           <slot name="before-form-builder" />
@@ -174,6 +220,8 @@
     <entity-index-table v-model:value="tableData"
                         v-model:table-selected-values="tableChosenValues"
                         :table-selection-mode="tableSelectionMode"
+                        :table-row-expandable="tableRowExpandable"
+                        :table-row-default-expand-action="tableRowDefaultExpandAction"
                         :columns="table.columns"
                         :title="title"
                         :row-key="rowKey"
@@ -183,7 +231,7 @@
                         @update:table-selected-values="updateSelectedValues"
                         @search="search">
       <template #entity-index-table-cell="{inputData}">
-        <slot name="table-cell"
+        <slot name="entity-index-table-cell"
               :inputData="inputData"
               :showConfirmRemoveDialog="showConfirmRemoveDialog">
           <q-td :props="inputData.props">
@@ -240,6 +288,14 @@ export default {
       default () {
         return 'none'
       }
+    },
+    tableRowExpandable: {
+      type: Boolean,
+      default: false
+    },
+    tableRowDefaultExpandAction: {
+      type: Boolean,
+      default: true
     },
     itemIndicatorKey: {
       type: String,
@@ -334,7 +390,7 @@ export default {
       set () {}
     },
     isNoEntityModeSet () {
-       return (this.showNoEntitySlot && this.tableData.data.length === 0)
+      return (this.showNoEntitySlot && this.tableData.data.length === 0)
     }
   },
   mounted () {

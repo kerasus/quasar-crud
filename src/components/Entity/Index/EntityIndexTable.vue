@@ -58,18 +58,50 @@
         </q-btn>
       </template>
 
-      <template #body-cell="props">
-        <slot name="entity-index-table-cell"
-              :inputData="{props}">
-          <q-td :props="props">
-            {{ props.value }}
-          </q-td>
-        </slot>
-      </template>
-
-      <template v-slot:item="props">
+      <template #item="props">
         <slot name="entity-index-table-item-cell"
               :inputData="{props}" />
+      </template>
+
+      <template #body="props">
+        <q-tr :props="props">
+          <q-td v-if="tableSelectionMode || tableRowExpandable">
+            <slot name="entity-index-table-selection-cell"
+                  :props="props">
+              <q-checkbox v-model="props.selected" />
+            </slot>
+          </q-td>
+          <slot name="entity-index-table-body"
+                v-bind="props">
+            <q-td v-for="(col, colIndex) in props.cols"
+                  :key="col.name"
+                  :props="props">
+              <slot name="entity-index-table-cell"
+                    :props="props"
+                    :col="col">
+                <template v-if="tableRowExpandable && tableRowDefaultExpandAction && colIndex === props.cols.length - 1">
+                  <q-btn v-if="tableRowExpandable && tableRowDefaultExpandAction"
+                         flat
+                         round
+                         :icon="props.expand ? 'expand_less' : 'expand_more'"
+                         @click="props.expand = !props.expand" />
+                  {{ col.value }}
+                </template>
+                <template v-else>
+                  {{ col.value }}
+                </template>
+              </slot>
+            </q-td>
+          </slot>
+        </q-tr>
+        <q-tr v-if="tableRowExpandable"
+              v-show="props.expand"
+              :props="props">
+          <q-td colspan="100%">
+            <slot name="entity-index-table-expanded-row"
+                  :props="props" />
+          </q-td>
+        </q-tr>
       </template>
 
       <template v-slot:pagination>
@@ -155,6 +187,14 @@ export default {
       default () {
         return []
       }
+    },
+    tableRowExpandable: {
+      type: Boolean,
+      default: false
+    },
+    tableRowDefaultExpandAction: {
+      type: Boolean,
+      default: true
     },
     tableSelectionMode: {
       type: String,

@@ -10,6 +10,29 @@
                :before-get-data="beforeGetData"
                :after-get-data="afterGetData"
                :defaultLayout="defaultLayout">
+    <template #entity-index-table-selection-cell="data">
+      <q-checkbox v-model="data.props.selected"
+                  @update:model-value="()=>{ data.props.expand = !data.props.selected }" />
+    </template>
+    <!--    <template #entity-input-table-cell="slotProps">-->
+    <!--      {{ slotProps.inputData.col.value }}-->
+    <!--    </template>-->
+    <!--    <template #entity-index-table-body="props">-->
+    <!--      <q-tr :props="props">-->
+    <!--        <q-td v-for="col in props.cols"-->
+    <!--              :key="col.name"-->
+    <!--              :props="props">-->
+    <!--          {{ col.value }}-->
+    <!--        </q-td>-->
+    <!--      </q-tr>-->
+    <!--    </template>-->
+    <!--    <template #entity-input-table-cell="slotProps">-->
+    <!--      {{ slotProps.inputData.col.value }}-->
+    <!--    </template>-->
+
+    <template #entity-index-table-expanded-row="data">
+      {{ data.props.row }}
+    </template>
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder"
                 inline-actions
@@ -70,6 +93,86 @@ export default {
             { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-6' },
             { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-6' }
           ]
+        },
+        {
+          type: 'entity',
+          name: 'subcategory',
+          selectionMode: 'multiple',
+          buttonColor: 'red',
+          buttonTextColor: 'black',
+          buttonBadgeColor: 'green',
+          label: 'زیر گروه',
+          tableRowExpandable: true,
+          tableRowDefaultExpandAction: false,
+          indexConfig: {
+            apiAddress: 'https://reqres.in/api/users',
+            tableTitle: 'لیست محصولات',
+            tableKeys: {
+              data: 'data',
+              total: 'total',
+              currentPage: 'page',
+              perPage: 'per_page',
+              pageKey: 'page'
+            },
+            table: {
+              columns: [
+                {
+                  name: 'id',
+                  required: true,
+                  label: '#',
+                  align: 'left',
+                  field: row => row.id
+                },
+                {
+                  name: 'thumbnail',
+                  required: true,
+                  label: 'تصویر',
+                  align: 'left',
+                  field: row => row.avatar
+                },
+                {
+                  name: 'first_name',
+                  required: true,
+                  label: 'نام',
+                  align: 'left',
+                  field: row => row.first_name
+                },
+                {
+                  name: 'last_name',
+                  required: true,
+                  label: 'نام خانوادگی',
+                  align: 'left',
+                  field: row => row.last_name
+                },
+                {
+                  name: 'email',
+                  required: true,
+                  label: 'ایمیل',
+                  align: 'left',
+                  field: row => row.email
+                },
+                {
+                  name: 'actions',
+                  required: true,
+                  label: '',
+                  align: 'left',
+                  field: ''
+                }
+              ],
+              data: []
+            },
+            inputs: [
+              { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
+              { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
+              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' }
+            ],
+            itemIdentifyKey: 'id'
+          },
+          itemIndicatorKey: 'first_name',
+          value: [],
+          responseKey: '',
+          selected: [],
+          col: 'col-md-12'
         }
       ],
       beforeFormBuilder: true,
@@ -81,6 +184,9 @@ export default {
     this.api += '/' + this.$route.params.id
   },
   methods: {
+    loggg (label, data) {
+      console.log(label, data)
+    },
     beforeGetData() {
       // eslint-disable-next-line
       console.log('before get data: ')

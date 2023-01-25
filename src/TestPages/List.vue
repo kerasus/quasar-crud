@@ -11,7 +11,7 @@
                 :create-route-name="'User.Create'"
                 :default-layout="true">
     <template #no-entity>
-        THERE IS NOTHING TO SHOW RIGHT NOW.
+      THERE IS NOTHING TO SHOW RIGHT NOW.
     </template>
     <template #table-cell="{inputData, showConfirmRemoveDialog}">
       <q-td :props="inputData.props">

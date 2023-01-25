@@ -7,7 +7,24 @@
                 :disable="disable"
                 :readonly="readonly"
                 @onClick="onInputClick"
-                @onKeyPress="onInputKeyPress" />
+                @onKeyPress="onInputKeyPress">
+    <template #entity-index-table-cell="slotProps">
+      <slot name="entity-index-table-cell"
+            v-bind="slotProps || {}" />
+    </template>
+    <template #entity-index-table-body="slotProps">
+      <slot name="entity-index-table-body"
+            v-bind="slotProps || {}" />
+    </template>
+    <template #entity-index-table-selection-cell="slotProps">
+      <slot name="entity-index-table-selection-cell"
+            v-bind="slotProps || {}" />
+    </template>
+    <template #entity-index-table-expanded-row="slotProps">
+      <slot name="entity-index-table-expanded-row"
+            v-bind="slotProps || {}" />
+    </template>
+  </form-builder>
   <div class="slot-wrapper">
     <slot name="after-form-builder" />
   </div>
@@ -58,7 +75,7 @@ export default {
     computedInputs: {
       get() {
         return this.value.map(input => {
-          if (input.type !== 'entity') {
+          if (input.type.toString() !== 'entity') {
             return input
           }
           return this.getEntityInput(input)
@@ -163,11 +180,6 @@ export default {
 
       const indexConfig = input.indexConfig
       Object.assign(input, indexConfig)
-      // input.props.selectionMode = input.selectionMode
-      // input.props.label = input.label || input.name
-      // input.props.buttonBadgeColor = input.buttonBadgeColor
-      // input.props.buttonTextColor = input.buttonTextColor
-      // input.props.buttonColor = input.buttonColor
       if (typeof input.selected !== 'undefined') {
         return input
       }

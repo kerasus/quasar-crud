@@ -23,17 +23,36 @@
                     :table="table"
                     :table-keys="tableKeys"
                     :table-selection-mode="selectionMode"
+                    :table-row-expandable="tableRowExpandable"
+                    :table-row-default-expand-action="tableRowDefaultExpandAction"
                     :show-close-button="true"
                     :show-expand-button="false"
                     :row-key="itemIdentifyKey"
                     :item-indicator-key="itemIndicatorKey"
-                    @update:table-selected-values="onSelectedUpdate" />
+                    @update:table-selected-values="onSelectedUpdate">
+        <template #entity-index-table-cell="slotProps">
+          <slot name="entity-index-table-cell"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-body="slotProps">
+          <slot name="entity-index-table-body"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-selection-cell="slotProps">
+          <slot name="entity-index-table-selection-cell"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-expanded-row="slotProps">
+          <slot name="entity-index-table-expanded-row"
+                v-bind="slotProps || {}" />
+        </template>
+      </entity-index>
     </q-dialog>
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, useSlots, useAttrs } from 'vue'
 import { inputMixin } from 'quasar-form-builder'
 
 export default {
@@ -73,6 +92,14 @@ export default {
     selectionMode: {
       type: String,
       default: 'none'
+    },
+    tableRowExpandable: {
+      type: Boolean,
+      default: false
+    },
+    tableRowDefaultExpandAction: {
+      type: Boolean,
+      default: true
     },
     showTableItemsRouteName: {
       type: String,
@@ -137,13 +164,34 @@ export default {
       default: 'id'
     }
   },
+  setup(props, context) {
+    const slots1 = useSlots()
+    const attrs1 = useAttrs()
+
+    // context.expose({ slots1, attrs1 })
+
+    return {
+      slots1,
+      attrs1
+    }
+  },
   data () {
     return {
+      slots11: this.$slots,
+      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row'],
       expanded: true,
       selected: [],
       dialog: null
     }
   },
+  computed: {
+    slots22 () {
+      return this.$slots
+    }
+  },
+  // mounted () {
+  //   console.log('this.$slots', this.$slots)
+  // },
   methods: {
     onSelectedUpdate (values) {
       let selected = (this.selectionMode === 'multiple') ? [] : null
