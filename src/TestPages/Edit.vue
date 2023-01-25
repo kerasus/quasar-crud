@@ -12,7 +12,7 @@
                :defaultLayout="defaultLayout">
     <template #entity-index-table-selection-cell="data">
       <q-checkbox v-model="data.props.selected"
-                  @update:model-value="()=>{ data.props.expand = !data.props.selected }" />
+                  @update:model-value="expandRow(data.props)" />
     </template>
     <!--    <template #entity-input-table-cell="slotProps">-->
     <!--      {{ slotProps.inputData.col.value }}-->
@@ -103,7 +103,7 @@ export default {
           buttonBadgeColor: 'green',
           label: 'زیر گروه',
           tableRowExpandable: true,
-          tableRowDefaultExpandAction: false,
+          tableRowDefaultExpandAction: true,
           indexConfig: {
             apiAddress: 'https://reqres.in/api/users',
             tableTitle: 'لیست محصولات',
@@ -184,8 +184,8 @@ export default {
     this.api += '/' + this.$route.params.id
   },
   methods: {
-    loggg (label, data) {
-      console.log(label, data)
+    expandRow (props) {
+      props.expand = !props.selected
     },
     beforeGetData() {
       // eslint-disable-next-line
