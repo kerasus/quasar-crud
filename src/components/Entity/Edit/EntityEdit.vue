@@ -1,5 +1,7 @@
 <template>
-  <portlet v-if="defaultLayout" ref="portlet" class="entity-edit">
+  <portlet v-if="defaultLayout"
+           ref="portlet"
+           class="entity-edit">
     <template #title>
       <slot name="title">
         {{ title }}
@@ -7,40 +9,32 @@
     </template>
     <template #toolbar>
       <slot name="toolbar">
-        <q-btn
-          v-if="showReloadButton"
-          flat
-          round
-          icon="cached"
-          @click="runNeededMethod(onReloadButton, getData)"
-        >
+        <q-btn v-if="showReloadButton"
+               flat
+               round
+               icon="cached"
+               @click="runNeededMethod(onReloadButton, getData)">
           <q-tooltip> بارگذاری مجدد </q-tooltip>
         </q-btn>
-        <q-btn
-          v-if="showSaveButton"
-          flat
-          round
-          icon="check"
-          @click="runNeededMethod(onSaveButton, editEntity)"
-        >
+        <q-btn v-if="showSaveButton"
+               flat
+               round
+               icon="check"
+               @click="runNeededMethod(onSaveButton, editEntity)">
           <q-tooltip> ذخیره </q-tooltip>
         </q-btn>
-        <q-btn
-          v-if="showCloseButton"
-          flat
-          round
-          icon="close"
-          @click="runNeededMethod(onCancelButton, goToShowView)"
-        >
+        <q-btn v-if="showCloseButton"
+               flat
+               round
+               icon="close"
+               @click="runNeededMethod(onCancelButton, goToShowView)">
           <q-tooltip> لغو </q-tooltip>
         </q-btn>
-        <q-btn
-          v-if="showExpandButton"
-          flat
-          round
-          :icon="expanded ? 'expand_less' : 'expand_more'"
-          @click="expanded = !expanded"
-        >
+        <q-btn v-if="showExpandButton"
+               flat
+               round
+               :icon="expanded ? 'expand_less' : 'expand_more'"
+               @click="expanded = !expanded">
           <q-tooltip>
             <span v-if="expanded">عدم نمایش فرم</span>
             <span v-else>نمایش فرم</span>
@@ -50,50 +44,78 @@
     </template>
     <template #content>
       <q-expansion-item v-model="expanded">
-        <entity-crud-form-builder
-          :key="key"
-          ref="formBuilder"
-          v-model:value="inputData"
-          :disable="false"
-          :copy-on-click="copyOnClick"
-          @onInputClick="onInputClick"
-          @onCopyToClipboard="onCopyToClipboard"
-        >
+        <entity-crud-form-builder ref="formBuilder"
+                                  v-model:value="inputData"
+                                  :disable="false"
+                                  :copy-on-click="copyOnClick"
+                                  @onInputClick="onInputClick"
+                                  @onCopyToClipboard="onCopyToClipboard">
+          <template #entity-index-table-cell="slotProps">
+            <slot name="entity-index-table-cell"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-body="slotProps">
+            <slot name="entity-index-table-body"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-selection-cell="slotProps">
+            <slot name="entity-index-table-selection-cell"
+                  v-bind="slotProps || {}" />
+          </template>
+          <template #entity-index-table-expanded-row="slotProps">
+            <slot name="entity-index-table-expanded-row"
+                  v-bind="slotProps || {}" />
+          </template>
           <template #before-form-builder>
             <div class="slot-wrapper">
-              <slot name="before-form-builder"></slot>
+              <slot name="before-form-builder" />
             </div>
           </template>
           <template #after-form-builder>
             <div class="slot-wrapper">
-              <slot name="after-form-builder"></slot>
+              <slot name="after-form-builder" />
             </div>
           </template>
         </entity-crud-form-builder>
-        <q-inner-loading :showing="loading">
-          <q-spinner-ball color="primary" size="50px" />
+        <q-inner-loading :showing="entityLoading">
+          <q-spinner-ball color="primary"
+                          size="50px" />
         </q-inner-loading>
       </q-expansion-item>
     </template>
   </portlet>
   <div v-else>
-    <entity-crud-form-builder
-      :key="key"
-      ref="formBuilder"
-      v-model:value="inputData"
-      :disable="false"
-      :copy-on-click="copyOnClick"
-      @onInputClick="onInputClick"
-      @onCopyToClipboard="onCopyToClipboard"
-    >
+    <entity-crud-form-builder ref="formBuilder"
+                              v-model:value="inputData"
+                              :disable="false"
+                              :copy-on-click="copyOnClick"
+                              @onInputClick="onInputClick"
+                              @onCopyToClipboard="onCopyToClipboard">
+
+      <template #entity-index-table-cell="slotProps">
+        <slot name="entity-index-table-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-body="slotProps">
+        <slot name="entity-index-table-body"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-selection-cell="slotProps">
+        <slot name="entity-index-table-selection-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-expanded-row="slotProps">
+        <slot name="entity-index-table-expanded-row"
+              v-bind="slotProps || {}" />
+      </template>
       <template #before-form-builder>
         <div class="slot-wrapper">
-          <slot name="before-form-builder"></slot>
+          <slot name="before-form-builder" />
         </div>
       </template>
       <template #after-form-builder>
         <div class="slot-wrapper">
-          <slot name="after-form-builder"></slot>
+          <slot name="after-form-builder" />
         </div>
       </template>
     </entity-crud-form-builder>
@@ -101,10 +123,10 @@
 </template>
 
 <script>
-import Portlet from '../../../components/Portlet';
-import EntityMixin from '../../../mixins/EntityMixin';
-import { inputMixin } from 'quasar-form-builder';
-import EntityCrudFormBuilder from '../EntityCrudFormBuilder';
+import { inputMixin } from 'quasar-form-builder'
+import Portlet from '../../../components/Portlet.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
 
 export default {
   name: 'EntityEdit',
@@ -113,70 +135,81 @@ export default {
   props: {
     value: {
       default: () => [],
-      type: Array,
+      type: Array
     },
     title: {
       default: '',
-      type: String,
+      type: String
     },
     api: {
       default: '',
-      type: String,
+      type: String
     },
     entityIdKey: {
       default: 'id',
-      type: String,
+      type: String
     },
     entityParamKey: {
       default: 'id',
-      type: String,
+      type: String
     },
     showRouteName: {
       default: '',
-      type: String,
+      type: String
+    },
+    redirectAfterEdit: {
+      default: true,
+      type: Boolean
     },
     table: {
       default: () => {
         return {
           columns: [],
-          data: [],
-        };
+          data: []
+        }
       },
-      type: Object,
+      type: Object
     },
     defaultLayout: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data() {
     return {
       expanded: true,
-      loading: false,
-    };
+      entityLoading: false
+    }
   },
   async created() {
-    await this.beforeGetData();
-    await this.getData();
-    this.key = Date.now();
+    await this.beforeGetData()
+    await this.getData()
     await this.afterGetData()
   },
   methods: {
-    editEntity() {
-      const formData = this.getFormData();
-      this.beforeSendData(formData, this.setNewInputData);
-      this.$axios
-        .put(this.api, formData, { headers: this.getHeaders() })
-        .then((d) => {
-          this.afterSendData(d);
-          this.goToShowView();
-        })
-        .catch(() => {
-          this.getData();
-        });
-    },
-  },
-};
+    editEntity(goToShowView) {
+      return new Promise((resolve, reject) => {
+        this.entityLoading = true
+        const formData = this.getFormData()
+        this.beforeSendData(formData, this.setNewInputData)
+        this.$axios
+          .put(this.api, formData, { headers: this.getHeaders() })
+          .then((d) => {
+            this.afterSendData(d)
+            if ((typeof goToShowView === 'undefined' || goToShowView === true) && this.redirectAfterEdit) {
+              this.goToShowView()
+            }
+            this.entityLoading = false
+            resolve(d)
+          })
+          .catch((err) => {
+            this.getData()
+            reject(err)
+          })
+      })
+    }
+  }
+}
 </script>
 
 <style lang="sass">

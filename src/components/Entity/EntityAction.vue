@@ -1,15 +1,17 @@
 <template>
   <portlet v-if="defaultLayout"
            ref="portlet"
-           class="entity-action"
-  >
+           class="entity-action">
     <template #title>
       <slot name="title">
         {{ formTitle }}
       </slot>
     </template>
     <template #toolbar>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'"
+      <q-btn v-if="showExpandButton"
+             flat
+             round
+             :icon="(expanded) ? 'expand_less' : 'expand_more'"
              @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
@@ -20,54 +22,54 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <div class="slot-wrapper">
-          <slot name="before-form-builder"></slot>
+          <slot name="before-form-builder" />
         </div>
         <entity-crud-form-builder ref="formBuilder"
                                   v-model:value="inputData"
                                   :disable="false"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
-                                  @onCopyToClipboard="onCopyToClipboard"
-        />
+                                  @onCopyToClipboard="onCopyToClipboard" />
         <div class="slot-wrapper">
-          <slot name="after-form-builder"></slot>
+          <slot name="after-form-builder" />
         </div>
-        <q-inner-loading :showing="loading">
-          <q-spinner-ball color="primary" size="50px"/>
+        <q-inner-loading :showing="entityLoading">
+          <q-spinner-ball color="primary"
+                          size="50px" />
         </q-inner-loading>
       </q-expansion-item>
     </template>
     <template #actions>
       <q-card-actions>
-        <q-btn color="primary" :loading="loading" :disable="loading" @click="doAction">
+        <q-btn color="primary"
+               :loading="entityLoading"
+               :disable="entityLoading"
+               @click="doAction">
           {{ actionTitle }}
         </q-btn>
       </q-card-actions>
     </template>
     <template #afterActions>
       <div class="slot-wrapper">
-        <slot name="afterAction"/>
+        <slot name="afterAction" />
       </div>
     </template>
   </portlet>
   <div v-else>
-    <entity-crud-form-builder
-      :key="key"
-      ref="formBuilder"
-      v-model:value="inputData"
-      :disable="false"
-      :copy-on-click="copyOnClick"
-      @onInputClick="onInputClick"
-      @onCopyToClipboard="onCopyToClipboard"
-    >
+    <entity-crud-form-builder ref="formBuilder"
+                              v-model:value="inputData"
+                              :disable="false"
+                              :copy-on-click="copyOnClick"
+                              @onInputClick="onInputClick"
+                              @onCopyToClipboard="onCopyToClipboard">
       <template #before-form-builder>
         <div class="slot-wrapper">
-          <slot name="before-form-builder"></slot>
+          <slot name="before-form-builder" />
         </div>
       </template>
       <template #after-form-builder>
         <div class="slot-wrapper">
-          <slot name="after-form-builder"></slot>
+          <slot name="after-form-builder" />
         </div>
       </template>
     </entity-crud-form-builder>
@@ -75,16 +77,15 @@
 </template>
 
 <script>
-import Portlet from '../../components/Portlet'
-import EntityMixin from '../../mixins/EntityMixin'
 import { inputMixin } from 'quasar-form-builder'
-import EntityCrudFormBuilder from './EntityCrudFormBuilder'
+import Portlet from '../../components/Portlet.vue'
+import EntityMixin from '../../mixins/EntityMixin.js'
+import EntityCrudFormBuilder from './EntityCrudFormBuilder.vue'
 
 export default {
   name: 'EntityAction',
   components: { EntityCrudFormBuilder, Portlet },
   mixins: [inputMixin, EntityMixin],
-  emits: ['onActionSuccess', 'onActionError'],
   props: {
     value: {
       default: () => [],
@@ -113,33 +114,34 @@ export default {
     },
     defaultLayout: {
       default: true,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
+  emits: ['onActionSuccess', 'onActionError'],
   data () {
     return {
       expanded: true,
-      loading: false
+      entityLoading: false
     }
   },
   methods: {
     doAction () {
-      this.loading = true
+      this.entityLoading = true
       const formData = this.getFormData()
       this.beforeDoAction(formData, this.setNewInputData)
       const axiosPromise = this.getAxiosPromise(this.actionMethod, this.actionApi, formData)
-          if (!axiosPromise) {
-            return
-          }
+      if (!axiosPromise) {
+        return
+      }
       axiosPromise
-          .then((response) => {
-            this.loading = false
-            this.$emit('onActionSuccess', response)
-          })
-          .catch((error) => {
-            this.loading = false
-            this.$emit('onActionError', error)
-          })
+        .then((response) => {
+          this.entityLoading = false
+          this.$emit('onActionSuccess', response)
+        })
+        .catch((error) => {
+          this.entityLoading = false
+          this.$emit('onActionError', error)
+        })
     },
     getAxiosPromise (actionMethod, address, data) {
       switch (actionMethod) {
@@ -152,7 +154,7 @@ export default {
         case 'delete':
           return this.$axios.delete(address, { headers: this.getHeaders() })
         default:
-            return false
+          return false
       }
     }
 

@@ -1,24 +1,23 @@
 <template>
-    <q-card class="crud-form">
-      <q-btn
-        push
-        color="positive"
-        text-color="white"
-        :label="'ثبت'"
-        align="right"
-        class="form-button"
-        @click="attachData"/>
-      <div class="col-12 no-padding">
-        <form-builder v-model:value="computedCrudFormInputs" />
-      </div>
-    </q-card>
+  <q-card class="crud-form">
+    <q-btn push
+           color="positive"
+           text-color="white"
+           :label="'ثبت'"
+           align="right"
+           class="form-button"
+           @click="attachData" />
+    <div class="col-12 no-padding">
+      <form-builder v-model:value="computedCrudFormInputs" />
+    </div>
+  </q-card>
 </template>
 
 <script>
 import { shallowRef } from 'vue'
-import EntityMixin from '../../../mixins/EntityMixin'
+import EntityInput from '../Attachment/EntityInput.vue'
+import EntityMixin from '../../../mixins/EntityMixin.js'
 import { FormBuilder, inputMixin } from 'quasar-form-builder'
-import EntityInput from '../Attachment/EntityInput'
 
 const EntityInputComp = shallowRef(EntityInput)
 export default {

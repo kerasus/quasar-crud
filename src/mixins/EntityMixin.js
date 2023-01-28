@@ -1,15 +1,11 @@
 import axios from 'axios'
+import * as shvl from 'shvl'
 import { shallowRef } from 'vue'
-import EntityInput from '../components/Entity/Attachment/EntityInput'
+import EntityInput from '../components/Entity/Attachment/EntityInput.vue'
 
 const EntityInputComp = shallowRef(EntityInput)
 
 const EntityMixin = {
-  data () {
-    return {
-      key: Date.now()
-    }
-  },
   props: {
     showSaveButton: {
       default: true,
@@ -71,9 +67,9 @@ const EntityMixin = {
     },
     beforeGetData: {
       default: () => {},
-      type: Function,
+      type: Function
     },
-    afterGetData:{
+    afterGetData: {
       default: () => {},
       type: Function
     },
@@ -91,23 +87,25 @@ const EntityMixin = {
       this.$axios = axios
     }
   },
-  emits: ['onInputClick', 'onCopyToClipboard'],
+  emits: ['onInputClick', 'onCopyToClipboard', 'onInputKeyPress'],
   methods: {
     onInputClick (data) {
       this.$emit('onInputClick', data)
+    },
+    onInputKeyPress(data) {
+      this.$emit('onInputKeyPress', data)
     },
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)
     },
     runNeededMethod (substituteMethod, callBackMethod) {
-      if (!!substituteMethod && substituteMethod()){
+      if (!!substituteMethod && substituteMethod()) {
         substituteMethod()
         return
       }
       callBackMethod()
     },
     getEntityId () {
-
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]
@@ -138,14 +136,25 @@ const EntityMixin = {
     goToShowView () {
       this.$router.push({ name: this.showRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     },
-    formHasFileInput () {
-      const target = this.inputData.find(item => item.type === 'file')
-      return !!target
+    formHasFileInput (inputData) {
+      let has = false
+      const inputs = inputData || this.inputData
+      inputs.forEach(input => {
+        if (input.type === 'file') {
+          has = true
+        } else if (input.type === 'formBuilder') {
+          has = this.formHasFileInput(input.value)
+        }
+      })
+
+      return has
     },
     getHeaders () {
       if (this.formHasFileInput()) {
         return { 'Content-Type': 'multipart/form-data' }
       }
+
+      return {}
     },
     isFile (file) {
       return file instanceof File
@@ -169,26 +178,11 @@ const EntityMixin = {
         if (formHasFileInput) {
           formData.append(item.name, item.value)
         } else {
-          this.createChainedObject(formData, item.name, item.value)
+          shvl.set(formData, item.name, item.value)
         }
       })
 
       return formData
-    },
-    createChainedObject (formData, chainedName, value) {
-      let keysArray = chainedName
-      if (typeof chainedName === 'string') {
-        keysArray = chainedName.split('.')
-      }
-      if (keysArray.length === 1) {
-        formData[keysArray[0]] = value
-      } else {
-        if (typeof formData[keysArray[0]] === 'undefined') {
-          formData[keysArray[0]] = {}
-        }
-        const newKeysArray = keysArray.filter((item, index) => index !== 0)
-        this.createChainedObject(formData[keysArray[0]], newKeysArray, value)
-      }
     },
     toggleFullscreen () {
       const target = this.$refs.portlet
@@ -205,16 +199,16 @@ const EntityMixin = {
       return input.type === EntityInputComp.value
     },
     async getData () {
-      this.loading = true
+      this.entityLoading = true
       await this.$axios.get(this.api)
         .then(response => {
           this.beforeLoadInputData(response.data, this.setNewInputData)
           this.loadInputData(response.data)
           this.afterLoadInputData(response.data, this.setNewInputData)
-          this.loading = false
+          this.entityLoading = false
         })
         .catch(() => {
-          this.loading = false
+          this.entityLoading = false
         })
     },
     loadInputData (responseData, inputs) {
@@ -240,15 +234,22 @@ const EntityMixin = {
 
           input.selected = validChainedObject
           if (Array.isArray(input.selected)) {
-            input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
+            input.value = input.selected.map(selected => selected[input.itemIdentifyKey])
             return
           }
-          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
-            input.value = input.selected[input.indexConfig.itemIdentifyKey]
-          } else {
-            console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
+
+          if (!input.indexConfig || !input.indexConfig.itemIdentifyKey) {
+            console.error('input.indexConfig.itemIdentifyKey not set: ', input)
+            return
           }
 
+          const selectedVal = shvl.get(input.selected, input.indexConfig.itemIdentifyKey)
+          if (!input.selected || !selectedVal) {
+            console.error('input.selected[input.indexConfig.itemIdentifyKey] does not exist: ', input)
+            return
+          }
+
+          input.value = selectedVal
         })
       }
 
@@ -259,6 +260,7 @@ const EntityMixin = {
     },
     getValidChainedObject (object, keys) {
       if (!Array.isArray(keys) && typeof keys !== 'string') {
+        // eslint-disable-next-line
         console.warn('keys must be array or string')
         return false
       }

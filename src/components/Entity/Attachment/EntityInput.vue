@@ -1,48 +1,68 @@
 <template>
   <div class="row">
-    <q-btn class="col-12" push :color="buttonColor" :text-color="buttonTextColor" :label="label" @click="openCloseModal">
-      <q-badge v-if="Array.isArray(value) && value.length > 0" :color="buttonBadgeColor" floating>{{ value.length }}</q-badge>
-      <q-badge v-else-if="!Array.isArray(value) && typeof value !== 'undefined' && value !== null" :color="buttonBadgeColor" floating>1</q-badge>
+    <q-btn class="col-12"
+           push
+           :color="buttonColor"
+           :text-color="buttonTextColor"
+           :label="label"
+           @click="openCloseModal">
+      <q-badge v-if="Array.isArray(value) && value.length > 0"
+               :color="buttonBadgeColor"
+               floating>{{ value.length }}</q-badge>
+      <q-badge v-else-if="!Array.isArray(value) && typeof value !== 'undefined' && value !== null"
+               :color="buttonBadgeColor"
+               floating>1</q-badge>
     </q-btn>
-    <q-dialog v-model="dialog" full-width full-height>
-      <entity-index
-          v-model:table-selected-values="selected"
-          :value="inputs"
-          :title="tableTitle"
-          :api="apiAddress"
-          :table="table"
-          :table-keys="tableKeys"
-          :table-selection-mode="selectionMode"
-          :show-close-button="true"
-          :show-expand-button="false"
-          :row-key="itemIdentifyKey"
-          :item-indicator-key="itemIndicatorKey"
-          @update:table-selected-values="onSelectedUpdate"
-      />
+    <q-dialog v-model="dialog"
+              full-width
+              full-height>
+      <entity-index v-model:table-selected-values="selected"
+                    :value="inputs"
+                    :title="tableTitle"
+                    :api="apiAddress"
+                    :table="table"
+                    :table-keys="tableKeys"
+                    :table-selection-mode="selectionMode"
+                    :table-row-expandable="tableRowExpandable"
+                    :table-row-default-expand-action="tableRowDefaultExpandAction"
+                    :show-close-button="true"
+                    :show-expand-button="false"
+                    :row-key="itemIdentifyKey"
+                    :item-indicator-key="itemIndicatorKey"
+                    @update:table-selected-values="onSelectedUpdate">
+        <template #entity-index-table-cell="slotProps">
+          <slot name="entity-index-table-cell"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-body="slotProps">
+          <slot name="entity-index-table-body"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-selection-cell="slotProps">
+          <slot name="entity-index-table-selection-cell"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-expanded-row="slotProps">
+          <slot name="entity-index-table-expanded-row"
+                v-bind="slotProps || {}" />
+        </template>
+      </entity-index>
     </q-dialog>
   </div>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, useSlots, useAttrs } from 'vue'
 import { inputMixin } from 'quasar-form-builder'
 
 export default {
   name: 'EntityInput',
-  mixins: [inputMixin],
   components: {
-    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex')),
+    EntityIndex: defineAsyncComponent(() => import('../Index/EntityIndex.vue'))
   },
-  watch: {
-    value () {
-      this.selected = this.input.selected
-    }
-  },
+  mixins: [inputMixin],
   props: {
     value: {
-      default: null
-    },
-    input: {
       default: null
     },
     name: {
@@ -51,7 +71,7 @@ export default {
     },
     buttonName: {
       type: String,
-      default: 'ali'
+      default: ''
     },
     buttonColor: {
       type: String,
@@ -72,6 +92,14 @@ export default {
     selectionMode: {
       type: String,
       default: 'none'
+    },
+    tableRowExpandable: {
+      type: Boolean,
+      default: false
+    },
+    tableRowDefaultExpandAction: {
+      type: Boolean,
+      default: true
     },
     showTableItemsRouteName: {
       type: String,
@@ -136,17 +164,38 @@ export default {
       default: 'id'
     }
   },
-  data () {
+  setup(props, context) {
+    const slots1 = useSlots()
+    const attrs1 = useAttrs()
+
+    // context.expose({ slots1, attrs1 })
+
     return {
-      expanded: true,
-      selected: [],
-      dialog: false
+      slots1,
+      attrs1
     }
   },
+  data () {
+    return {
+      slots11: this.$slots,
+      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row'],
+      expanded: true,
+      selected: [],
+      dialog: null
+    }
+  },
+  computed: {
+    slots22 () {
+      return this.$slots
+    }
+  },
+  // mounted () {
+  //   console.log('this.$slots', this.$slots)
+  // },
   methods: {
     onSelectedUpdate (values) {
       let selected = (this.selectionMode === 'multiple') ? [] : null
-      values.forEach( vlue => {
+      values.forEach(vlue => {
         if (this.selectionMode === 'multiple') {
           selected.push(vlue)
         } else {
@@ -162,7 +211,7 @@ export default {
     },
     getItemIdentifyKey () {
       return this.itemIdentifyKey
-    },
+    }
   }
 }
 </script>

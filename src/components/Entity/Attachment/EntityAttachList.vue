@@ -1,38 +1,48 @@
 <template>
-  <entity-index-table
-    v-model:value="tableData"
-    :columns="table.columns"
-    :title="listTitle"
-    :loading="loading"
-    :change-page="changePage"
-    @search="search"
-  >
+  <entity-index-table v-model:value="tableData"
+                      :columns="table.columns"
+                      :title="listTitle"
+                      :loading="entityLoading"
+                      :change-page="changePage"
+                      @search="search">
     <template #entity-index-table-cell="{inputData}">
-      <slot name="table-cell" :inputData="inputData" :showConfirmRemoveDialog="showConfirmRemoveDialog">
+      <slot name="table-cell"
+            :inputData="inputData"
+            :showConfirmRemoveDialog="showConfirmRemoveDialog">
         <q-td :props="inputData.props">
           {{ inputData.props.value }}
         </q-td>
       </slot>
     </template>
   </entity-index-table>
-  <q-dialog v-model="confirmRemoveDialog" persistent>
+  <q-dialog v-model="confirmRemoveDialog"
+            persistent>
     <q-card>
       <q-card-section class="row items-center">
-        <q-icon name="warning" color="primary" size="md"/>
+        <q-icon name="warning"
+                color="primary"
+                size="md" />
         <span class="q-ml-sm">{{ confirmRemoveMessage }}</span>
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn v-close-popup flat label="انصراف" color="primary" />
-        <q-btn v-close-popup flat label="تایید" color="primary" @click="removeItem" />
+        <q-btn v-close-popup
+               flat
+               label="انصراف"
+               color="primary" />
+        <q-btn v-close-popup
+               flat
+               label="تایید"
+               color="primary"
+               @click="removeItem" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script>
-import  EntityIndexTable from '../../Entity/Index/EntityIndexTable'
 import { inputMixin } from 'quasar-form-builder'
-import EntityMixin from '../../../mixins/EntityMixin'
+import EntityMixin from '../../../mixins/EntityMixin.js'
+import EntityIndexTable from '../../Entity/Index/EntityIndexTable.vue'
 export default {
   name: 'EntityAttachList',
   components: { EntityIndexTable },
@@ -83,7 +93,7 @@ export default {
           rowsNumber: 0
         }
       },
-      loading: false
+      entityLoading: false
 
     }
   },
@@ -100,7 +110,7 @@ export default {
     },
     getData (address, page) {
       const that = this
-      this.loading = true
+      this.entityLoading = true
       if (!address) {
         address = this.api
       }
@@ -109,7 +119,7 @@ export default {
         params: that.createParams(page)
       })
         .then((response) => {
-          that.loading = false
+          that.entityLoading = false
 
           that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
           that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
@@ -117,10 +127,9 @@ export default {
           that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
           that.$emit('onPageChanged', response)
-          this.key = Date.now()
         })
         .catch(error => {
-          that.loading = false
+          that.entityLoading = false
           that.$emit('catchError', error)
         })
     },
@@ -138,13 +147,13 @@ export default {
       }
 
       const that = this
-      this.loading = true
+      this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
         .then(() => {
           that.reload()
         })
         .catch(() => {
-          that.loading = false
+          that.entityLoading = false
         })
     },
     showConfirmRemoveDialog (item, idKey, label) {
