@@ -76,35 +76,18 @@
             </q-chip>
           </template>
         </slot>
-        <div class="slot-wrapper">
-          <slot name="before-form-builder" />
-        </div>
         <entity-crud-form-builder ref="formBuilder"
                                   v-model:value="inputData"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
                                   @onInputKeyPress="onInputKeyPress"
                                   @onCopyToClipboard="onCopyToClipboard">
-          <template #entity-index-table-cell="slotProps">
-            <slot name="entity-index-table-cell"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-body="slotProps">
-            <slot name="entity-index-table-body"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-selection-cell="slotProps">
-            <slot name="entity-index-table-selection-cell"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-expanded-row="slotProps">
-            <slot name="entity-index-table-expanded-row"
+          <template v-for="slotName in slots"
+                    #[slotName]="slotProps">
+            <slot :name="slotName"
                   v-bind="slotProps || {}" />
           </template>
         </entity-crud-form-builder>
-        <div class="slot-wrapper">
-          <slot name="after-form-builder" />
-        </div>
         <div class="row">
           <div class="col">
             <div class="slot-wrapper">
@@ -127,27 +110,27 @@
                                 :change-page="changePage"
                                 @update:table-selected-values="updateSelectedValues"
                                 @search="search">
-              <template #table-cell="slotProps">
-                <slot name="table-cell"
-                      :inputData="slotProps"
-                      :showConfirmRemoveDialog="showConfirmRemoveDialog">
-                  <q-td :props="inputData.props">
-                    {{ slotProps.col.value }}
-                  </q-td>
-                </slot>
+              <template v-for="slotName in slots"
+                        #[slotName]="{props, col}">
+                <slot v-if="slotName === 'entity-index-table-cell'"
+                      :name="slotName"
+                      :props="props"
+                      :col="col"
+                      :showConfirmRemoveDialog="showConfirmRemoveDialog" />
+                <slot v-else
+                      :name="slotName"
+                      v-bind="props || {}" />
               </template>
-              <template #entity-index-table-body="slotProps">
-                <slot name="entity-index-table-body"
-                      v-bind="slotProps || {}" />
-              </template>
-              <template #entity-index-table-selection-cell="slotProps">
-                <slot name="entity-index-table-selection-cell"
-                      v-bind="slotProps || {}" />
-              </template>
-              <template #entity-index-table-expanded-row="slotProps">
-                <slot name="entity-index-table-expanded-row"
-                      v-bind="slotProps || {}" />
-              </template>
+              <!--              <template #table-cell="slotProps">-->
+              <!--                <slot name="table-cell"-->
+              <!--                      :inputData="slotProps"-->
+              <!--                      :showConfirmRemoveDialog="showConfirmRemoveDialog">-->
+              <!--                  <q-td :props="inputData.props">-->
+              <!--                    {{ slotProps.col.value }}-->
+              <!--                  </q-td>-->
+              <!--                </slot>-->
+              <!--              </template>-->
+
             </entity-index-table>
             <div class="slot-wrapper">
               <slot name="after-index-table" />
@@ -187,31 +170,10 @@
                               @onInputClick="onInputClick"
                               @onInputKeyPress="onInputKeyPress"
                               @onCopyToClipboard="onCopyToClipboard">
-      <template #entity-index-table-cell="slotProps">
-        <slot name="entity-index-table-cell"
+      <template v-for="slotName in slots"
+                #[slotName]="slotProps">
+        <slot :name="slotName"
               v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-body="slotProps">
-        <slot name="entity-index-table-body"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-selection-cell="slotProps">
-        <slot name="entity-index-table-selection-cell"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-expanded-row="slotProps">
-        <slot name="entity-index-table-expanded-row"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #before-form-builder>
-        <div class="slot-wrapper">
-          <slot name="before-form-builder" />
-        </div>
-      </template>
-      <template #after-form-builder>
-        <div class="slot-wrapper">
-          <slot name="after-form-builder" />
-        </div>
       </template>
     </entity-crud-form-builder>
     <div class="slot-wrapper">
@@ -230,12 +192,12 @@
                         :table-grid-size="tableGridSize"
                         @update:table-selected-values="updateSelectedValues"
                         @search="search">
-      <template #entity-index-table-cell="{inputData}">
+      <template #entity-index-table-cell="slotProps">
         <slot name="entity-index-table-cell"
-              :inputData="inputData"
+              :inputData="slotProps"
               :showConfirmRemoveDialog="showConfirmRemoveDialog">
-          <q-td :props="inputData.props">
-            {{ inputData.props.value }}
+          <q-td :props="slotProps">
+            {{ slotProps.col.value }}
           </q-td>
         </slot>
       </template>
@@ -359,6 +321,7 @@ export default {
   ],
   data () {
     return {
+      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row', 'before-form-builder', 'after-form-builder'],
       removeIdKey: 'id',
       confirmRemoveDialog: false,
       confirmRemoveMessage: 'false',

@@ -30,20 +30,9 @@
                     :row-key="itemIdentifyKey"
                     :item-indicator-key="itemIndicatorKey"
                     @update:table-selected-values="onSelectedUpdate">
-        <template #entity-index-table-cell="slotProps">
-          <slot name="entity-index-table-cell"
-                v-bind="slotProps || {}" />
-        </template>
-        <template #entity-index-table-body="slotProps">
-          <slot name="entity-index-table-body"
-                v-bind="slotProps || {}" />
-        </template>
-        <template #entity-index-table-selection-cell="slotProps">
-          <slot name="entity-index-table-selection-cell"
-                v-bind="slotProps || {}" />
-        </template>
-        <template #entity-index-table-expanded-row="slotProps">
-          <slot name="entity-index-table-expanded-row"
+        <template v-for="slotName in slots"
+                  #[slotName]="slotProps">
+          <slot :name="slotName"
                 v-bind="slotProps || {}" />
         </template>
       </entity-index>

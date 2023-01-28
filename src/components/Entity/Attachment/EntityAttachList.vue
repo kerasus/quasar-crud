@@ -5,12 +5,13 @@
                       :loading="entityLoading"
                       :change-page="changePage"
                       @search="search">
-    <template #entity-index-table-cell="{inputData}">
-      <slot name="table-cell"
-            :inputData="inputData"
+    <template #entity-index-table-cell="inputData">
+      <slot name="entity-index-table-cell"
+            :props="inputData.props"
+            :col="inputData.col"
             :showConfirmRemoveDialog="showConfirmRemoveDialog">
         <q-td :props="inputData.props">
-          {{ inputData.props.value }}
+          {{ inputData.col.value }}
         </q-td>
       </slot>
     </template>
@@ -101,6 +102,9 @@ export default {
     this.search()
   },
   methods: {
+    loggg (data) {
+      console.log(data)
+    },
     clearData () {
       this.tableData.data = []
     },

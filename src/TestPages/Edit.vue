@@ -14,7 +14,7 @@
       <q-checkbox v-model="data.props.selected"
                   @update:model-value="expandRow(data.props)" />
     </template>
-    <!--    <template #entity-input-table-cell="slotProps">-->
+    <!--    <template #entity-index-table-cell="slotProps">-->
     <!--      {{ slotProps.inputData.col.value }}-->
     <!--    </template>-->
     <!--    <template #entity-index-table-body="props">-->
@@ -26,7 +26,7 @@
     <!--        </q-td>-->
     <!--      </q-tr>-->
     <!--    </template>-->
-    <!--    <template #entity-input-table-cell="slotProps">-->
+    <!--    <template #entity-index-table-cell="slotProps">-->
     <!--      {{ slotProps.inputData.col.value }}-->
     <!--    </template>-->
 
