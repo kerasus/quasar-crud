@@ -446,7 +446,8 @@ export default {
     },
     createParams (page) {
       const params = {}
-      this.inputData.forEach(item => {
+      const allValues = this.getValues(this.inputData)
+      allValues.forEach(item => {
         if (
             typeof item.name !== 'undefined' &&
             item.name !== null &&
