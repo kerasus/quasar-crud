@@ -2955,7 +2955,7 @@ qs@6.11.0:
   dependencies:
     side-channel "^1.0.4"
 
-quasar-form-builder@0.1.85:
+quasar-form-builder@^0.1.85:
   version "0.1.85"
   resolved "https://registry.yarnpkg.com/quasar-form-builder/-/quasar-form-builder-0.1.85.tgz#614d31ccb674516b96176ea354ad2b55c65baa1c"
   integrity sha512-0TY4LmNo9zAl99PkyJfhsaJOSMqxNVtI0EkgJTU/l+M8v+fV2Co+YkcdFJsUAwyVv3AUvfe1wh6OedJZj/dOcw==

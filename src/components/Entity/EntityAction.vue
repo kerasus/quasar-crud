@@ -127,7 +127,7 @@ export default {
   methods: {
     doAction () {
       this.entityLoading = true
-      const formData = this.getFormData()
+      const formData = this.$refs.formBuilder.getFormData()
       this.beforeDoAction(formData, this.setNewInputData)
       const axiosPromise = this.getAxiosPromise(this.actionMethod, this.actionApi, formData)
       if (!axiosPromise) {

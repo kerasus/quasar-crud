@@ -162,28 +162,6 @@ const EntityMixin = {
     setNewInputData (newInputData) {
       this.inputData = newInputData
     },
-    getFormData () {
-      const formHasFileInput = this.formHasFileInput()
-      const formData = formHasFileInput ? new FormData() : {}
-      const inputs = this.$refs.formBuilder.getValues()
-      inputs.forEach(item => {
-        if (item.disable || typeof item.value === 'undefined' || item.value === null) {
-          return
-        }
-
-        if (item.type === 'file' && !this.isFile(item.value)) {
-          return
-        }
-
-        if (formHasFileInput) {
-          formData.append(item.name, item.value)
-        } else {
-          shvl.set(formData, item.name, item.value)
-        }
-      })
-
-      return formData
-    },
     toggleFullscreen () {
       const target = this.$refs.portlet
       this.$q.fullscreen.toggle(target)

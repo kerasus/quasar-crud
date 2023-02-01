@@ -179,14 +179,13 @@
     <div class="slot-wrapper">
       <slot name="before-index-table" />
     </div>
-    <div class="slot-wrapper no-entity"
-         v-if="isNoEntityModeSet"
-    >
+    <div v-if="isNoEntityModeSet"
+         class="slot-wrapper no-entity">
       <slot name="no-entity" />
     </div>
-    <entity-index-table v-model:value="tableData"
+    <entity-index-table v-if="!isNoEntityModeSet"
+                        v-model:value="tableData"
                         v-model:table-selected-values="tableChosenValues"
-                        v-if="!isNoEntityModeSet"
                         :table-selection-mode="tableSelectionMode"
                         :table-row-expandable="tableRowExpandable"
                         :table-row-default-expand-action="tableRowDefaultExpandAction"
@@ -397,12 +396,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-          .then(() => {
-            that.reload()
-          })
-          .catch(() => {
-            that.entityLoading = false
-          })
+        .then(() => {
+          that.reload()
+        })
+        .catch(() => {
+          that.entityLoading = false
+        })
     },
     changePage (page) {
       this.clearData()
@@ -428,24 +427,24 @@ export default {
       this.$axios.get(address, {
         params: that.createParams(page)
       })
-          .then((response) => {
-            that.entityLoading = false
+        .then((response) => {
+          that.entityLoading = false
 
-            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
-            that.$emit('onPageChanged', response)
-            // this.key = Date.now()
-          })
-          .catch(error => {
-            that.entityLoading = false
-            that.$emit('catchError', error)
-          })
+          that.$emit('onPageChanged', response)
+          // this.key = Date.now()
+        })
+        .catch(error => {
+          that.entityLoading = false
+          that.$emit('catchError', error)
+        })
     },
     createParams (page) {
-      const filterData = this.getFormData()
+      const filterData = this.$refs.formBuilder.getFormData()
       const formHasFileInput = this.formHasFileInput()
 
       if (typeof page === 'undefined') {
