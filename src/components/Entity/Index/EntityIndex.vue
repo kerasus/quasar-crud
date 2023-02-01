@@ -445,25 +445,20 @@ export default {
           })
     },
     createParams (page) {
-      const params = {}
-      const allValues = this.getValues(this.inputData)
-      allValues.forEach(item => {
-        if (
-            typeof item.name !== 'undefined' &&
-            item.name !== null &&
-            typeof item.value !== 'undefined' &&
-            item.value !== null &&
-            item.value !== ''
-        ) {
-          params[item.name] = item.value
-        }
-      })
+      const filterData = this.getFormData()
+      const formHasFileInput = this.formHasFileInput()
 
-      if (typeof page !== 'undefined') {
-        params[this.tableKeys.pageKey] = page
+      if (typeof page === 'undefined') {
+        return filterData
       }
 
-      return params
+      if (formHasFileInput) {
+        filterData.append(this.tableKeys.pageKey, page)
+      } else {
+        filterData[this.tableKeys.pageKey] = page
+      }
+
+      return filterData
     },
     updateSelectedValues(value) {
       this.$emit('update:tableSelectedValues', value)
