@@ -98,6 +98,16 @@ const EntityMixin = {
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)
     },
+    getInputsByName(name) {
+      const inputs = this.getValues()
+      return inputs.find((input) => input.name === name)
+    },
+    setInputByName(name, value) {
+      this.$refs.formBuilder.setInputByName(name, value)
+    },
+    refreshAllInputs() {
+      this.$refs.formBuilder.refreshAllInputs()
+    },
     runNeededMethod (substituteMethod, callBackMethod) {
       if (!!substituteMethod && substituteMethod()) {
         substituteMethod()

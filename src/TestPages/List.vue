@@ -1,5 +1,6 @@
 <template>
-  <entity-index v-model:value="inputs"
+  <entity-index ref="entityIndex"
+      v-model:value="inputs"
                 v-model:table-selected-values="selected"
                 title="لیست کاربران"
                 show-no-entity-slot
@@ -63,6 +64,8 @@
                  @click="beforeFormBuilder = false" />
         </template>
       </q-banner>
+      <q-btn label="refreshAllInputs" @click="refreshAllInputs"></q-btn>
+      <q-btn label="setInputByName" @click="setInputByName"></q-btn>
     </template>
     <template #after-form-builder>
       <q-banner v-if="afterFormBuilder"
@@ -195,7 +198,17 @@ export default {
       inputs: [
         { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
         { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
-        { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' }
+        { type: 'input', name: 'last_name', value: 'ldkfjkldfn;kdjfvn', label: 'نام خانوادگی', col: 'col-md-3' },
+        {
+          type: 'formBuilder',
+          name: 'formBuilderCol',
+          col: 'col-md-12',
+          class: 'entity-filter-box',
+          ignoreValue: true,
+          value: [
+            { type: 'input', name: 'name', value: 'dkfjgkdjfgdf', label: 'name', col: 'col-md-3' }
+          ]
+        }
       ],
       crudFormInputs: [
         {
@@ -442,9 +455,16 @@ export default {
       afterIndexTable: true
     }
   },
+  mounted () {},
   methods: {
     loggg (data) {
       console.log(data)
+    },
+    refreshAllInputs () {
+      this.$refs.entityIndex.refreshAllInputs()
+    },
+    setInputByName () {
+      this.$refs.entityIndex.setInputByName('name', 'متن تستی ست شده')
     },
     beforeDoAction () {
       // eslint-disable-next-line
