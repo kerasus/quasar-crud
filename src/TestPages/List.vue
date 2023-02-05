@@ -455,9 +455,7 @@ export default {
       afterIndexTable: true
     }
   },
-  mounted () {
-    this.loggg('ksdjksdj')
-  },
+  mounted () {},
   methods: {
     loggg (data) {
       console.log(data)
