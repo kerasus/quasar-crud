@@ -175,6 +175,9 @@ export default {
     getValues() {
       return this.$refs.formBuilder.getValues()
     },
+    refreshAllInputs() {
+      this.$refs.formBuilder.clearFormBuilderInputValues()
+    },
     getEntityInput (input) {
       input.type = EntityInputComp
 
