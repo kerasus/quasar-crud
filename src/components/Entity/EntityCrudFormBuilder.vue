@@ -4,6 +4,7 @@
   </div>
   <form-builder ref="formBuilder"
                 v-model:value="computedInputs"
+                :isColGutter="isColGutter"
                 :disable="disable"
                 :readonly="readonly"
                 @onClick="onInputClick"
@@ -43,6 +44,10 @@ export default {
   components: { FormBuilder },
   mixins: [inputMixin, EntityMixin],
   props: {
+    isColGutter: {
+      default: true,
+      type: Boolean
+    },
     value: {
       default: () => [],
       type: [Array, Object]
