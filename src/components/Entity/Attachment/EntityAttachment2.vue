@@ -7,12 +7,19 @@
       </slot>
     </template>
     <template #toolbar>
-      <q-btn flat round icon="cached" @click="reload">
+      <q-btn flat
+             round
+             icon="cached"
+             @click="reload">
         <q-tooltip>
           بارگذاری مجدد
         </q-tooltip>
       </q-btn>
-      <q-btn v-if="showExpandButton" flat round :icon="(expanded) ? 'expand_less' : 'expand_more'" @click="expanded = !expanded">
+      <q-btn v-if="showExpandButton"
+             flat
+             round
+             :icon="(expanded) ? 'expand_less' : 'expand_more'"
+             @click="expanded = !expanded">
         <q-tooltip>
           <span v-if="expanded">عدم نمایش فرم</span>
           <span v-else>نمایش فرم</span>
@@ -22,41 +29,47 @@
     <template #content>
       <q-expansion-item v-model="expanded">
         <div class="attach-modal-btn-box">
-          <q-btn
-            push
-            color="primary"
-            text-color="white"
-            :label="buttonLabel"
-            class="attach-modal-btn"
-            @click="openCloseModal"
-          />
+          <q-btn push
+                 color="primary"
+                 text-color="white"
+                 :label="buttonLabel"
+                 class="attach-modal-btn"
+                 @click="openCloseModal" />
         </div>
-        <entity-attach-list
-          ref="EntityAttachList"
-          :list-title="listTitle"
-          :table="table"
-          :table-keys="tableKeys"
-          :api="attachmentListApiAddress"
-        >
-          <template v-slot:table-cell="{inputData, showConfirmRemoveDialog}">
+        <entity-attach-list ref="EntityAttachList"
+                            :list-title="listTitle"
+                            :table="table"
+                            :table-keys="tableKeys"
+                            :api="attachmentListApiAddress">
+          <template v-slot:entity-index-table-cell="{inputData, showConfirmRemoveDialog}">
             <q-td :props="inputData.props">
               <template v-if="inputData.props.col.name === 'photo'">
                 <q-avatar>
-                  <q-img
-                    :src="inputData.props.value"
-                    placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
-                    spinner-color="white"
-                    style="height: 50px; max-width: 50px"
-                  />
+                  <q-img :src="inputData.props.value"
+                         placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
+                         spinner-color="white"
+                         style="height: 50px; max-width: 50px" />
                 </q-avatar>
               </template>
               <template v-else-if="inputData.props.col.name === 'actions'">
-                <q-btn round flat dense size="md" color="info" icon="info" :to="{name: listShowRouteName, params: {id: inputData.props.row.id}}">
+                <q-btn round
+                       flat
+                       dense
+                       size="md"
+                       color="info"
+                       icon="info"
+                       :to="{name: listShowRouteName, params: {id: inputData.props.row.id}}">
                   <q-tooltip>
                     مشاهده
                   </q-tooltip>
                 </q-btn>
-                <q-btn round flat dense size="md" color="negative" icon="delete" class="q-ml-md"
+                <q-btn round
+                       flat
+                       dense
+                       size="md"
+                       color="negative"
+                       icon="delete"
+                       class="q-ml-md"
                        @click="showConfirmRemoveDialog(inputData.props.row, 'id', getRemoveMessage(inputData.props.row))">
                   <q-tooltip>
                     حذف
@@ -71,10 +84,8 @@
         </entity-attach-list>
       </q-expansion-item>
       <q-dialog v-model="entityCrudFormDialog">
-        <entity-crud-form
-          v-model:crud-form-inputs="computedCrudFormInputs"
-          @data-set="attachEntity"
-        />
+        <entity-crud-form v-model:crud-form-inputs="computedCrudFormInputs"
+                          @data-set="attachEntity" />
       </q-dialog>
     </template>
   </portlet>
@@ -82,7 +93,7 @@
 
 <script>
 import { inputMixin } from 'quasar-form-builder'
-import  Portlet  from '../../../components/Portlet.vue'
+import Portlet from '../../../components/Portlet.vue'
 import EntityMixin from '../../../mixins/EntityMixin.js'
 import EntityCrudForm from '../Attachment/EntityCrudForm.vue'
 import EntityAttachList from '../Attachment/EntityAttachList.vue'
@@ -239,6 +250,7 @@ export default {
           finalData[input.name] = val
         }
       })
+      // eslint-disable-next-line
       console.log('finalData', finalData)
       // this.$q.notify({
       //   type: 'positive',

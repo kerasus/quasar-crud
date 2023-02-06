@@ -1,30 +1,40 @@
 <template>
-  <entity-action
-    v-model:value="computedCrudFormInputs"
-    :form-title="title"
-    :action-title="actionTitle"
-    :action-method="'post'"
-    :action-api="actionApi"
-    :beforeDoAction="beforeDoAction"
-    @onActionSuccess="onActionSuccess"
-    @onActionError="onActionError"
-  >
+  <entity-action v-model:value="computedCrudFormInputs"
+                 :form-title="title"
+                 :action-title="actionTitle"
+                 :action-method="'post'"
+                 :action-api="actionApi"
+                 :beforeDoAction="beforeDoAction"
+                 @onActionSuccess="onActionSuccess"
+                 @onActionError="onActionError">
     <template #after-form-builder>
       <q-dialog v-model="entityCrudFormDialog"
                 :maximized="dialogMaximized"
                 transition-show="slide-up"
-                transition-hide="slide-down"
-      >
+                transition-hide="slide-down">
         <q-card>
           <q-bar>
             <q-space />
-            <q-btn dense flat icon="minimize" :disable="!dialogMaximized" @click="dialogMaximized = false">
-              <q-tooltip v-if="entityCrudFormDialog" class="bg-white text-primary">Minimize</q-tooltip>
+            <q-btn dense
+                   flat
+                   icon="minimize"
+                   :disable="!dialogMaximized"
+                   @click="dialogMaximized = false">
+              <q-tooltip v-if="entityCrudFormDialog"
+                         class="bg-white text-primary">Minimize</q-tooltip>
             </q-btn>
-            <q-btn dense flat icon="crop_square" :disable="dialogMaximized" @click="dialogMaximized = true">
-              <q-tooltip v-if="!entityCrudFormDialog" class="bg-white text-primary">Maximize</q-tooltip>
+            <q-btn dense
+                   flat
+                   icon="crop_square"
+                   :disable="dialogMaximized"
+                   @click="dialogMaximized = true">
+              <q-tooltip v-if="!entityCrudFormDialog"
+                         class="bg-white text-primary">Maximize</q-tooltip>
             </q-btn>
-            <q-btn v-close-popup dense flat icon="close">
+            <q-btn v-close-popup
+                   dense
+                   flat
+                   icon="close">
               <q-tooltip class="bg-white text-primary">Close</q-tooltip>
             </q-btn>
           </q-bar>
@@ -34,51 +44,55 @@
                                       :disable="false"
                                       :copy-on-click="copyOnClick"
                                       @onInputClick="onInputClick"
-                                      @onCopyToClipboard="onCopyToClipboard"
-            />
+                                      @onCopyToClipboard="onCopyToClipboard" />
           </q-card-section>
         </q-card>
       </q-dialog>
     </template>
     <template #afterAction>
-      <entity-attach-list
-        ref="EntityAttachList"
-        :list-title="listTitle"
-        :table="table"
-        :table-keys="tableKeys"
-        :api="attachmentListApiAddress"
-      >
-        <template v-slot:table-cell="{inputData, showConfirmRemoveDialog}">
-          <q-td :props="inputData.props">
-            <template v-if="inputData.props.col.name === 'photo'">
-              <q-avatar>
-                <q-img
-                  :src="inputData.props.value"
-                  placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
-                  spinner-color="white"
-                  style="height: 50px; max-width: 50px"
-                />
-              </q-avatar>
-            </template>
-            <template v-else-if="inputData.props.col.name === 'actions'">
-              <q-btn round flat dense size="md" color="info" icon="info"
-                     @click="onAttachmentClicked(inputData.props.row)"
-              >
-                <q-tooltip>
-                  مشاهده
-                </q-tooltip>
-              </q-btn>
-              <q-btn round flat dense size="md" color="negative" icon="delete" class="q-ml-md"
-                     @click="showConfirmRemoveDialog(inputData.props.row, 'id', getRemoveMessage(inputData.props.row))">
-                <q-tooltip>
-                  حذف
-                </q-tooltip>
-              </q-btn>
-            </template>
-            <template v-else>
-              {{ inputData.props.value }}
-            </template>
-          </q-td>
+      <entity-attach-list ref="EntityAttachList"
+                          :list-title="listTitle"
+                          :table="table"
+                          :table-keys="tableKeys"
+                          :api="attachmentListApiAddress">
+        <!--        <template v-slot:entity-index-table-cell="{inputData, showConfirmRemoveDialog}">-->
+        <template v-slot:entity-index-table-cell="{col, props, showConfirmRemoveDialog}">
+          <template v-if="col.name === 'photo'">
+            <q-avatar>
+              <q-img :src="col.value"
+                     placeholder-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg=="
+                     spinner-color="white"
+                     style="height: 50px; max-width: 50px" />
+            </q-avatar>
+          </template>
+          <template v-else-if="col.name === 'actions'">
+            <q-btn round
+                   flat
+                   dense
+                   size="md"
+                   color="info"
+                   icon="info"
+                   @click="onAttachmentClicked(props.row)">
+              <q-tooltip>
+                مشاهده
+              </q-tooltip>
+            </q-btn>
+            <q-btn round
+                   flat
+                   dense
+                   size="md"
+                   color="negative"
+                   icon="delete"
+                   class="q-ml-md"
+                   @click="showConfirmRemoveDialog(props.row, 'id', getRemoveMessage(props.row))">
+              <q-tooltip>
+                حذف
+              </q-tooltip>
+            </q-btn>
+          </template>
+          <template v-else>
+            {{ col.value }}
+          </template>
         </template>
       </entity-attach-list>
     </template>
@@ -97,7 +111,7 @@ export default {
   components: {
     EntityAction,
     EntityAttachList,
-    EntityCrudFormBuilder,
+    EntityCrudFormBuilder
   },
   mixins: [inputMixin, EntityMixin],
   props: {
@@ -236,6 +250,9 @@ export default {
     this.expanded = this.expandedDefault
   },
   methods: {
+    loggg (data) {
+      console.log(data)
+    },
     beforeDoAction () {
       this.beforeDoAttach()
     },
@@ -254,7 +271,7 @@ export default {
       this.$emit('onActionError', error)
     },
     clearDialogFormInputDataValues () {
-      this.dialogFormInputData.forEach( input => {
+      this.dialogFormInputData.forEach(input => {
         input.value = null
       })
     },
@@ -270,8 +287,6 @@ export default {
     getRemoveMessage (row) {
       return this.getDetachMessage(row)
     },
-
-
 
     createValue (val, done) {
       if (val.length > 0) {
@@ -298,6 +313,7 @@ export default {
           finalData[input.name] = val
         }
       })
+      // eslint-disable-next-line
       console.log('finalData', finalData)
       // this.$q.notify({
       //   type: 'positive',

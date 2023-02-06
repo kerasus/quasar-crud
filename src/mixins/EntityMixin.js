@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as shvl from 'shvl'
 import { shallowRef } from 'vue'
 import EntityInput from '../components/Entity/Attachment/EntityInput.vue'
 
@@ -66,9 +67,9 @@ const EntityMixin = {
     },
     beforeGetData: {
       default: () => {},
-      type: Function,
+      type: Function
     },
-    afterGetData:{
+    afterGetData: {
       default: () => {},
       type: Function
     },
@@ -97,15 +98,24 @@ const EntityMixin = {
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)
     },
+    getInputsByName(name) {
+      const inputs = this.getValues()
+      return inputs.find((input) => input.name === name)
+    },
+    setInputByName(name, value) {
+      this.$refs.formBuilder.setInputByName(name, value)
+    },
+    refreshAllInputs() {
+      this.$refs.formBuilder.refreshAllInputs()
+    },
     runNeededMethod (substituteMethod, callBackMethod) {
-      if (!!substituteMethod && substituteMethod()){
+      if (!!substituteMethod && substituteMethod()) {
         substituteMethod()
         return
       }
       callBackMethod()
     },
     getEntityId () {
-
       function getEntityIdFromNestedInputData (entityIdKey, inputs) {
         for (let i = 0; i < inputs.length; i++) {
           const input = inputs[i]
@@ -138,8 +148,8 @@ const EntityMixin = {
     },
     formHasFileInput (inputData) {
       let has = false
-      const inputs = inputData ? inputData : this.inputData
-      inputs.forEach( input => {
+      const inputs = inputData || this.inputData
+      inputs.forEach(input => {
         if (input.type === 'file') {
           has = true
         } else if (input.type === 'formBuilder') {
@@ -153,49 +163,14 @@ const EntityMixin = {
       if (this.formHasFileInput()) {
         return { 'Content-Type': 'multipart/form-data' }
       }
+
+      return {}
     },
     isFile (file) {
       return file instanceof File
     },
     setNewInputData (newInputData) {
       this.inputData = newInputData
-    },
-    getFormData () {
-      const formHasFileInput = this.formHasFileInput()
-      const formData = formHasFileInput ? new FormData() : {}
-      const inputs = this.$refs.formBuilder.getValues()
-      inputs.forEach(item => {
-        if (item.disable || typeof item.value === 'undefined' || item.value === null) {
-          return
-        }
-
-        if (item.type === 'file' && !this.isFile(item.value)) {
-          return
-        }
-
-        if (formHasFileInput) {
-          formData.append(item.name, item.value)
-        } else {
-          this.createChainedObject(formData, item.name, item.value)
-        }
-      })
-
-      return formData
-    },
-    createChainedObject (formData, chainedName, value) {
-      let keysArray = chainedName
-      if (typeof chainedName === 'string') {
-        keysArray = chainedName.split('.')
-      }
-      if (keysArray.length === 1) {
-        formData[keysArray[0]] = value
-      } else {
-        if (typeof formData[keysArray[0]] === 'undefined') {
-          formData[keysArray[0]] = {}
-        }
-        const newKeysArray = keysArray.filter((item, index) => index !== 0)
-        this.createChainedObject(formData[keysArray[0]], newKeysArray, value)
-      }
     },
     toggleFullscreen () {
       const target = this.$refs.portlet
@@ -247,15 +222,22 @@ const EntityMixin = {
 
           input.selected = validChainedObject
           if (Array.isArray(input.selected)) {
-            input.value = input.selected.map( selected => selected[input.itemIdentifyKey])
+            input.value = input.selected.map(selected => selected[input.itemIdentifyKey])
             return
           }
-          if (input.indexConfig && input.indexConfig.itemIdentifyKey && input.selected && input.selected[input.indexConfig.itemIdentifyKey]) {
-            input.value = input.selected[input.indexConfig.itemIdentifyKey]
-          } else {
-            console.error('input.indexConfig.itemIdentifyKey not set or input.selected[input.indexConfig.itemIdentifyKey] does not exist  : ', input)
+
+          if (!input.indexConfig || !input.indexConfig.itemIdentifyKey) {
+            console.error('input.indexConfig.itemIdentifyKey not set: ', input)
+            return
           }
 
+          const selectedVal = shvl.get(input.selected, input.indexConfig.itemIdentifyKey)
+          if (!input.selected || !selectedVal) {
+            console.error('input.selected[input.indexConfig.itemIdentifyKey] does not exist: ', input)
+            return
+          }
+
+          input.value = selectedVal
         })
       }
 
@@ -266,6 +248,7 @@ const EntityMixin = {
     },
     getValidChainedObject (object, keys) {
       if (!Array.isArray(keys) && typeof keys !== 'string') {
+        // eslint-disable-next-line
         console.warn('keys must be array or string')
         return false
       }

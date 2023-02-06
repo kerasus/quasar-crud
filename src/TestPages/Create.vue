@@ -1,28 +1,36 @@
 <template>
-  <entity-create
-    v-model:value="inputs"
-    title="ساخت کاربر جدید"
-    :api="api"
-    :entity-id-key="entityIdKey"
-    :entity-param-key="entityParamKey"
-    :show-route-name="showRouteName"
-    :index-route-name="indexRouteName"
-    :before-send-data="beforeSendData"
-    :after-send-data="afterSendData"
-  >
+  <entity-create v-model:value="inputs"
+                 title="ساخت کاربر جدید"
+                 :api="api"
+                 :entity-id-key="entityIdKey"
+                 :entity-param-key="entityParamKey"
+                 :show-route-name="showRouteName"
+                 :index-route-name="indexRouteName"
+                 :before-send-data="beforeSendData"
+                 :after-send-data="afterSendData">
     <template #before-form-builder>
-      <q-banner v-if="beforeFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
+      <q-banner v-if="beforeFormBuilder"
+                inline-actions
+                rounded
+                class="bg-orange text-white q-ma-md">
         before form builder
         <template v-slot:action>
-          <q-btn flat label="Dismiss" @click="beforeFormBuilder = false" />
+          <q-btn flat
+                 label="Dismiss"
+                 @click="beforeFormBuilder = false" />
         </template>
       </q-banner>
     </template>
     <template #after-form-builder>
-      <q-banner v-if="afterFormBuilder" inline-actions rounded class="bg-orange text-white q-ma-md">
+      <q-banner v-if="afterFormBuilder"
+                inline-actions
+                rounded
+                class="bg-orange text-white q-ma-md">
         after form builder
         <template v-slot:action>
-          <q-btn flat label="Dismiss" @click="afterFormBuilder = false" />
+          <q-btn flat
+                 label="Dismiss"
+                 @click="afterFormBuilder = false" />
         </template>
       </q-banner>
     </template>
@@ -49,9 +57,9 @@ export default {
           name: 'product',
           selectionMode: 'multiple',
           label: 'محصول',
-          buttonColor:'deep-purple',
-          buttonTextColor:'white',
-          buttonBadgeColor:'pink',
+          buttonColor: 'deep-purple',
+          buttonTextColor: 'white',
+          buttonBadgeColor: 'pink',
           indexConfig: {
             apiAddress: 'https://reqres.in/api/users',
             tableTitle: 'لیست محصولات',
@@ -113,7 +121,7 @@ export default {
             inputs: [
               { type: 'input', name: 'id', value: null, label: 'شناسه', col: 'col-md-3' },
               { type: 'input', name: 'first_name', value: null, label: 'نام', col: 'col-md-3' },
-              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' },
+              { type: 'input', name: 'last_name', value: null, label: 'نام خانوادگی', col: 'col-md-3' }
             ],
             itemIndicatorKey: 'first_name',
             itemIdentifyKey: 'id'
@@ -135,16 +143,21 @@ export default {
               col: 'col-md-6',
               value: [
                 { type: 'input', name: 'id3', responseKey: 'id3', value: null, label: 'شناسه3', col: 'col-md-6' },
-                { type: 'input', name: 'id4', responseKey: 'id4', value: null, label: 'شناسه4', col: 'col-md-6' },
+                { type: 'input', name: 'id4', responseKey: 'id4', value: null, label: 'شناسه4', col: 'col-md-6' }
               ]
-            },
+            }
           ]
         },
         { type: 'input', name: 'id', responseKey: 'data.id', label: 'شناسه', col: 'col-md-6', disable: true },
         { type: 'input', name: 'first_name', responseKey: 'data.first_name', label: 'نام', col: 'col-md-4' },
         { type: 'input', name: 'last_name', responseKey: 'data.last_name', label: 'نام خانوادگی', col: 'col-md-4' },
         { type: 'input', name: 'email', responseKey: 'data.email', label: 'ایمیل', col: 'col-md-4' },
-        { type: 'tiptap-editor', name: 'tiptap', responseKey: 'data.tiptap', label: 'ادیتور پیشرفته', options: {
+        {
+          type: 'tiptap-editor',
+          name: 'tiptap',
+          responseKey: 'data.tiptap',
+          label: 'ادیتور پیشرفته',
+          options: {
             bubbleMenu: false,
             floatingMenu: false,
             poem: false,
@@ -156,7 +169,9 @@ export default {
               instantUpload: true,
               headers: { Authorization: 'Bearer ' + '65465' }
             }
-          }, col: 'col-md-12' },
+          },
+          col: 'col-md-12'
+        }
       ],
       beforeFormBuilder: true,
       afterFormBuilder: true
@@ -171,9 +186,11 @@ export default {
     // create entity
     // for those functionalities you can use created option instead of these two
     beforeSendData (formData/* , setNewInputData */) {
+      // eslint-disable-next-line
       console.log('formData before send data: ', formData)
     },
-    afterSendData(res){
+    afterSendData(res) {
+      // eslint-disable-next-line
       console.log('response after send data: ', res)
     }
   }

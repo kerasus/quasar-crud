@@ -6,17 +6,17 @@
           <slot name="title">title</slot>
         </div>
       </section>
-      <q-space/>
+      <q-space />
       <div class="col-auto">
-        <slot name="toolbar"></slot>
+        <slot name="toolbar" />
       </div>
     </q-toolbar>
-    <q-separator/>
+    <q-separator />
     <q-card-section>
-      <slot name="content"></slot>
+      <slot name="content" />
     </q-card-section>
-    <slot name="actions"/>
-    <slot name="afterActions"/>
+    <slot name="actions" />
+    <slot name="afterActions" />
   </q-card>
 </template>
 
