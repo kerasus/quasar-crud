@@ -27,6 +27,7 @@
         <entity-crud-form-builder ref="formBuilder"
                                   v-model:value="inputData"
                                   :disable="false"
+                                  :isColGutter="isColGutter"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
                                   @onCopyToClipboard="onCopyToClipboard" />
