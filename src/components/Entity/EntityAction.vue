@@ -54,6 +54,7 @@
     <entity-crud-form-builder
       ref="formBuilder"
       v-model:value="inputData"
+      :isColGutter="isColGutter"
       :disable="false"
       :copy-on-click="copyOnClick"
       @onInputClick="onInputClick"
@@ -84,6 +85,10 @@ export default {
   components: { EntityCrudFormBuilder, Portlet },
   mixins: [inputMixin, EntityMixin],
   props: {
+    isColGutter: {
+      default: true,
+      type: Boolean
+    },
     value: {
       default: () => [],
       type: Array
