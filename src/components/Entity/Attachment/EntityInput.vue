@@ -111,7 +111,7 @@ const DefaultBtnConfig = {
   stretch: false,
   percentage: 0,
 }
-import { defineAsyncComponent, useSlots, useAttrs, ref } from 'vue'
+import { defineAsyncComponent } from 'vue'
 import { inputMixin } from 'quasar-form-builder'
 
 export default {
@@ -219,20 +219,8 @@ export default {
       default: 'id'
     }
   },
-  setup(props, context) {
-    const slots1 = useSlots()
-    const attrs1 = useAttrs()
-
-    // context.expose({ slots1, attrs1 })
-
-    return {
-      slots1,
-      attrs1
-    }
-  },
   data () {
     return {
-      slots11: this.$slots,
       slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row'],
       expanded: true,
       selected: [],
@@ -248,9 +236,6 @@ export default {
     }
   },
   computed: {
-    slots22 () {
-      return this.$slots
-    },
     getPopUpButtonConfig () {
       return Object.assign(this.defaultBtnConfig, this.popUpButtonConfig)
     },
@@ -258,9 +243,6 @@ export default {
       return Object.assign(this.defaultConfirmButtonConfig, this.dialogConfirmButtonConfig)
     }
   },
-  // mounted () {
-  //   console.log('this.$slots', this.$slots)
-  // },
   methods: {
     onSelectedUpdate (values) {
       let selected = (this.selectionMode === 'multiple') ? [] : null
