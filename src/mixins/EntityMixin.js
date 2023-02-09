@@ -98,8 +98,11 @@ const EntityMixin = {
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)
     },
+    setInputAttributeByName(name, value, attribute) {
+      this.$refs.formBuilder.setInputAttributeByName(name, value, attribute)
+    },
     getInputsByName(name) {
-      const inputs = this.getValues()
+      const inputs = this.$refs.formBuilder.getValues()
       return inputs.find((input) => input.name === name)
     },
     setInputByName(name, value) {
