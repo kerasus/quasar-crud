@@ -66,10 +66,11 @@
       <template #body="props">
         <q-tr :props="props">
           <q-td v-if="tableSelectionMode || tableRowExpandable">
-            <slot name="entity-index-table-selection-cell"
-                  :props="props">
-              <q-checkbox v-model="props.selected" />
-            </slot>
+<!--            todo: this slot leads to performance issues, must be handled-->
+            <!--            <slot name="entity-index-table-selection-cell"-->
+            <!--                  :props="props">-->
+            <q-checkbox v-model="props.selected"/>
+            <!--            </slot>-->
           </q-td>
           <slot name="entity-index-table-body"
                 v-bind="props">
