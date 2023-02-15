@@ -1,6 +1,6 @@
 <template>
   <entity-index ref="entityIndex"
-      v-model:value="inputs"
+                v-model:value="inputs"
                 v-model:table-selected-values="selected"
                 title="لیست کاربران"
                 show-no-entity-slot
@@ -64,8 +64,10 @@
                  @click="beforeFormBuilder = false" />
         </template>
       </q-banner>
-      <q-btn label="refreshAllInputs" @click="refreshAllInputs"></q-btn>
-      <q-btn label="setInputByName" @click="setInputByName"></q-btn>
+      <q-btn label="refreshAllInputs"
+             @click="refreshAllInputs" />
+      <q-btn label="setInputByName"
+             @click="setInputByName" />
     </template>
     <template #after-form-builder>
       <q-banner v-if="afterFormBuilder"
