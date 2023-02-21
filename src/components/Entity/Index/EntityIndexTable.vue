@@ -98,7 +98,6 @@
               v-show="props.expand"
               :props="props">
           <q-td colspan="100%">
-            d;flg,k;fdgl,dg;fl
             <slot name="entity-index-table-expanded-row"
                   :props="props" />
           </q-td>
