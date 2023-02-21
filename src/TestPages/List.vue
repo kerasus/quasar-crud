@@ -129,18 +129,52 @@
                  :beforeDoAction="beforeDoAction"
                  @onActionSuccess="onActionSuccess"
                  @onActionError="onActionError" />
+  <q-btn @click="dialog = !dialog">dialog</q-btn>
+  <q-dialog v-model="dialog">
+    <q-card>
+      <q-btn @click="dialog2 =! dialog2">dialog2</q-btn>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="dialog2">
+    <entity-edit ref="entityEditForm"
+                 v-model:value="crudFormInputs"
+                 title="ویرایش اطلاعات محتوا"
+                 :api="api"
+                 :entity-id-key="entityIdKey"
+                 :entity-param-key="entityParamKey">
+      <template #entity-index-table-selection-cell="data">
+        title
+        <q-checkbox v-model="data.props.selected"  @update:model-value="expandRow(data.props)" />
+      </template>
+      <template #entity-index-table-expanded-row="data">
+        test desc
+        {{ data.props }}
+      </template>
+    </entity-edit>
+  </q-dialog>
 </template>
 
 <script>
 import EntityAction from '../components/Entity/EntityAction.vue'
 import EntityIndex from '../components/Entity/Index/EntityIndex.vue'
+import EntityEdit from '../components/Entity/Edit/EntityEdit.vue'
 import EntityAttachment from '../components/Entity/Attachment/EntityAttachment.vue'
 export default {
   name: 'List',
-  components: { EntityAttachment, EntityIndex, EntityAction },
+  components: { EntityAttachment, EntityIndex, EntityAction, EntityEdit },
   data () {
     return {
+      dialog: false,
+      dialog2: false,
       expanded: true,
+      teachers: [],
+      setForm: {
+        teacher: '',
+        orderType: 'last',
+        order: ''
+      },
+      entityIdKey: 'id',
+      entityParamKey: 'id',
       selected: [],
       api: 'https://reqres.in/api/users',
       tableKeys: {
@@ -297,12 +331,23 @@ export default {
           name: 'exam',
           label: 'آزمون',
           selectionMode: 'multiple',
-          buttonColor: 'indigo',
-          buttonTextColor: 'black',
-          buttonBadgeColor: 'blue',
+          popUpButtonConfig: {
+            unelevated: true,
+            color: 'indigo',
+            textColor: 'black',
+            badgeColor: 'blue',
+            label: 'انتخاب از لیست آزمون ها'
+          },
+          tableRowExpandable: true,
+          dialogConfirmButtonConfig: {
+            unelevated: true,
+            color: 'positive',
+            label: 'ثبت آزمون'
+          },
           indexConfig: {
+            tableRowExpandable: true,
             apiAddress: 'https://reqres.in/api/users',
-            tableTitle: 'لیست محصولات',
+            tableTitle: 'لیست آزمون ها',
             tableKeys: {
               data: 'data',
               total: 'total',
@@ -459,6 +504,9 @@ export default {
   },
   mounted () {},
   methods: {
+    expandRow (props) {
+      props.expand = !props.selected
+    },
     loggg (data) {
       console.log(data)
     },
