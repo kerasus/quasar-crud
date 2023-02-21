@@ -110,15 +110,20 @@
                                 :change-page="changePage"
                                 @update:table-selected-values="updateSelectedValues"
                                 @search="search">
-              <template v-for="slotName in slots"
-                        #[slotName]="{props, col}">
-                <slot v-if="slotName === 'entity-index-table-cell'"
-                      :name="slotName"
+<!--              slots has been declared in template before use-->
+              <template #entity-index-table-cell="{props, col}">
+                <slot name="entity-index-table-cell"
                       :props="props"
                       :col="col"
-                      :showConfirmRemoveDialog="showConfirmRemoveDialog" />
-                <slot v-else
-                      :name="slotName"
+                      :showConfirmRemoveDialog="showConfirmRemoveDialog"
+                />
+              </template>
+              <template #entity-index-table-body="{props, col}">
+                <slot name="entity-index-table-body"
+                      v-bind="props || {}" />
+              </template>
+              <template #entity-index-table-expanded-row="{props, col}">
+                <slot name="entity-index-table-expanded-row"
                       v-bind="props || {}" />
               </template>
               <template #entity-index-table-selection-cell="slotProps">
@@ -218,6 +223,14 @@
         <slot name="table-item-cell"
               :inputData="inputData"
               :showConfirmRemoveDialog="showConfirmRemoveDialog" />
+      </template>
+      <template #entity-index-table-body="{props, col}">
+        <slot name="entity-index-table-body"
+              v-bind="props || {}" />
+      </template>
+      <template #entity-index-table-expanded-row="{props, col}">
+        <slot name="entity-index-table-expanded-row"
+              v-bind="props || {}" />
       </template>
     </entity-index-table>
     <div class="slot-wrapper">
