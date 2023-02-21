@@ -54,8 +54,8 @@
                 v-bind="slotProps || {}" />
         </template>
         <template #after-index-table>
-          <q-btn class="col-12"
-                 v-close-popup
+          <q-btn v-close-popup
+                 class="col-12"
                  style="float: left;"
                  :push="getDialogConfirmButtonConfig.push"
                  :unelevated="getDialogConfirmButtonConfig.unelevated"
@@ -78,7 +78,7 @@
                  :outline="getDialogConfirmButtonConfig.outline"
                  :loading="getDialogConfirmButtonConfig.loading"
                  :disable="getDialogConfirmButtonConfig.disable"
-                 :percentage="getDialogConfirmButtonConfig.percentage"/>
+                 :percentage="getDialogConfirmButtonConfig.percentage" />
         </template>
       </entity-index>
     </q-dialog>
@@ -87,14 +87,14 @@
 
 <script>
 const DefaultBtnConfig = {
-  label:'',
+  label: '',
   loading: false,
   disable: false,
   size: undefined,
   padding: undefined,
   color: 'primary',
   textColor: undefined,
-  badgeColor:'primary',
+  badgeColor: 'primary',
   icon: undefined,
   iconRight: undefined,
   align: undefined,
@@ -109,7 +109,7 @@ const DefaultBtnConfig = {
   noWrap: false,
   stack: false,
   stretch: false,
-  percentage: 0,
+  percentage: 0
 }
 import { defineAsyncComponent } from 'vue'
 import { inputMixin } from 'quasar-form-builder'
@@ -132,13 +132,13 @@ export default {
       type: Object,
       default: () => {
         return {}
-      },
+      }
     },
     dialogConfirmButtonConfig: {
       type: Object,
       default: () => {
         return {}
-      },
+      }
     },
     tableTitle: {
       type: String,
@@ -221,7 +221,12 @@ export default {
   },
   data () {
     return {
-      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row'],
+      slots: [
+        'entity-index-table-cell',
+        'entity-index-table-body',
+        'entity-index-table-selection-cell',
+        'entity-index-table-expanded-row'
+      ],
       expanded: true,
       selected: [],
       dialog: null,
@@ -232,7 +237,7 @@ export default {
         ...DefaultBtnConfig,
         label: 'close',
         color: 'negative'
-      },
+      }
     }
   },
   computed: {

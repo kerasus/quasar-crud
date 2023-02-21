@@ -121,6 +121,10 @@
                       :name="slotName"
                       v-bind="props || {}" />
               </template>
+              <template #entity-index-table-selection-cell="slotProps">
+                <slot name="entity-index-table-selection-cell"
+                      v-bind="slotProps || {}" />
+              </template>
               <!--              <template #table-cell="slotProps">-->
               <!--                <slot name="table-cell"-->
               <!--                      :inputData="slotProps"-->
@@ -205,6 +209,10 @@
             {{ slotProps.col.value }}
           </q-td>
         </slot>
+      </template>
+      <template #entity-index-table-selection-cell="slotProps">
+        <slot name="entity-index-table-selection-cell"
+              v-bind="slotProps || {}" />
       </template>
       <template #entity-index-table-item-cell="{inputData}">
         <slot name="table-item-cell"
@@ -326,7 +334,15 @@ export default {
   ],
   data () {
     return {
-      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row', 'before-form-builder', 'after-form-builder'],
+      slots: [
+        'entity-index-table-cell',
+        'entity-index-table-body',
+        //  this slot must be declared in template before use
+        // 'entity-index-table-selection-cell',
+        'entity-index-table-expanded-row',
+        'before-form-builder',
+        'after-form-builder'
+      ],
       removeIdKey: 'id',
       confirmRemoveDialog: false,
       confirmRemoveMessage: 'false',

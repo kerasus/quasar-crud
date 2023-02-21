@@ -5,7 +5,10 @@ module.exports = {
   root: true,
 
   parserOptions: {
-    ecmaVersion: '2021' // Allows for the parsing of modern ECMAScript features
+    ecmaVersion: '2021', // Allows for the parsing of modern ECMAScript features
+    ecmaFeatures: {
+      experimentalObjectRestSpread: true
+    }
   },
 
   env: {
@@ -74,7 +77,19 @@ module.exports = {
     'prefer-promise-reject-errors': 'off',
     'no-unused-vars': 'error',
 
+    'vue/attributes-order': 'error',
+    'vue/order-in-components': 'error',
+    'vue/max-attributes-per-line': 'error',
+    'vue/html-indent': 'error',
+    'vue/html-closing-bracket-spacing': 'error',
     'vue/no-multi-spaces': 'error',
+    'no-console': [
+      'warn',
+      { allow: ['clear', 'info', 'error', 'dir', 'trace', 'groupEnd', 'groupCollapsed'] }
+    ],
+
+    'vue/multi-word-component-names': 'off',
+    'vue/no-v-text-v-html-on-component': 'off',
     'vue/component-name-in-template-casing': [
       'error',
       'kebab-case',
@@ -108,19 +123,6 @@ module.exports = {
         multiline: 'beside'
       }
     ],
-    'vue/attributes-order': 'error',
-    'vue/order-in-components': 'error',
-    'vue/max-attributes-per-line': 'error',
-    'vue/html-indent': 'error',
-    'vue/html-closing-bracket-spacing': 'error',
-    'no-console': [
-      'warn',
-      { allow: ['clear', 'info', 'error', 'dir', 'trace', 'groupEnd', 'groupCollapsed'] }
-    ],
-
-    'vue/multi-word-component-names': 'off',
-    'vue/no-v-text-v-html-on-component': 'off',
-
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'space-before-function-paren': 0
