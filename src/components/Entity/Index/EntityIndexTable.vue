@@ -66,11 +66,10 @@
       <template #body="props">
         <q-tr :props="props">
           <q-td v-if="tableSelectionMode !== 'none' || tableRowExpandable">
-            <!--            todo: this slot leads to performance issues, must be handled-->
-            <!--            <slot name="entity-index-table-selection-cell"-->
-            <!--                  :props="props">-->
-            <q-checkbox v-model="props.selected"/>
-            <!--            </slot>-->
+            <slot name="entity-index-table-selection-cell"
+                  :props="props">
+              <q-checkbox v-model="props.selected"/>
+            </slot>
           </q-td>
           <slot name="entity-index-table-body"
                 v-bind="props">
@@ -99,6 +98,7 @@
               v-show="props.expand"
               :props="props">
           <q-td colspan="100%">
+            d;flg,k;fdgl,dg;fl
             <slot name="entity-index-table-expanded-row"
                   :props="props" />
           </q-td>

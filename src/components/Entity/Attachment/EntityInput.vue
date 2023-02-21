@@ -221,7 +221,12 @@ export default {
   },
   data () {
     return {
-      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row'],
+      slots: [
+        'entity-index-table-cell',
+        'entity-index-table-body',
+        'entity-index-table-selection-cell',
+        'entity-index-table-expanded-row'
+      ],
       expanded: true,
       selected: [],
       dialog: null,
