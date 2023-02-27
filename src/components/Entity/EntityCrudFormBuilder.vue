@@ -66,14 +66,14 @@ export default {
     'onCopyToClipboard',
     'onInputKeyPress'
   ],
-  data() {
+  data () {
     return {
       entityInput: []
     }
   },
   computed: {
     computedInputs: {
-      get() {
+      get () {
         return this.value.map(input => {
           if (input.type.toString() !== 'entity') {
             return input
@@ -81,7 +81,7 @@ export default {
           return this.getEntityInput(input)
         })
       },
-      set(inputs) {
+      set (inputs) {
         inputs.forEach(input => {
           if (!this.isEntityInput(input)) {
             return
@@ -134,7 +134,7 @@ export default {
     }
   },
   watch: {},
-  mounted() {
+  mounted () {
     if (this.readonly) {
       this.$refs.formBuilder.readonlyAllInputs()
     }
@@ -143,7 +143,7 @@ export default {
     }
   },
   methods: {
-    onInputClick(data) {
+    onInputClick (data) {
       const targetValue = data?.event?.target?.value
       if (this.copyOnClick && targetValue) {
         copyToClipboard(targetValue)
@@ -153,10 +153,10 @@ export default {
       }
       this.$emit('onInputClick', data)
     },
-    onInputKeyPress(data) {
+    onInputKeyPress (data) {
       this.$emit('onInputKeyPress', data)
     },
-    getItemIdentifyKey(input) {
+    getItemIdentifyKey (input) {
       if (typeof input.indexConfig.itemIdentifyKey === 'string') {
         return input.indexConfig.itemIdentifyKey
       } else if (typeof input.indexConfig.itemIdentifyKey === 'function') {
@@ -165,20 +165,23 @@ export default {
         return EntityInputComp.value.props.itemIdentifyKey.default
       }
     },
-    getInputSelectionMode(input) {
+    getInputSelectionMode (input) {
       if (typeof input.selectionMode !== 'undefined') {
         return input.selectionMode
       } else {
         return EntityInputComp.value.props.selectionMode.default
       }
     },
-    getValues() {
+    getValues () {
       return this.$refs.formBuilder.getValues()
     },
-    getFormData() {
+    getFormData () {
       return this.$refs.formBuilder.getFormData()
     },
-    refreshAllInputs() {
+    formHasFileInput () {
+      return this.$refs.formBuilder.formHasFileInput()
+    },
+    refreshAllInputs () {
       this.$refs.formBuilder.clearFormBuilderInputValues()
     },
     getEntityInput (input) {

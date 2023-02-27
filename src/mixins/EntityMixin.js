@@ -98,8 +98,11 @@ const EntityMixin = {
     onCopyToClipboard (data) {
       this.$emit('onCopyToClipboard', data)
     },
+    setInputAttributeByName(name, value, attribute) {
+      this.$refs.formBuilder.setInputAttributeByName(name, value, attribute)
+    },
     getInputsByName(name) {
-      const inputs = this.getValues()
+      const inputs = this.$refs.formBuilder.getValues()
       return inputs.find((input) => input.name === name)
     },
     setInputByName(name, value) {
@@ -147,20 +150,24 @@ const EntityMixin = {
       this.$router.push({ name: this.showRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     },
     formHasFileInput (inputData) {
-      let has = false
-      const inputs = inputData || this.inputData
-      inputs.forEach(input => {
-        if (input.type === 'file') {
-          has = true
-        } else if (input.type === 'formBuilder') {
-          has = this.formHasFileInput(input.value)
-        }
-      })
+      if (inputData) {
+        let has = false
+        const inputs = inputData || this.inputData
+        inputs.filter(item => !item.disable && !item.ignoreValue && typeof item.value !== 'undefined' && item.value !== null).forEach(input => {
+          if (input.type === 'file') {
+            has = true
+          } else if (input.type === 'formBuilder') {
+            has = this.formHasFileInput(input.value)
+          }
+        })
 
-      return has
+        return has
+      }
+
+      return this.$refs.formBuilder.formHasFileInput()
     },
-    getHeaders () {
-      if (this.formHasFileInput()) {
+    getHeaders (formData) {
+      if (this.formHasFileInput(formData)) {
         return { 'Content-Type': 'multipart/form-data' }
       }
 
