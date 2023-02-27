@@ -58,11 +58,6 @@
         </q-btn>
       </template>
 
-      <template #item="props">
-        <slot name="entity-index-table-item-cell"
-              :inputData="{props}" />
-      </template>
-
       <template #body="props">
         <q-tr :props="props">
           <q-td v-if="tableSelectionMode !== 'none' || tableRowExpandable">

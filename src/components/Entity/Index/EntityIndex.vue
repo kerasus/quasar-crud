@@ -219,11 +219,6 @@
         <slot name="entity-index-table-selection-cell"
               v-bind="slotProps || {}" />
       </template>
-      <template #entity-index-table-item-cell="{inputData}">
-        <slot name="table-item-cell"
-              :inputData="inputData"
-              :showConfirmRemoveDialog="showConfirmRemoveDialog" />
-      </template>
       <template #entity-index-table-body="{props, col}">
         <slot name="entity-index-table-body"
               v-bind="props || {}" />
