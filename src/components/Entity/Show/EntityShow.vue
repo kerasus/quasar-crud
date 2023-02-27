@@ -197,21 +197,11 @@ export default {
     }
   },
   async created () {
-    // this.readonlyAllInputs(this.inputData)
     await this.beforeGetData()
     await this.getData()
     await this.afterGetData()
   },
   methods: {
-    readonlyAllInputs (inputs) {
-      inputs.forEach(input => {
-        if (input.type === 'formBuilder') {
-          this.readonlyAllInputs(input.value)
-        } else {
-          input.readonly = true
-        }
-      })
-    },
     goToEditView () {
       this.$router.push({ name: this.editRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     }
