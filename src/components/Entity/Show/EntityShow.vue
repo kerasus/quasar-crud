@@ -56,7 +56,6 @@
         <entity-crud-form-builder :key="key"
                                   ref="formBuilder"
                                   v-model:value="inputData"
-                                  :readonly="true"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
                                   @onCopyToClipboard="onCopyToClipboard">
@@ -197,18 +196,18 @@ export default {
     }
   },
   async created () {
-    // this.disabledAllInputs(this.inputData)
+    this.readonlyAllInputs(this.inputData)
     await this.beforeGetData()
     await this.getData()
     await this.afterGetData()
   },
   methods: {
-    disabledAllInputs (inputs) {
+    readonlyAllInputs (inputs) {
       inputs.forEach(input => {
         if (input.type === 'formBuilder') {
-          this.disabledAllInputs(input.value)
+          this.readonlyAllInputs(input.value)
         } else {
-          input.disable = true
+          input.readonly = true
         }
       })
     },
