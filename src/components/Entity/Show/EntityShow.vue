@@ -57,6 +57,7 @@
                                   ref="formBuilder"
                                   v-model:value="inputData"
                                   :copy-on-click="copyOnClick"
+                                  :readonly="true"
                                   @onInputClick="onInputClick"
                                   @onCopyToClipboard="onCopyToClipboard">
           <template #entity-index-table-cell="slotProps">
@@ -196,7 +197,7 @@ export default {
     }
   },
   async created () {
-    this.readonlyAllInputs(this.inputData)
+    // this.readonlyAllInputs(this.inputData)
     await this.beforeGetData()
     await this.getData()
     await this.afterGetData()
