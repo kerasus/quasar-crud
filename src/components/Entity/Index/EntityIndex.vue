@@ -384,7 +384,7 @@ export default {
           rowsNumber: 0
         }
       },
-      getDataPromiseCancelMethod: null
+      dataRequestPromiseCancelMethod: null
     }
   },
   computed: {
@@ -472,12 +472,12 @@ export default {
       if (!address) {
         address = this.api
       }
-      if (this.getDataPromiseCancelMethod) {
-        this.getDataPromiseCancelMethod()
+      if (this.dataRequestPromiseCancelMethod) {
+        this.dataRequestPromiseCancelMethod()
       }
       this.getDataCancellablePromise(this.$axios.get(address, {
         params: that.createParams(page)
-      }), this.getDataPromiseCancelMethod)
+      }), this.dataRequestPromiseCancelMethod)
           .then((response) => {
             that.entityLoading = false
 
