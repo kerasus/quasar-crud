@@ -5,7 +5,6 @@
   <form-builder ref="formBuilder"
                 v-model:value="computedInputs"
                 :disable="disable"
-                :readonly="readonly"
                 @onClick="onInputClick"
                 @onKeyPress="onInputKeyPress">
     <template #entity-index-table-cell="slotProps">
@@ -136,10 +135,10 @@ export default {
   watch: {},
   mounted () {
     if (this.readonly) {
-      this.$refs.formBuilder.readonlyAllInputs()
+      this.$refs.formBuilder.readonlyAllInputs(true)
     }
     if (this.disable) {
-      this.$refs.formBuilder.disableAllInputs()
+      this.$refs.formBuilder.disableAllInputs(true)
     }
   },
   methods: {
