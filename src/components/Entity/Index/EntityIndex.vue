@@ -110,13 +110,19 @@
                                 :change-page="changePage"
                                 @update:table-selected-values="updateSelectedValues"
                                 @search="search">
-<!--              slots has been declared in template before use-->
-              <template #entity-index-table-cell="{props, col}">
+              <!--              slots has been declared in template before use-->
+              <template #entity-index-table-cell="slotProps">
                 <slot name="entity-index-table-cell"
-                      :props="props"
-                      :col="col"
-                      :showConfirmRemoveDialog="showConfirmRemoveDialog"
-                />
+                      :inputData="slotProps"
+                      :showConfirmRemoveDialog="showConfirmRemoveDialog">
+                  <q-td :props="slotProps">
+                    {{ slotProps.col.value }}
+                  </q-td>
+                </slot>
+              </template>
+              <template #entity-index-table-selection-cell="slotProps">
+                <slot name="entity-index-table-selection-cell"
+                      v-bind="slotProps || {}" />
               </template>
               <template #entity-index-table-body="{props, col}">
                 <slot name="entity-index-table-body"
@@ -126,19 +132,6 @@
                 <slot name="entity-index-table-expanded-row"
                       v-bind="props || {}" />
               </template>
-              <template #entity-index-table-selection-cell="slotProps">
-                <slot name="entity-index-table-selection-cell"
-                      v-bind="slotProps || {}" />
-              </template>
-              <!--              <template #table-cell="slotProps">-->
-              <!--                <slot name="table-cell"-->
-              <!--                      :inputData="slotProps"-->
-              <!--                      :showConfirmRemoveDialog="showConfirmRemoveDialog">-->
-              <!--                  <q-td :props="inputData.props">-->
-              <!--                    {{ slotProps.col.value }}-->
-              <!--                  </q-td>-->
-              <!--                </slot>-->
-              <!--              </template>-->
 
             </entity-index-table>
             <div class="slot-wrapper">
@@ -172,6 +165,28 @@
     </template>
   </portlet>
   <div v-else>
+    <q-dialog v-model="confirmRemoveDialog"
+              persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-icon name="warning"
+                  color="primary"
+                  size="md" />
+          <span class="q-ml-sm">{{ confirmRemoveMessage }}</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup
+                 flat
+                 label="انصراف"
+                 color="primary" />
+          <q-btn v-close-popup
+                 flat
+                 label="تایید"
+                 color="primary"
+                 @click="removeItem" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <entity-crud-form-builder ref="formBuilder"
                               v-model:value="inputData"
                               :disable="false"
@@ -382,7 +397,7 @@ export default {
       set () {}
     },
     isNoEntityModeSet () {
-      return (this.showNoEntitySlot && this.tableData.data.length === 0)
+      return (this.showNoEntitySlot && !this.entityLoading && this.tableData.data.length === 0)
     }
   },
   mounted () {
@@ -402,6 +417,7 @@ export default {
       this.$router.push({ name: this.createRouteName })
     },
     showConfirmRemoveDialog (item, idKey, lable) {
+      console.log('showConfirmRemoveDialog')
       if (idKey) {
         this.removeIdKey = idKey
       }
@@ -420,12 +436,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-        .then(() => {
-          that.reload()
-        })
-        .catch(() => {
-          that.entityLoading = false
-        })
+          .then(() => {
+            that.reload()
+          })
+          .catch(() => {
+            that.entityLoading = false
+          })
     },
     changePage (page) {
       this.clearData()
