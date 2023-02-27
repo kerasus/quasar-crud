@@ -384,7 +384,7 @@ export default {
           rowsNumber: 0
         }
       },
-      dataRequestPromiseCancelMethod: null
+      dataAbortController: null
     }
   },
   computed: {
@@ -457,26 +457,20 @@ export default {
     search () {
       this.changePage()
     },
-    getDataCancellablePromise (promiseToCancel, cancelVariable) {
-      return new Promise((resolve, reject) => {
-        cancelVariable = reject
-        promiseToCancel
-            .then(resolve)
-            .catch(reject)
-      })
-    },
     getData (address, page) {
       const that = this
       this.entityLoading = true
       if (!address) {
         address = this.api
       }
-      if (this.dataRequestPromiseCancelMethod) {
-        this.dataRequestPromiseCancelMethod()
+      if (this.dataAbortController) {
+        this.dataAbortController.abort()
       }
-      this.getDataCancellablePromise(this.$axios.get(address, {
+      this.dataAbortController = new AbortController()
+      this.$axios.get(address, {
+        signal: this.dataAbortController.signal,
         params: that.createParams(page)
-      }), this.dataRequestPromiseCancelMethod)
+      })
           .then((response) => {
             that.entityLoading = false
 
