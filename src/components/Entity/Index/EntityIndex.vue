@@ -418,7 +418,6 @@ export default {
       this.$router.push({ name: this.createRouteName })
     },
     showConfirmRemoveDialog (item, idKey, lable) {
-      console.log('showConfirmRemoveDialog')
       if (idKey) {
         this.removeIdKey = idKey
       }
