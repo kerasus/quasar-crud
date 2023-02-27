@@ -383,7 +383,8 @@ export default {
           pageKey: 'page',
           rowsNumber: 0
         }
-      }
+      },
+      getDataPromiseCancelMethod: null
     }
   },
   computed: {
@@ -457,31 +458,42 @@ export default {
     search () {
       this.changePage()
     },
+    getDataCancellablePromise (promiseToCancel, cancelVariable) {
+      return new Promise((resolve, reject) => {
+        cancelVariable = reject
+        promiseToCancel
+            .then(resolve)
+            .catch(reject)
+      })
+    },
     getData (address, page) {
       const that = this
       this.entityLoading = true
       if (!address) {
         address = this.api
       }
-
-      this.$axios.get(address, {
+      if (this.getDataPromiseCancelMethod) {
+        this.getDataPromiseCancelMethod()
+      }
+      this.getDataCancellablePromise(this.$axios.get(address, {
         params: that.createParams(page)
-      })
-        .then((response) => {
-          that.entityLoading = false
+      }), this.getDataPromiseCancelMethod)
+          .then((response) => {
+            that.entityLoading = false
 
-          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
-          that.$emit('onPageChanged', response)
-          // this.key = Date.now()
-        })
-        .catch(error => {
-          that.entityLoading = false
-          that.$emit('catchError', error)
-        })
+            that.$emit('onPageChanged', response)
+            // this.key = Date.now()
+          })
+          .catch(error => {
+            that.entityLoading = false
+            that.$emit('catchError', error)
+          })
+
     },
     createParams (page) {
       const filterData = this.$refs.formBuilder.getFormData()
