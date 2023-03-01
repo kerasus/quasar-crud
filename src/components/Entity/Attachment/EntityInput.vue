@@ -47,6 +47,7 @@
                     :show-expand-button="false"
                     :row-key="itemIdentifyKey"
                     :item-indicator-key="itemIndicatorKey"
+                    @onInputClick="onInputClick"
                     @update:table-selected-values="onSelectedUpdate">
         <template v-for="slotName in slots"
                   #[slotName]="slotProps">
@@ -219,6 +220,7 @@ export default {
       default: 'id'
     }
   },
+  emits: ['onInputClick'],
   data () {
     return {
       slots: [
@@ -249,6 +251,9 @@ export default {
     }
   },
   methods: {
+    onInputClick(event) {
+      this.$emit('onInputClick', event)
+    },
     onSelectedUpdate (values) {
       let selected = (this.selectionMode === 'multiple') ? [] : null
       values.forEach(vlue => {

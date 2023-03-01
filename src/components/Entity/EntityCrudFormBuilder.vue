@@ -5,6 +5,7 @@
   <form-builder ref="formBuilder"
                 v-model:value="computedInputs"
                 :disable="disable"
+                @onInputClick="onInputClick"
                 @onClick="onInputClick"
                 @onKeyPress="onInputKeyPress">
     <template #entity-index-table-cell="slotProps">
