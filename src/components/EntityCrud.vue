@@ -51,7 +51,7 @@
       <slot v-if="currentComponent === 'entity-index'"
             name="entity-crud-after-index-table" />
     </template>
-    <template v-slot:table-cell="{inputData, showConfirmRemoveDialog}">
+    <template v-slot:entity-index-table-cell="{inputData, showConfirmRemoveDialog}">
       <slot v-if="currentComponent === 'entity-index'"
             name="entity-crud-table-cell"
             :inputData="inputData"

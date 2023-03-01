@@ -1,16 +1,34 @@
 <template>
   <div class="row">
     <q-btn class="col-12"
-           push
-           :color="buttonColor"
-           :text-color="buttonTextColor"
-           :label="label"
+           :push="getPopUpButtonConfig.push"
+           :unelevated="getPopUpButtonConfig.unelevated"
+           :color="getPopUpButtonConfig.color"
+           :text-color="getPopUpButtonConfig.textColor"
+           :label="getPopUpButtonConfig.label"
+           :align="getPopUpButtonConfig.align"
+           :flat="getPopUpButtonConfig.flat"
+           :size="getPopUpButtonConfig.size"
+           :padding="getPopUpButtonConfig.padding"
+           :icon="getPopUpButtonConfig.icon"
+           :stack="getPopUpButtonConfig.stack"
+           :stretch="getPopUpButtonConfig.stretch"
+           :icon-right="getPopUpButtonConfig.iconRight"
+           :no-wrap="getPopUpButtonConfig.noWrap"
+           :dense="getPopUpButtonConfig.dense"
+           :rounded="getPopUpButtonConfig.rounded"
+           :square="getPopUpButtonConfig.square"
+           :glossy="getPopUpButtonConfig.glossy"
+           :outline="getPopUpButtonConfig.outline"
+           :loading="getPopUpButtonConfig.loading"
+           :disable="getPopUpButtonConfig.disable"
+           :percentage="getPopUpButtonConfig.percentage"
            @click="openCloseModal">
       <q-badge v-if="Array.isArray(value) && value.length > 0"
-               :color="buttonBadgeColor"
+               :color="getPopUpButtonConfig.badgeColor"
                floating>{{ value.length }}</q-badge>
       <q-badge v-else-if="!Array.isArray(value) && typeof value !== 'undefined' && value !== null"
-               :color="buttonBadgeColor"
+               :color="getPopUpButtonConfig.badgeColor"
                floating>1</q-badge>
     </q-btn>
     <q-dialog v-model="dialog"
@@ -25,26 +43,42 @@
                     :table-selection-mode="selectionMode"
                     :table-row-expandable="tableRowExpandable"
                     :table-row-default-expand-action="tableRowDefaultExpandAction"
-                    :show-close-button="true"
+                    :show-close-button="false"
                     :show-expand-button="false"
                     :row-key="itemIdentifyKey"
                     :item-indicator-key="itemIndicatorKey"
                     @update:table-selected-values="onSelectedUpdate">
-        <template #entity-index-table-cell="slotProps">
-          <slot name="entity-index-table-cell"
+        <template v-for="slotName in slots"
+                  #[slotName]="slotProps">
+          <slot :name="slotName"
                 v-bind="slotProps || {}" />
         </template>
-        <template #entity-index-table-body="slotProps">
-          <slot name="entity-index-table-body"
-                v-bind="slotProps || {}" />
-        </template>
-        <template #entity-index-table-selection-cell="slotProps">
-          <slot name="entity-index-table-selection-cell"
-                v-bind="slotProps || {}" />
-        </template>
-        <template #entity-index-table-expanded-row="slotProps">
-          <slot name="entity-index-table-expanded-row"
-                v-bind="slotProps || {}" />
+        <template #after-index-table>
+          <q-btn v-close-popup
+                 class="col-12"
+                 style="float: left;"
+                 :push="getDialogConfirmButtonConfig.push"
+                 :unelevated="getDialogConfirmButtonConfig.unelevated"
+                 :color="getDialogConfirmButtonConfig.color"
+                 :text-color="getDialogConfirmButtonConfig.textColor"
+                 :label="getDialogConfirmButtonConfig.label"
+                 :align="getDialogConfirmButtonConfig.align"
+                 :flat="getDialogConfirmButtonConfig.flat"
+                 :size="getDialogConfirmButtonConfig.size"
+                 :padding="getDialogConfirmButtonConfig.padding"
+                 :icon="getDialogConfirmButtonConfig.icon"
+                 :stack="getDialogConfirmButtonConfig.stack"
+                 :stretch="getDialogConfirmButtonConfig.stretch"
+                 :icon-right="getDialogConfirmButtonConfig.iconRight"
+                 :no-wrap="getDialogConfirmButtonConfig.noWrap"
+                 :dense="getDialogConfirmButtonConfig.dense"
+                 :rounded="getDialogConfirmButtonConfig.rounded"
+                 :square="getDialogConfirmButtonConfig.square"
+                 :glossy="getDialogConfirmButtonConfig.glossy"
+                 :outline="getDialogConfirmButtonConfig.outline"
+                 :loading="getDialogConfirmButtonConfig.loading"
+                 :disable="getDialogConfirmButtonConfig.disable"
+                 :percentage="getDialogConfirmButtonConfig.percentage" />
         </template>
       </entity-index>
     </q-dialog>
@@ -52,7 +86,32 @@
 </template>
 
 <script>
-import { defineAsyncComponent, useSlots, useAttrs } from 'vue'
+const DefaultBtnConfig = {
+  label: '',
+  loading: false,
+  disable: false,
+  size: undefined,
+  padding: undefined,
+  color: 'primary',
+  textColor: undefined,
+  badgeColor: 'primary',
+  icon: undefined,
+  iconRight: undefined,
+  align: undefined,
+  dense: false,
+  outline: false,
+  flat: false,
+  unelevated: false,
+  rounded: false,
+  push: false,
+  square: false,
+  glossy: false,
+  noWrap: false,
+  stack: false,
+  stretch: false,
+  percentage: 0
+}
+import { defineAsyncComponent } from 'vue'
 import { inputMixin } from 'quasar-form-builder'
 
 export default {
@@ -69,21 +128,17 @@ export default {
       type: String,
       default: ''
     },
-    buttonName: {
-      type: String,
-      default: ''
+    popUpButtonConfig: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
-    buttonColor: {
-      type: String,
-      default: 'primary'
-    },
-    buttonTextColor: {
-      type: String,
-      default: 'white'
-    },
-    buttonBadgeColor: {
-      type: String,
-      default: 'orange'
+    dialogConfirmButtonConfig: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     tableTitle: {
       type: String,
@@ -164,34 +219,35 @@ export default {
       default: 'id'
     }
   },
-  setup(props, context) {
-    const slots1 = useSlots()
-    const attrs1 = useAttrs()
-
-    // context.expose({ slots1, attrs1 })
-
-    return {
-      slots1,
-      attrs1
-    }
-  },
   data () {
     return {
-      slots11: this.$slots,
-      slots: ['entity-index-table-cell', 'entity-index-table-body', 'entity-index-table-selection-cell', 'entity-index-table-expanded-row'],
+      slots: [
+        'entity-index-table-cell',
+        'entity-index-table-body',
+        'entity-index-table-selection-cell',
+        'entity-index-table-expanded-row'
+      ],
       expanded: true,
       selected: [],
-      dialog: null
+      dialog: null,
+      defaultBtnConfig: {
+        ...DefaultBtnConfig
+      },
+      defaultConfirmButtonConfig: {
+        ...DefaultBtnConfig,
+        label: 'close',
+        color: 'negative'
+      }
     }
   },
   computed: {
-    slots22 () {
-      return this.$slots
+    getPopUpButtonConfig () {
+      return Object.assign(this.defaultBtnConfig, this.popUpButtonConfig)
+    },
+    getDialogConfirmButtonConfig () {
+      return Object.assign(this.defaultConfirmButtonConfig, this.dialogConfirmButtonConfig)
     }
   },
-  // mounted () {
-  //   console.log('this.$slots', this.$slots)
-  // },
   methods: {
     onSelectedUpdate (values) {
       let selected = (this.selectionMode === 'multiple') ? [] : null

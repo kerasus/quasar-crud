@@ -41,7 +41,7 @@
                             :table="table"
                             :table-keys="tableKeys"
                             :api="attachmentListApiAddress">
-          <template v-slot:table-cell="{inputData, showConfirmRemoveDialog}">
+          <template v-slot:entity-index-table-cell="{inputData, showConfirmRemoveDialog}">
             <q-td :props="inputData.props">
               <template v-if="inputData.props.col.name === 'photo'">
                 <q-avatar>

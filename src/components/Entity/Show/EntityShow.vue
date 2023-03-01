@@ -56,8 +56,8 @@
         <entity-crud-form-builder :key="key"
                                   ref="formBuilder"
                                   v-model:value="inputData"
-                                  :readonly="true"
                                   :copy-on-click="copyOnClick"
+                                  :readonly="true"
                                   @onInputClick="onInputClick"
                                   @onCopyToClipboard="onCopyToClipboard">
           <template #entity-index-table-cell="slotProps">
@@ -197,21 +197,11 @@ export default {
     }
   },
   async created () {
-    // this.disabledAllInputs(this.inputData)
     await this.beforeGetData()
     await this.getData()
     await this.afterGetData()
   },
   methods: {
-    disabledAllInputs (inputs) {
-      inputs.forEach(input => {
-        if (input.type === 'formBuilder') {
-          this.disabledAllInputs(input.value)
-        } else {
-          input.disable = true
-        }
-      })
-    },
     goToEditView () {
       this.$router.push({ name: this.editRouteName, params: { [this.entityParamKey]: this.getEntityId() } })
     }

@@ -190,7 +190,7 @@ export default {
     editEntity(goToShowView) {
       return new Promise((resolve, reject) => {
         this.entityLoading = true
-        const formData = this.getFormData()
+        const formData = this.$refs.formBuilder.getFormData()
         this.beforeSendData(formData, this.setNewInputData)
         this.$axios
           .put(this.api, formData, { headers: this.getHeaders() })

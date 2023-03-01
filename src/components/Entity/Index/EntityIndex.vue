@@ -76,35 +76,18 @@
             </q-chip>
           </template>
         </slot>
-        <div class="slot-wrapper">
-          <slot name="before-form-builder" />
-        </div>
         <entity-crud-form-builder ref="formBuilder"
                                   v-model:value="inputData"
                                   :copy-on-click="copyOnClick"
                                   @onInputClick="onInputClick"
                                   @onInputKeyPress="onInputKeyPress"
                                   @onCopyToClipboard="onCopyToClipboard">
-          <template #entity-index-table-cell="slotProps">
-            <slot name="entity-index-table-cell"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-body="slotProps">
-            <slot name="entity-index-table-body"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-selection-cell="slotProps">
-            <slot name="entity-index-table-selection-cell"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-expanded-row="slotProps">
-            <slot name="entity-index-table-expanded-row"
+          <template v-for="slotName in slots"
+                    #[slotName]="slotProps">
+            <slot :name="slotName"
                   v-bind="slotProps || {}" />
           </template>
         </entity-crud-form-builder>
-        <div class="slot-wrapper">
-          <slot name="after-form-builder" />
-        </div>
         <div class="row">
           <div class="col">
             <div class="slot-wrapper">
@@ -127,27 +110,29 @@
                                 :change-page="changePage"
                                 @update:table-selected-values="updateSelectedValues"
                                 @search="search">
-              <template #table-cell="slotProps">
-                <slot name="table-cell"
+              <!--              slots has been declared in template before use-->
+              <template #entity-index-table-cell="slotProps">
+                <slot name="entity-index-table-cell"
                       :inputData="slotProps"
                       :showConfirmRemoveDialog="showConfirmRemoveDialog">
-                  <q-td :props="inputData.props">
+                  <q-td :props="slotProps">
                     {{ slotProps.col.value }}
                   </q-td>
                 </slot>
-              </template>
-              <template #entity-index-table-body="slotProps">
-                <slot name="entity-index-table-body"
-                      v-bind="slotProps || {}" />
               </template>
               <template #entity-index-table-selection-cell="slotProps">
                 <slot name="entity-index-table-selection-cell"
                       v-bind="slotProps || {}" />
               </template>
-              <template #entity-index-table-expanded-row="slotProps">
-                <slot name="entity-index-table-expanded-row"
-                      v-bind="slotProps || {}" />
+              <template #entity-index-table-body="{props, col}">
+                <slot name="entity-index-table-body"
+                      v-bind="props || {}" />
               </template>
+              <template #entity-index-table-expanded-row="{props, col}">
+                <slot name="entity-index-table-expanded-row"
+                      v-bind="props || {}" />
+              </template>
+
             </entity-index-table>
             <div class="slot-wrapper">
               <slot name="after-index-table" />
@@ -180,6 +165,28 @@
     </template>
   </portlet>
   <div v-else>
+    <q-dialog v-model="confirmRemoveDialog"
+              persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-icon name="warning"
+                  color="primary"
+                  size="md" />
+          <span class="q-ml-sm">{{ confirmRemoveMessage }}</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn v-close-popup
+                 flat
+                 label="انصراف"
+                 color="primary" />
+          <q-btn v-close-popup
+                 flat
+                 label="تایید"
+                 color="primary"
+                 @click="removeItem" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <entity-crud-form-builder ref="formBuilder"
                               v-model:value="inputData"
                               :disable="false"
@@ -187,37 +194,21 @@
                               @onInputClick="onInputClick"
                               @onInputKeyPress="onInputKeyPress"
                               @onCopyToClipboard="onCopyToClipboard">
-      <template #entity-index-table-cell="slotProps">
-        <slot name="entity-index-table-cell"
+      <template v-for="slotName in slots"
+                #[slotName]="slotProps">
+        <slot :name="slotName"
               v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-body="slotProps">
-        <slot name="entity-index-table-body"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-selection-cell="slotProps">
-        <slot name="entity-index-table-selection-cell"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-expanded-row="slotProps">
-        <slot name="entity-index-table-expanded-row"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #before-form-builder>
-        <div class="slot-wrapper">
-          <slot name="before-form-builder" />
-        </div>
-      </template>
-      <template #after-form-builder>
-        <div class="slot-wrapper">
-          <slot name="after-form-builder" />
-        </div>
       </template>
     </entity-crud-form-builder>
     <div class="slot-wrapper">
       <slot name="before-index-table" />
     </div>
-    <entity-index-table v-model:value="tableData"
+    <div v-if="isNoEntityModeSet"
+         class="slot-wrapper no-entity">
+      <slot name="no-entity" />
+    </div>
+    <entity-index-table v-if="!isNoEntityModeSet"
+                        v-model:value="tableData"
                         v-model:table-selected-values="tableChosenValues"
                         :table-selection-mode="tableSelectionMode"
                         :table-row-expandable="tableRowExpandable"
@@ -230,19 +221,26 @@
                         :table-grid-size="tableGridSize"
                         @update:table-selected-values="updateSelectedValues"
                         @search="search">
-      <template #entity-index-table-cell="{inputData}">
+      <template #entity-index-table-cell="slotProps">
         <slot name="entity-index-table-cell"
-              :inputData="inputData"
+              :inputData="slotProps"
               :showConfirmRemoveDialog="showConfirmRemoveDialog">
-          <q-td :props="inputData.props">
-            {{ inputData.props.value }}
+          <q-td :props="slotProps">
+            {{ slotProps.col.value }}
           </q-td>
         </slot>
       </template>
-      <template #entity-index-table-item-cell="{inputData}">
-        <slot name="table-item-cell"
-              :inputData="inputData"
-              :showConfirmRemoveDialog="showConfirmRemoveDialog" />
+      <template #entity-index-table-selection-cell="slotProps">
+        <slot name="entity-index-table-selection-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-body="{props, col}">
+        <slot name="entity-index-table-body"
+              v-bind="props || {}" />
+      </template>
+      <template #entity-index-table-expanded-row="{props, col}">
+        <slot name="entity-index-table-expanded-row"
+              v-bind="props || {}" />
       </template>
     </entity-index-table>
     <div class="slot-wrapper">
@@ -359,6 +357,15 @@ export default {
   ],
   data () {
     return {
+      slots: [
+        'entity-index-table-cell',
+        'entity-index-table-body',
+        //  this slot must be declared in template before use
+        // 'entity-index-table-selection-cell',
+        'entity-index-table-expanded-row',
+        'before-form-builder',
+        'after-form-builder'
+      ],
       removeIdKey: 'id',
       confirmRemoveDialog: false,
       confirmRemoveMessage: 'false',
@@ -376,7 +383,8 @@ export default {
           pageKey: 'page',
           rowsNumber: 0
         }
-      }
+      },
+      dataAbortController: null
     }
   },
   computed: {
@@ -390,7 +398,7 @@ export default {
       set () {}
     },
     isNoEntityModeSet () {
-      return (this.showNoEntitySlot && this.tableData.data.length === 0)
+      return (this.showNoEntitySlot && !this.entityLoading && this.tableData.data.length === 0)
     }
   },
   mounted () {
@@ -428,12 +436,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-        .then(() => {
-          that.reload()
-        })
-        .catch(() => {
-          that.entityLoading = false
-        })
+          .then(() => {
+            that.reload()
+          })
+          .catch(() => {
+            that.entityLoading = false
+          })
     },
     changePage (page) {
       this.clearData()
@@ -455,45 +463,46 @@ export default {
       if (!address) {
         address = this.api
       }
-
+      if (this.dataAbortController) {
+        this.dataAbortController.abort()
+      }
+      this.dataAbortController = new AbortController()
       this.$axios.get(address, {
+        signal: this.dataAbortController.signal,
         params: that.createParams(page)
       })
-        .then((response) => {
-          that.entityLoading = false
+          .then((response) => {
+            that.entityLoading = false
 
-          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
 
-          that.$emit('onPageChanged', response)
-          // this.key = Date.now()
-        })
-        .catch(error => {
-          that.entityLoading = false
-          that.$emit('catchError', error)
-        })
+            that.$emit('onPageChanged', response)
+            // this.key = Date.now()
+          })
+          .catch(error => {
+            that.entityLoading = false
+            that.$emit('catchError', error)
+          })
+
     },
     createParams (page) {
-      const params = {}
-      this.inputData.forEach(item => {
-        if (
-          typeof item.name !== 'undefined' &&
-            item.name !== null &&
-            typeof item.value !== 'undefined' &&
-            item.value !== null &&
-            item.value !== ''
-        ) {
-          params[item.name] = item.value
-        }
-      })
+      const filterData = this.$refs.formBuilder.getFormData()
+      const formHasFileInput = this.formHasFileInput()
 
-      if (typeof page !== 'undefined') {
-        params[this.tableKeys.pageKey] = page
+      if (typeof page === 'undefined') {
+        return filterData
       }
 
-      return params
+      if (formHasFileInput) {
+        filterData.append(this.tableKeys.pageKey, page)
+      } else {
+        filterData[this.tableKeys.pageKey] = page
+      }
+
+      return filterData
     },
     updateSelectedValues(value) {
       this.$emit('update:tableSelectedValues', value)
