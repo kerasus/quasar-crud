@@ -183,7 +183,11 @@ export default {
   },
   async created() {
     await this.beforeGetData()
-    await this.getData()
+    if (this.loadedData) {
+      this.setLoadedData(this.loadedData)
+    } else {
+      await this.getData()
+    }
     await this.afterGetData()
   },
   methods: {
