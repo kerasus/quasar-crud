@@ -53,8 +53,7 @@
         <div class="slot-wrapper">
           <slot name="before-form-builder" />
         </div>
-        <entity-crud-form-builder :key="key"
-                                  ref="formBuilder"
+        <entity-crud-form-builder ref="formBuilder"
                                   v-model:value="inputData"
                                   :copy-on-click="copyOnClick"
                                   :readonly="true"
