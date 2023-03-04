@@ -11,7 +11,7 @@
                 :item-indicator-key="'first_name'"
                 :create-route-name="'User.Create'"
                 :default-layout="false"
-                :table-grid-size="false">
+                :table-grid-size="true">
     <template #no-entity>
       THERE IS NOTHING TO SHOW RIGHT NOW.
     </template>
