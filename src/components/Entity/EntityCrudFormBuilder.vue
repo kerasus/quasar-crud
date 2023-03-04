@@ -23,6 +23,10 @@
       <slot name="entity-index-table-expanded-row"
             v-bind="slotProps || {}" />
     </template>
+    <template #entity-index-table-item-cell="slotProps">
+      <slot name="entity-index-table-item-cell"
+            v-bind="slotProps || {}" />
+    </template>
   </form-builder>
   <div class="slot-wrapper">
     <slot name="after-form-builder" />

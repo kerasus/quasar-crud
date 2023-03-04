@@ -120,6 +120,12 @@
                   </q-td>
                 </slot>
               </template>
+              <template #entity-index-table-item-cell="slotProps">
+                <slot name="entity-index-table-item-cell"
+                      :inputData="slotProps"
+                      :showConfirmRemoveDialog="showConfirmRemoveDialog">
+                </slot>
+              </template>
               <template #entity-index-table-selection-cell="slotProps">
                 <slot name="entity-index-table-selection-cell"
                       v-bind="slotProps || {}" />
@@ -228,6 +234,12 @@
           <q-td :props="slotProps">
             {{ slotProps.col.value }}
           </q-td>
+        </slot>
+      </template>
+      <template #entity-index-table-item-cell="slotProps">
+        <slot name="entity-index-table-item-cell"
+              :inputData="slotProps"
+              :showConfirmRemoveDialog="showConfirmRemoveDialog">
         </slot>
       </template>
       <template #entity-index-table-selection-cell="slotProps">
