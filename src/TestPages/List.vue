@@ -10,7 +10,8 @@
                 :table-selection-mode="'multiple'"
                 :item-indicator-key="'first_name'"
                 :create-route-name="'User.Create'"
-                :default-layout="true">
+                :default-layout="false"
+                :table-grid-size="true">
     <template #no-entity>
       THERE IS NOTHING TO SHOW RIGHT NOW.
     </template>
@@ -52,6 +53,10 @@
         {{ col.value }}
       </template>
     </template>
+    <template #entity-index-table-item-cell="{inputData, showConfirmRemoveDialog}">
+      <strong>{{ inputData.props.row.first_name }},</strong>
+    </template>
+
     <template #before-form-builder>
       <q-banner v-if="beforeFormBuilder"
                 inline-actions
@@ -149,6 +154,9 @@
       <template #entity-index-table-expanded-row="data">
         test desc
         {{ data.props }}
+      </template>
+      <template #entity-index-table-item-cell="{inputData, showConfirmRemoveDialog}">
+        <strong>{{ inputData.props.row.first_name }},</strong>
       </template>
     </entity-edit>
   </q-dialog>
