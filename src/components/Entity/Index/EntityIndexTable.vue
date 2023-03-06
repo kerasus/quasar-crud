@@ -57,8 +57,12 @@
           </q-tooltip>
         </q-btn>
       </template>
+      <template #item="props" v-if="isInGridMode">
+        <slot name="entity-index-table-item-cell"
+              :props="props" />
+      </template>
 
-      <template #body="props">
+      <template #body="props" v-if="!isInGridMode">
         <q-tr :props="props">
           <q-td v-if="tableSelectionMode !== 'none' || tableRowExpandable">
             <slot name="entity-index-table-selection-cell"
@@ -233,6 +237,9 @@ export default {
     },
     getTableGridSize() {
       return this.$q.screen.lt.sm
+    },
+    isInGridMode () {
+      return !!this.tableGridSize
     }
   },
   watch: {

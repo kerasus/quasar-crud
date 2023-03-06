@@ -2955,10 +2955,10 @@ qs@6.11.0:
   dependencies:
     side-channel "^1.0.4"
 
-quasar-form-builder@^0.1.88:
-  version "0.1.88"
-  resolved "https://registry.yarnpkg.com/quasar-form-builder/-/quasar-form-builder-0.1.88.tgz#39503d28b4356c00fa4befd5b62c9738f17b19df"
-  integrity sha512-PbPfdGr8wVxXq+1hY+Cy5MGFppDIiibHcR5hYsvdZ+oy1gp0Q3rMTGM8g3VznAZtlv5c5BHksiyYFYXv1zSW2A==
+quasar-form-builder@^0.1.89:
+  version "0.1.89"
+  resolved "https://registry.yarnpkg.com/quasar-form-builder/-/quasar-form-builder-0.1.89.tgz#a5dacee43826d4009a6d0a6ac64f5caf33d7316f"
+  integrity sha512-xTJptoz5hL1Qe1/QHHYpYkN+JAL8GNuiMeeoe0q/ix+ndftT2B03nnUDZ72m6/oAJGQkybmwsBxjB6lrnP9Gbw==
   dependencies:
     "@quasar/extras" "^1.15.10"
     core-js "^3.27.2"

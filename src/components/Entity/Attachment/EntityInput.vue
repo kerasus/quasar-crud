@@ -227,6 +227,7 @@ export default {
         'entity-index-table-cell',
         'entity-index-table-body',
         'entity-index-table-selection-cell',
+        'entity-index-table-item-cell',
         'entity-index-table-expanded-row'
       ],
       expanded: true,

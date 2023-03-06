@@ -120,15 +120,21 @@
                   </q-td>
                 </slot>
               </template>
+              <template #entity-index-table-item-cell="slotProps">
+                <slot name="entity-index-table-item-cell"
+                      :inputData="slotProps"
+                      :showConfirmRemoveDialog="showConfirmRemoveDialog">
+                </slot>
+              </template>
               <template #entity-index-table-selection-cell="slotProps">
                 <slot name="entity-index-table-selection-cell"
                       v-bind="slotProps || {}" />
               </template>
-              <template #entity-index-table-body="{props, col}">
+              <template #entity-index-table-body="{props}">
                 <slot name="entity-index-table-body"
                       v-bind="props || {}" />
               </template>
-              <template #entity-index-table-expanded-row="{props, col}">
+              <template #entity-index-table-expanded-row="{props}">
                 <slot name="entity-index-table-expanded-row"
                       v-bind="props || {}" />
               </template>
@@ -228,6 +234,12 @@
           <q-td :props="slotProps">
             {{ slotProps.col.value }}
           </q-td>
+        </slot>
+      </template>
+      <template #entity-index-table-item-cell="slotProps">
+        <slot name="entity-index-table-item-cell"
+              :inputData="slotProps"
+              :showConfirmRemoveDialog="showConfirmRemoveDialog">
         </slot>
       </template>
       <template #entity-index-table-selection-cell="slotProps">
@@ -436,12 +448,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-          .then(() => {
-            that.reload()
-          })
-          .catch(() => {
-            that.entityLoading = false
-          })
+        .then(() => {
+          that.reload()
+        })
+        .catch(() => {
+          that.entityLoading = false
+        })
     },
     changePage (page) {
       this.clearData()
@@ -471,22 +483,23 @@ export default {
         signal: this.dataAbortController.signal,
         params: that.createParams(page)
       })
-          .then((response) => {
+        .then((response) => {
+          that.entityLoading = false
+
+          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+
+          that.$emit('onPageChanged', response)
+          // this.key = Date.now()
+        })
+        .catch(thrown => {
+          if (!this.$axios.isCancel(thrown)) {
             that.entityLoading = false
-
-            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
-
-            that.$emit('onPageChanged', response)
-            // this.key = Date.now()
-          })
-          .catch(error => {
-            that.entityLoading = false
-            that.$emit('catchError', error)
-          })
-
+          }
+          that.$emit('catchError', thrown)
+        })
     },
     createParams (page) {
       const filterData = this.$refs.formBuilder.getFormData()

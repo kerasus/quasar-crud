@@ -7,6 +7,10 @@ const EntityInputComp = shallowRef(EntityInput)
 
 const EntityMixin = {
   props: {
+    loadedData: {
+      default: null,
+      type: Object
+    },
     showSaveButton: {
       default: true,
       type: Boolean
@@ -192,6 +196,12 @@ const EntityMixin = {
     },
     isEntityInput (input) {
       return input.type === EntityInputComp.value
+    },
+    setLoadedData (data) {
+      this.beforeLoadInputData(data, this.setNewInputData)
+      this.loadInputData(data)
+      this.afterLoadInputData(data, this.setNewInputData)
+      this.entityLoading = false
     },
     async getData () {
       this.entityLoading = true

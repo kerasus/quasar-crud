@@ -62,6 +62,10 @@
             <slot name="entity-index-table-selection-cell"
                   v-bind="slotProps || {}" />
           </template>
+          <template #entity-index-table-item-cell="slotProps">
+            <slot name="entity-index-table-item-cell"
+                  v-bind="slotProps || {}" />
+          </template>
           <template #entity-index-table-expanded-row="slotProps">
             <slot name="entity-index-table-expanded-row"
                   v-bind="slotProps || {}" />
@@ -102,6 +106,10 @@
       </template>
       <template #entity-index-table-selection-cell="slotProps">
         <slot name="entity-index-table-selection-cell"
+              v-bind="slotProps || {}" />
+      </template>
+      <template #entity-index-table-item-cell="slotProps">
+        <slot name="entity-index-table-item-cell"
               v-bind="slotProps || {}" />
       </template>
       <template #entity-index-table-expanded-row="slotProps">
@@ -183,7 +191,11 @@ export default {
   },
   async created() {
     await this.beforeGetData()
-    await this.getData()
+    if (this.loadedData) {
+      this.setLoadedData(this.loadedData)
+    } else {
+      await this.getData()
+    }
     await this.afterGetData()
   },
   methods: {
