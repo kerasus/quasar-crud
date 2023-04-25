@@ -495,7 +495,7 @@ export default {
           // this.key = Date.now()
         })
         .catch(thrown => {
-          if (!this.$axios.isCancel(thrown)) {
+          if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
             that.entityLoading = false
           }
           that.$emit('catchError', thrown)
