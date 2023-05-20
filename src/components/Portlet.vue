@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card v-if="defaultLayout">
     <q-toolbar>
       <section class="q-my-sm q-mr-md cursor-pointer text-subtitle1">
         <div class="doc-card-title">
@@ -18,11 +18,35 @@
     <slot name="actions" />
     <slot name="afterActions" />
   </q-card>
+  <div v-else>
+    <slot name="title"/>
+    <slot name="toolbar" />
+    <slot name="content" />
+    <slot name="actions" />
+    <slot name="afterActions" />
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Portlet'
+  name: 'Portlet',
+  props: {
+    defaultLayout: {
+      default: true,
+      type: Boolean
+    }
+  },
+  computed: {
+    getElementName () {
+      return (defaultElementName) => {
+        if (this.defaultLayout) {
+          console.log('defaultElementName', defaultElementName)
+          return defaultElementName
+        }
+        return 'div'
+      }
+    }
+  }
 }
 </script>
 

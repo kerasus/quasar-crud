@@ -1,181 +1,151 @@
 <template>
-  <q-no-ssr>
-    <template v-slot:placeholder>
-      <div></div>
-    </template>
-    <div>
-      <portlet v-if="defaultLayout"
-               class="entity-index">
-        <template #title>
-          <slot name="title">
-            {{ title }}
+  <div  class="entity-index">
+    <portlet :default-layout="defaultLayout">
+      <template #title>
+        <slot name="title">
+          {{ title }}
+        </slot>
+      </template>
+      <template #toolbar>
+        <slot name="toolbar">
+          <q-btn v-if="showSearchButton"
+                 flat
+                 round
+                 icon="search"
+                 @click="search">
+            <q-tooltip>
+              جستجو
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="createRouteName"
+                 flat
+                 round
+                 icon="add"
+                 @click="runNeededMethod(onAddButton, goToCreatePage)">
+            <q-tooltip>
+              جدید
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="showReloadButton"
+                 flat
+                 round
+                 icon="cached"
+                 @click="reload">
+            <q-tooltip>
+              بارگذاری مجدد
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="showCloseButton"
+                 v-close-popup
+                 flat
+                 round
+                 icon="cancel">
+            <q-tooltip>
+              بستن
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="showExpandButton"
+                 flat
+                 round
+                 :icon="(expanded) ? 'expand_less' : 'expand_more'"
+                 @click="expanded = !expanded">
+            <q-tooltip>
+              <span v-if="expanded">عدم نمایش فرم</span>
+              <span v-else>نمایش فرم</span>
+            </q-tooltip>
+          </q-btn>
+        </slot>
+      </template>
+      <template #content>
+        <q-expansion-item v-model="expanded">
+          <slot name="chip-area">
+            <template v-if="Array.isArray(tableSelectedValues)">
+              <q-chip v-for="(item, index) in tableSelectedValues"
+                      :key="index"
+                      clickable
+                      removable
+                      @remove="deselectItem(item)">
+                {{ getChipTitle(item) }}
+              </q-chip>
+            </template>
+            <template v-else>
+              <q-chip clickable
+                      removable
+                      @remove="deselectItem(tableSelectedValues)">
+                {{ getChipTitle(tableSelectedValues) }}
+              </q-chip>
+            </template>
           </slot>
-        </template>
-        <template #toolbar>
-          <slot name="toolbar">
-            <q-btn v-if="showSearchButton"
-                   flat
-                   round
-                   icon="search"
-                   @click="search">
-              <q-tooltip>
-                جستجو
-              </q-tooltip>
-            </q-btn>
-            <q-btn v-if="createRouteName"
-                   flat
-                   round
-                   icon="add"
-                   @click="runNeededMethod(onAddButton, goToCreatePage)">
-              <q-tooltip>
-                جدید
-              </q-tooltip>
-            </q-btn>
-            <q-btn v-if="showReloadButton"
-                   flat
-                   round
-                   icon="cached"
-                   @click="reload">
-              <q-tooltip>
-                بارگذاری مجدد
-              </q-tooltip>
-            </q-btn>
-            <q-btn v-if="showCloseButton"
-                   v-close-popup
-                   flat
-                   round
-                   icon="cancel">
-              <q-tooltip>
-                بستن
-              </q-tooltip>
-            </q-btn>
-            <q-btn v-if="showExpandButton"
-                   flat
-                   round
-                   :icon="(expanded) ? 'expand_less' : 'expand_more'"
-                   @click="expanded = !expanded">
-              <q-tooltip>
-                <span v-if="expanded">عدم نمایش فرم</span>
-                <span v-else>نمایش فرم</span>
-              </q-tooltip>
-            </q-btn>
-          </slot>
-        </template>
-        <template #content>
-          <q-expansion-item v-model="expanded">
-            <slot name="chip-area">
-              <template v-if="Array.isArray(tableSelectedValues)">
-                <q-chip v-for="(item, index) in tableSelectedValues"
-                        :key="index"
-                        clickable
-                        removable
-                        @remove="deselectItem(item)">
-                  {{ getChipTitle(item) }}
-                </q-chip>
-              </template>
-              <template v-else>
-                <q-chip clickable
-                        removable
-                        @remove="deselectItem(tableSelectedValues)">
-                  {{ getChipTitle(tableSelectedValues) }}
-                </q-chip>
-              </template>
-            </slot>
-            <entity-crud-form-builder ref="formBuilder"
-                                      v-model:value="inputData"
-                                      :copy-on-click="copyOnClick"
-                                      @onInputClick="onInputClick"
-                                      @onInputKeyPress="onInputKeyPress"
-                                      @onCopyToClipboard="onCopyToClipboard">
-              <template v-for="slotName in slots"
-                        #[slotName]="slotProps">
-                <slot :name="slotName"
-                      v-bind="slotProps || {}" />
-              </template>
-            </entity-crud-form-builder>
-            <div class="row">
-              <div class="col">
-                <div class="slot-wrapper">
-                  <slot name="before-index-table" />
-                </div>
-                <div v-if="isNoEntityModeSet"
-                     class="slot-wrapper no-entity">
-                  <slot name="no-entity" />
-                </div>
-                <entity-index-table v-if="!isNoEntityModeSet"
-                                    v-model:value="tableData"
-                                    v-model:table-selected-values="tableChosenValues"
-                                    :table-selection-mode="tableSelectionMode"
-                                    :table-row-expandable="tableRowExpandable"
-                                    :table-row-default-expand-action="tableRowDefaultExpandAction"
-                                    :columns="table.columns"
-                                    :title="title"
-                                    :row-key="rowKey"
-                                    :loading="entityLoading"
-                                    :change-page="changePage"
-                                    @update:table-selected-values="updateSelectedValues"
-                                    @search="search">
-                  <!--              slots has been declared in template before use-->
-                  <template #entity-index-table-cell="slotProps">
-                    <slot name="entity-index-table-cell"
-                          :inputData="slotProps"
-                          :showConfirmRemoveDialog="showConfirmRemoveDialog">
-                      <q-td :props="slotProps">
-                        {{ slotProps.col.value }}
-                      </q-td>
-                    </slot>
-                  </template>
-                  <template #entity-index-table-item-cell="slotProps">
-                    <slot name="entity-index-table-item-cell"
-                          :inputData="slotProps"
-                          :showConfirmRemoveDialog="showConfirmRemoveDialog">
-                    </slot>
-                  </template>
-                  <template #entity-index-table-selection-cell="slotProps">
-                    <slot name="entity-index-table-selection-cell"
-                          v-bind="slotProps || {}" />
-                  </template>
-                  <template #entity-index-table-body="{props}">
-                    <slot name="entity-index-table-body"
-                          v-bind="props || {}" />
-                  </template>
-                  <template #entity-index-table-expanded-row="{props}">
-                    <slot name="entity-index-table-expanded-row"
-                          v-bind="props || {}" />
-                  </template>
+          <entity-crud-form-builder ref="formBuilder"
+                                    v-model:value="inputData"
+                                    :copy-on-click="copyOnClick"
+                                    @onInputClick="onInputClick"
+                                    @onInputKeyPress="onInputKeyPress"
+                                    @onCopyToClipboard="onCopyToClipboard">
+            <template v-for="slotName in slots"
+                      #[slotName]="slotProps">
+              <slot :name="slotName"
+                    v-bind="slotProps || {}" />
+            </template>
+          </entity-crud-form-builder>
+          <div class="row">
+            <div class="col">
+              <div class="slot-wrapper">
+                <slot name="before-index-table" />
+              </div>
+              <div v-if="isNoEntityModeSet"
+                   class="slot-wrapper no-entity">
+                <slot name="no-entity" />
+              </div>
+              <entity-index-table v-if="!isNoEntityModeSet"
+                                  v-model:value="tableData"
+                                  v-model:table-selected-values="tableChosenValues"
+                                  :table-selection-mode="tableSelectionMode"
+                                  :table-row-expandable="tableRowExpandable"
+                                  :table-row-default-expand-action="tableRowDefaultExpandAction"
+                                  :columns="table.columns"
+                                  :title="title"
+                                  :row-key="rowKey"
+                                  :loading="entityLoading"
+                                  :change-page="changePage"
+                                  @update:table-selected-values="updateSelectedValues"
+                                  @search="search">
+                <!--              slots has been declared in template before use-->
+                <template #entity-index-table-cell="slotProps">
+                  <slot name="entity-index-table-cell"
+                        :inputData="slotProps"
+                        :showConfirmRemoveDialog="showConfirmRemoveDialog">
+                    <q-td :props="slotProps">
+                      {{ slotProps.col.value }}
+                    </q-td>
+                  </slot>
+                </template>
+                <template #entity-index-table-item-cell="slotProps">
+                  <slot name="entity-index-table-item-cell"
+                        :inputData="slotProps"
+                        :showConfirmRemoveDialog="showConfirmRemoveDialog">
+                  </slot>
+                </template>
+                <template #entity-index-table-selection-cell="slotProps">
+                  <slot name="entity-index-table-selection-cell"
+                        v-bind="slotProps || {}" />
+                </template>
+                <template #entity-index-table-body="{props}">
+                  <slot name="entity-index-table-body"
+                        v-bind="props || {}" />
+                </template>
+                <template #entity-index-table-expanded-row="{props}">
+                  <slot name="entity-index-table-expanded-row"
+                        v-bind="props || {}" />
+                </template>
 
-                </entity-index-table>
-                <div class="slot-wrapper">
-                  <slot name="after-index-table" />
-                </div>
+              </entity-index-table>
+              <div class="slot-wrapper">
+                <slot name="after-index-table" />
               </div>
             </div>
-          </q-expansion-item>
-          <q-dialog v-model="confirmRemoveDialog"
-                    persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <q-icon name="warning"
-                        color="primary"
-                        size="md" />
-                <span class="q-ml-sm">{{ confirmRemoveMessage }}</span>
-              </q-card-section>
-              <q-card-actions align="right">
-                <q-btn v-close-popup
-                       flat
-                       label="انصراف"
-                       color="primary" />
-                <q-btn v-close-popup
-                       flat
-                       label="تایید"
-                       color="primary"
-                       @click="removeItem" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
-        </template>
-      </portlet>
-      <div v-else>
+          </div>
+        </q-expansion-item>
         <q-dialog v-model="confirmRemoveDialog"
                   persistent>
           <q-card>
@@ -198,74 +168,9 @@
             </q-card-actions>
           </q-card>
         </q-dialog>
-        <entity-crud-form-builder ref="formBuilder"
-                                  v-model:value="inputData"
-                                  :disable="false"
-                                  :copy-on-click="copyOnClick"
-                                  @onInputClick="onInputClick"
-                                  @onInputKeyPress="onInputKeyPress"
-                                  @onCopyToClipboard="onCopyToClipboard">
-          <template v-for="slotName in slots"
-                    #[slotName]="slotProps">
-            <slot :name="slotName"
-                  v-bind="slotProps || {}" />
-          </template>
-        </entity-crud-form-builder>
-        <div class="slot-wrapper">
-          <slot name="before-index-table" />
-        </div>
-        <div v-if="isNoEntityModeSet"
-             class="slot-wrapper no-entity">
-          <slot name="no-entity" />
-        </div>
-        <entity-index-table v-if="!isNoEntityModeSet"
-                            v-model:value="tableData"
-                            v-model:table-selected-values="tableChosenValues"
-                            :table-selection-mode="tableSelectionMode"
-                            :table-row-expandable="tableRowExpandable"
-                            :table-row-default-expand-action="tableRowDefaultExpandAction"
-                            :columns="table.columns"
-                            :title="title"
-                            :row-key="rowKey"
-                            :loading="entityLoading"
-                            :change-page="changePage"
-                            :table-grid-size="tableGridSize"
-                            @update:table-selected-values="updateSelectedValues"
-                            @search="search">
-          <template #entity-index-table-cell="slotProps">
-            <slot name="entity-index-table-cell"
-                  :inputData="slotProps"
-                  :showConfirmRemoveDialog="showConfirmRemoveDialog">
-              <q-td :props="slotProps">
-                {{ slotProps.col.value }}
-              </q-td>
-            </slot>
-          </template>
-          <template #entity-index-table-item-cell="slotProps">
-            <slot name="entity-index-table-item-cell"
-                  :inputData="slotProps"
-                  :showConfirmRemoveDialog="showConfirmRemoveDialog">
-            </slot>
-          </template>
-          <template #entity-index-table-selection-cell="slotProps">
-            <slot name="entity-index-table-selection-cell"
-                  v-bind="slotProps || {}" />
-          </template>
-          <template #entity-index-table-body="{props, col}">
-            <slot name="entity-index-table-body"
-                  v-bind="props || {}" />
-          </template>
-          <template #entity-index-table-expanded-row="{props, col}">
-            <slot name="entity-index-table-expanded-row"
-                  v-bind="props || {}" />
-          </template>
-        </entity-index-table>
-        <div class="slot-wrapper">
-          <slot name="after-index-table" />
-        </div>
-      </div>
-    </div>
-  </q-no-ssr>
+      </template>
+    </portlet>
+  </div>
 </template>
 
 <script>
@@ -509,7 +414,7 @@ export default {
         })
     },
     createParams (page) {
-      const filterData = this.$refs.formBuilder.getFormData()
+      const filterData = this.$refs.formBuilder?.getFormData()
       const formHasFileInput = this.formHasFileInput()
 
       if (typeof page === 'undefined') {
