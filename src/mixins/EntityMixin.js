@@ -168,7 +168,7 @@ const EntityMixin = {
         return has
       }
 
-      return this.$refs.formBuilder.formHasFileInput()
+      return this.$refs.formBuilder?.formHasFileInput()
     },
     getHeaders (formData) {
       if (this.formHasFileInput(formData)) {

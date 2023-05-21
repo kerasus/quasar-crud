@@ -1,42 +1,44 @@
 <template>
-  <q-no-ssr>
-    <template v-slot:placeholder>
-      <div></div>
-    </template>
-    <div class="slot-wrapper">
-      <slot name="before-form-builder" />
-    </div>
-    <form-builder ref="formBuilder"
-                  v-model:value="computedInputs"
-                  :disable="disable"
-                  @onInputClick="onInputClick"
-                  @onClick="onInputClick"
-                  @onKeyPress="onInputKeyPress">
-      <template #entity-index-table-cell="slotProps">
-        <slot name="entity-index-table-cell"
-              v-bind="slotProps || {}" />
+  <div class="entity-crud-formBuilder">
+    <q-no-ssr>
+      <template v-slot:placeholder>
+        <div></div>
       </template>
-      <template #entity-index-table-body="slotProps">
-        <slot name="entity-index-table-body"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-selection-cell="slotProps">
-        <slot name="entity-index-table-selection-cell"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-expanded-row="slotProps">
-        <slot name="entity-index-table-expanded-row"
-              v-bind="slotProps || {}" />
-      </template>
-      <template #entity-index-table-item-cell="slotProps">
-        <slot name="entity-index-table-item-cell"
-              v-bind="slotProps || {}" />
-      </template>
-    </form-builder>
-    <div class="slot-wrapper">
-      <slot name="after-form-builder" />
-    </div>
-  </q-no-ssr>
+      <div class="slot-wrapper">
+        <slot name="before-form-builder" />
+      </div>
+      <form-builder ref="formBuilder"
+                    v-model:value="computedInputs"
+                    :disable="disable"
+                    @onInputClick="onInputClick"
+                    @onClick="onInputClick"
+                    @onKeyPress="onInputKeyPress">
+        <template #entity-index-table-cell="slotProps">
+          <slot name="entity-index-table-cell"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-body="slotProps">
+          <slot name="entity-index-table-body"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-selection-cell="slotProps">
+          <slot name="entity-index-table-selection-cell"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-expanded-row="slotProps">
+          <slot name="entity-index-table-expanded-row"
+                v-bind="slotProps || {}" />
+        </template>
+        <template #entity-index-table-item-cell="slotProps">
+          <slot name="entity-index-table-item-cell"
+                v-bind="slotProps || {}" />
+        </template>
+      </form-builder>
+      <div class="slot-wrapper">
+        <slot name="after-form-builder" />
+      </div>
+    </q-no-ssr>
+  </div>
 </template>
 
 <script>
@@ -145,10 +147,10 @@ export default {
   watch: {},
   mounted () {
     if (this.readonly) {
-      this.$refs.formBuilder.readonlyAllInputs(true)
+      this.$refs.formBuilder?.readonlyAllInputs(true)
     }
     if (this.disable) {
-      this.$refs.formBuilder.disableAllInputs(true)
+      this.$refs.formBuilder?.disableAllInputs(true)
     }
   },
   methods: {
@@ -156,9 +158,9 @@ export default {
       const targetValue = data?.event?.target?.value
       if (this.copyOnClick && targetValue) {
         copyToClipboard(targetValue)
-          .then(() => {
-            this.$emit('onCopyToClipboard', data)
-          })
+            .then(() => {
+              this.$emit('onCopyToClipboard', data)
+            })
       }
       this.$emit('onInputClick', data)
     },
@@ -182,16 +184,16 @@ export default {
       }
     },
     getValues () {
-      return this.$refs.formBuilder.getValues()
+      return this.$refs.formBuilder?.getValues()
     },
     getFormData () {
-      return this.$refs.formBuilder.getFormData()
+      return this.$refs.formBuilder?.getFormData()
     },
     formHasFileInput () {
-      return this.$refs.formBuilder.formHasFileInput()
+      return this.$refs.formBuilder?.formHasFileInput()
     },
     refreshAllInputs () {
-      this.$refs.formBuilder.clearFormBuilderInputValues()
+      this.$refs.formBuilder?.clearFormBuilderInputValues()
     },
     getEntityInput (input) {
       input.type = EntityInputComp
