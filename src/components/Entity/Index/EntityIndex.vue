@@ -76,7 +76,8 @@
               </q-chip>
             </template>
           </slot>
-          <entity-crud-form-builder ref="formBuilder"
+          <entity-crud-form-builder v-if="isCrudFormBuilderReady"
+                                    ref="formBuilder"
                                     v-model:value="inputData"
                                     :copy-on-click="copyOnClick"
                                     @onInputClick="onInputClick"
@@ -281,6 +282,7 @@ export default {
   ],
   data () {
     return {
+      isCrudFormBuilderReady: false,
       slots: [
         'entity-index-table-cell',
         'entity-index-table-body',
@@ -326,7 +328,10 @@ export default {
     }
   },
   mounted () {
-    this.search()
+    this.$nextTick(() => {
+      this.isCrudFormBuilderReady = true
+      this.search()
+    })
   },
   methods: {
     onInputKeyPress(data) {
@@ -360,12 +365,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-        .then(() => {
-          that.reload()
-        })
-        .catch(() => {
-          that.entityLoading = false
-        })
+          .then(() => {
+            that.reload()
+          })
+          .catch(() => {
+            that.entityLoading = false
+          })
     },
     changePage (page) {
       this.clearData()
@@ -395,23 +400,23 @@ export default {
         signal: this.dataAbortController.signal,
         params: that.createParams(page)
       })
-        .then((response) => {
-          that.entityLoading = false
-
-          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
-
-          that.$emit('onPageChanged', response)
-          // this.key = Date.now()
-        })
-        .catch(thrown => {
-          if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
+          .then((response) => {
             that.entityLoading = false
-          }
-          that.$emit('catchError', thrown)
-        })
+
+            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+
+            that.$emit('onPageChanged', response)
+            // this.key = Date.now()
+          })
+          .catch(thrown => {
+            if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
+              that.entityLoading = false
+            }
+            that.$emit('catchError', thrown)
+          })
     },
     createParams (page) {
       const filterData = this.$refs.formBuilder?.getFormData()
