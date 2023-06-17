@@ -14,7 +14,7 @@
     "axios": "^1.3.4",
     "moment-jalaali": "^0.9.6",
     "quasar": "^2.11.7",
-    "quasar-form-builder": "^0.1.92",
+    "quasar-form-builder": "^0.1.93",
     "shvl": "^3.0.0",
     "vue": "^3.2.47"
   },
