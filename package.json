@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.3.25",
+  "version": "0.3.26",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue ./",
@@ -8,10 +8,16 @@
     "build": "vite build",
     "serve": "vite preview"
   },
+  "files": [
+    "*",
+    "dist"
+  ],
+  "main": "./dist/quasar-crud.umd.cjs",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "import": "./quasar-crud.mjs",
+      "require": "./dist/quasar-crud.umd.cjs"
     },
     "./src/components/": "./src/components/"
   },
@@ -20,7 +26,7 @@
     "axios": "^1.3.4",
     "moment-jalaali": "^0.9.6",
     "quasar": "^2.11.7",
-    "quasar-form-builder": "^0.1.94",
+    "quasar-form-builder": "^0.1.95",
     "shvl": "^3.0.0",
     "vue": "^3.2.47"
   },
