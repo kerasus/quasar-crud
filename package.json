@@ -8,13 +8,7 @@
     "build": "vite build",
     "serve": "vite preview"
   },
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs"
-    },
-    "./src/components/": "./src/components/"
-  },
+  "main": "index.js",
   "dependencies": {
     "@quasar/extras": "^1.15.11",
     "axios": "^1.3.4",
