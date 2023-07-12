@@ -457,7 +457,7 @@ export default {
   display: none
 
 .entity-index .q-expansion-item__container .quasar-crud-index-table .q-item
-  display: block
+  display: inherit
 
 .entity-index .slot-wrapper .q-expansion-item__container .q-item
   display: flex
