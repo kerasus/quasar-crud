@@ -1,5 +1,5 @@
 <template>
-  <div  class="entity-index">
+  <div class="entity-index">
     <portlet :default-layout="defaultLayout">
       <template #title>
         <slot name="title">
@@ -106,6 +106,7 @@
                                   :table-row-default-expand-action="tableRowDefaultExpandAction"
                                   :columns="table.columns"
                                   :title="title"
+                                  :table-grid-size="tableGridSize"
                                   :row-key="rowKey"
                                   :loading="entityLoading"
                                   :change-page="changePage"
@@ -124,8 +125,7 @@
                 <template #entity-index-table-item-cell="slotProps">
                   <slot name="entity-index-table-item-cell"
                         :inputData="slotProps"
-                        :showConfirmRemoveDialog="showConfirmRemoveDialog">
-                  </slot>
+                        :showConfirmRemoveDialog="showConfirmRemoveDialog" />
                 </template>
                 <template #entity-index-table-selection-cell="slotProps">
                   <slot name="entity-index-table-selection-cell"
@@ -365,12 +365,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-          .then(() => {
-            that.reload()
-          })
-          .catch(() => {
-            that.entityLoading = false
-          })
+        .then(() => {
+          that.reload()
+        })
+        .catch(() => {
+          that.entityLoading = false
+        })
     },
     changePage (page) {
       this.clearData()
@@ -400,23 +400,23 @@ export default {
         signal: this.dataAbortController.signal,
         params: that.createParams(page)
       })
-          .then((response) => {
+        .then((response) => {
+          that.entityLoading = false
+
+          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
+          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
+          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
+          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
+
+          that.$emit('onPageChanged', response)
+          // this.key = Date.now()
+        })
+        .catch(thrown => {
+          if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
             that.entityLoading = false
-
-            that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-            that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-            that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-            that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
-
-            that.$emit('onPageChanged', response)
-            // this.key = Date.now()
-          })
-          .catch(thrown => {
-            if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
-              that.entityLoading = false
-            }
-            that.$emit('catchError', thrown)
-          })
+          }
+          that.$emit('catchError', thrown)
+        })
     },
     createParams (page) {
       const filterData = this.$refs.formBuilder?.getFormData()
@@ -455,6 +455,9 @@ export default {
 <style lang="sass">
 .entity-index .q-expansion-item__container .q-item
   display: none
+
+.entity-index .q-expansion-item__container .quasar-crud-index-table .q-item
+  display: block
 
 .entity-index .slot-wrapper .q-expansion-item__container .q-item
   display: flex
