@@ -10,11 +10,11 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@quasar/extras": "^1.16.4",
+    "@quasar/extras": "^1.16.5",
     "axios": "^1.4.0",
     "moment-jalaali": "^0.10.0",
-    "quasar": "^2.12.0",
-    "quasar-form-builder": "^0.1.100",
+    "quasar": "^2.12.2",
+    "quasar-form-builder": "^0.1.101",
     "shvl": "^3.0.0",
     "vue": "^3.2.47"
   },
