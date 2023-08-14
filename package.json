@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.3.41",
+  "version": "0.3.43",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue ./",
@@ -14,7 +14,7 @@
     "axios": "^1.4.0",
     "moment-jalaali": "^0.10.0",
     "quasar": "^2.12.2",
-    "quasar-form-builder": "^0.1.106",
+    "quasar-form-builder": "^0.1.107",
     "shvl": "^3.0.0",
     "vue": "^3.2.47"
   },

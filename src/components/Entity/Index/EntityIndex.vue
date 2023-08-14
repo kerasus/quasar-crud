@@ -328,8 +328,8 @@ export default {
     }
   },
   mounted () {
+    this.isCrudFormBuilderReady = true
     this.$nextTick(() => {
-      this.isCrudFormBuilderReady = true
       this.$nextTick(() => {
         this.search()
       })
