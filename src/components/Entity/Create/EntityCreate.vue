@@ -192,9 +192,9 @@ export default {
         this.beforeSendData(formData, this.setNewInputData)
         this.$axios.post(this.api, formData, { headers: this.getHeaders() })
           .then((response) => {
-            const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
             this.afterSendData(response)
             if (typeof goToShowView === 'undefined' || goToShowView === true) {
+              const entityId = this.getValidChainedObject(response.data, this.entityIdKeyInResponse.split('.'))
               this.$router.push({ name: this.showRouteName, params: { [this.showRouteParamKey]: entityId } })
             }
             this.entityLoading = false
@@ -202,7 +202,6 @@ export default {
           })
           .catch((err) => {
             this.entityLoading = false
-            this.getData()
             reject(err)
           })
       })
