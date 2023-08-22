@@ -80,6 +80,7 @@
               <slot name="entity-index-table-cell"
                     :props="props"
                     :col="col"
+                    :rowNumber="((crrPage - 1) * inputData.data.length) + (props.pageIndex + 1)"
                     :crrPage="crrPage"
                     :perPage="inputData.data.length"
                     :totalPages="pagesNumber">
