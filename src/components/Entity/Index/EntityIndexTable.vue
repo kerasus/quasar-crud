@@ -57,17 +57,19 @@
           </q-tooltip>
         </q-btn>
       </template>
-      <template #item="props" v-if="isInGridMode">
+      <template v-if="isInGridMode"
+                #item="props">
         <slot name="entity-index-table-item-cell"
               :props="props" />
       </template>
 
-      <template #body="props" v-if="!isInGridMode">
+      <template v-if="!isInGridMode"
+                #body="props">
         <q-tr :props="props">
           <q-td v-if="tableSelectionMode !== 'none' || tableRowExpandable">
             <slot name="entity-index-table-selection-cell"
                   :props="props">
-              <q-checkbox v-model="props.selected"/>
+              <q-checkbox v-model="props.selected" />
             </slot>
           </q-td>
           <slot name="entity-index-table-body"
@@ -77,7 +79,11 @@
                   :props="props">
               <slot name="entity-index-table-cell"
                     :props="props"
-                    :col="col">
+                    :col="col"
+                    :rowNumber="((crrPage - 1) * inputData.data.length) + (props.pageIndex + 1)"
+                    :crrPage="crrPage"
+                    :perPage="inputData.data.length"
+                    :totalPages="pagesNumber">
                 <template v-if="tableRowExpandable && tableRowDefaultExpandAction && colIndex === props.cols.length - 1">
                   <q-btn v-if="tableRowExpandable && tableRowDefaultExpandAction"
                          flat
@@ -124,12 +130,12 @@ import { inputMixin } from 'quasar-form-builder'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = (typeof formatFn !== 'undefined')
-      ? formatFn(val)
-      : val
+    ? formatFn(val)
+    : val
 
   formatted = (typeof formatted === 'undefined') || formatted === null
-      ? ''
-      : String(formatted)
+    ? ''
+    : String(formatted)
 
   formatted = formatted.split('"').join('""')
   /**
@@ -281,18 +287,18 @@ export default {
     exportTable () {
       // naive encoding to csv format
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
-          this.inputData.data.map(row => this.columns.map(col => wrapCsvValue(
-              typeof col.field === 'function'
-                  ? col.field(row)
-                  : row[typeof col.field === 'undefined' ? col.name : col.field],
-              col.format
-          )).join(','))
+        this.inputData.data.map(row => this.columns.map(col => wrapCsvValue(
+          typeof col.field === 'function'
+            ? col.field(row)
+            : row[typeof col.field === 'undefined' ? col.name : col.field],
+          col.format
+        )).join(','))
       ).join('\r\n')
 
       const status = exportFile(
-          'table-export.csv',
-          '\ufeff' + content,
-          'text/csv'
+        'table-export.csv',
+        '\ufeff' + content,
+        'text/csv'
       )
 
       if (status !== true) {
