@@ -216,6 +216,7 @@ export default {
           })
           .catch((err) => {
             // this.getData()
+            this.entityLoading = false
             reject(err)
           })
       })
