@@ -215,7 +215,7 @@ export default {
             resolve(d)
           })
           .catch((err) => {
-            this.getData()
+            // this.getData()
             reject(err)
           })
       })
