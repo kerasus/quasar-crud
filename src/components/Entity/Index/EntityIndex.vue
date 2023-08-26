@@ -420,8 +420,16 @@ export default {
           that.$emit('catchError', thrown)
         })
     },
+    removeEmptyString (filterData) {
+      Object.keys(filterData).forEach(key => {
+        if (filterData[key] === '') {
+          filterData[key] = null
+        }
+      })
+    },
     createParams (page) {
       const filterData = this.$refs.formBuilder?.getFormData()
+      this.removeEmptyString(filterData)
       const formHasFileInput = this.formHasFileInput()
 
       if (typeof page === 'undefined') {
