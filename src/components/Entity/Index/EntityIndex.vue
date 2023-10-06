@@ -342,6 +342,10 @@ export default {
       }
     },
     getChipTitle (item) {
+      if (typeof this.itemIndicatorKey === 'function') {
+        return this.itemIndicatorKey(item)
+      }
+
       const value = this.getValidChainedObject(item, this.itemIndicatorKey)
       return value || '_'
     },
