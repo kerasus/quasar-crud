@@ -80,7 +80,7 @@
                  :loading="getDialogConfirmButtonConfig.loading"
                  :disable="getDialogConfirmButtonConfig.disable"
                  :percentage="getDialogConfirmButtonConfig.percentage"
-                 @click="onConfirmed" />
+                 @click="onConfirmedBtn" />
         </template>
       </entity-index>
     </q-dialog>
@@ -219,6 +219,10 @@ export default {
       required: true,
       type: [String, Function],
       default: 'id'
+    },
+    onConfirmed: {
+      type: Function,
+      default: () => {}
     }
   },
   emits: ['onInputClick', 'onConfirmed'],
@@ -253,8 +257,9 @@ export default {
     }
   },
   methods: {
-    onConfirmed() {
+    onConfirmedBtn () {
       this.$emit('onConfirmed', this.selected)
+      this.onConfirmed(this.selected)
     },
     onInputClick(event) {
       this.$emit('onInputClick', event)
