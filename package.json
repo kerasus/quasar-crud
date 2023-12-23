@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue ./",
@@ -10,18 +10,18 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@quasar/extras": "^1.16.5",
-    "axios": "^1.4.0",
+    "@quasar/extras": "^1.16.9",
+    "axios": "^1.6.2",
     "moment-jalaali": "^0.10.0",
-    "quasar": "^2.12.2",
-    "quasar-form-builder": "^0.2.0",
+    "quasar": "^2.14.2",
+    "quasar-form-builder": "^1.0.0",
     "shvl": "^3.0.0",
-    "vue": "^3.2.47"
+    "vue": "^3.3.13"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^7.0.0",
-    "@quasar/app-vite": "^1.2.1",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@quasar/app-vite": "^1.7.1",
+    "@vitejs/plugin-vue": "^4.5.2",
     "autoprefixer": "^10.4.13",
     "eslint": "8.22.0",
     "eslint-config-standard": "^17.0.0",
@@ -31,7 +31,7 @@
     "eslint-plugin-vue": "^9.9.0",
     "postcss": "^8.4.21",
     "postcss-rtlcss": "^4.0.1",
-    "vite": "^4.0.4",
+    "vite": "^5.0.10",
     "vite-plugin-eslint": "^1.8.1",
     "vue-router": "4"
   },
