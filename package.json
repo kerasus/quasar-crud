@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue ./",
@@ -14,9 +14,8 @@
     "axios": "^1.6.2",
     "moment-jalaali": "^0.10.0",
     "quasar": "^2.14.2",
-    "quasar-form-builder": "^1.0.1",
-    "shvl": "^3.0.0",
-    "vue": "^3.3.13"
+    "quasar-form-builder": "^1.0.2",
+    "shvl": "^3.0.0"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^7.0.0",
