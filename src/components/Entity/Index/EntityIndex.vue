@@ -433,6 +433,9 @@ export default {
     },
     createParams (page) {
       const filterData = this.$refs.formBuilder?.getFormData()
+      if (!filterData) {
+        return {}
+      }
       this.removeEmptyString(filterData)
       const formHasFileInput = this.formHasFileInput()
 
