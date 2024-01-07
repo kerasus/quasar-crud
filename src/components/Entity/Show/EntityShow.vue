@@ -87,8 +87,7 @@
     </template>
   </portlet>
   <div v-else>
-    <entity-crud-form-builder :key="key"
-                              ref="formBuilder"
+    <entity-crud-form-builder ref="formBuilder"
                               v-model:value="inputData"
                               :disable="true"
                               :copy-on-click="copyOnClick"
