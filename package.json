@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue ./",
