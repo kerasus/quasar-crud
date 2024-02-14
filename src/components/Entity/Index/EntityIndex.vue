@@ -111,6 +111,9 @@
                                   :row-key="rowKey"
                                   :loading="entityLoading"
                                   :change-page="changePage"
+                                  :show-search-button="showSearchButton"
+                                  :show-export-table-button="showExportTableButton"
+                                  :show-fullscreen-button="showFullscreenButton"
                                   @update:table-selected-values="updateSelectedValues"
                                   @search="search">
                 <!--              slots has been declared in template before use-->
@@ -280,6 +283,14 @@ export default {
       default () {
         return false
       }
+    },
+    showExportTableButton: {
+      default: true,
+      type: Boolean
+    },
+    showFullscreenButton: {
+      default: true,
+      type: Boolean
     }
   },
   emits: [

@@ -27,7 +27,8 @@
                   :options="columns"
                   option-value="name"
                   style="min-width: 150px" />
-        <q-btn flat
+        <q-btn v-if="showSearchButton"
+               flat
                round
                dense
                icon="search"
@@ -37,7 +38,8 @@
             جستجو
           </q-tooltip>
         </q-btn>
-        <q-btn flat
+        <q-btn v-if="showExportTableButton"
+               flat
                round
                dense
                icon="archive"
@@ -47,7 +49,8 @@
             خروجی اکسل
           </q-tooltip>
         </q-btn>
-        <q-btn flat
+        <q-btn v-if="showFullscreenButton"
+               flat
                round
                dense
                :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
@@ -213,6 +216,18 @@ export default {
       default () {
         return false
       }
+    },
+    showSearchButton: {
+      default: true,
+      type: Boolean
+    },
+    showExportTableButton: {
+      default: true,
+      type: Boolean
+    },
+    showFullscreenButton: {
+      default: true,
+      type: Boolean
     }
   },
   emits: [
