@@ -15,7 +15,7 @@
 export default {
   name: 'ExpansionDynamicLayout',
   props: {
-    value: {
+    modelValue: {
       default: false
     },
     defaultLayout: {
@@ -26,10 +26,10 @@ export default {
   computed: {
     localValue: {
       get () {
-        return this.value
+        return this.modelValue
       },
       set (newValue) {
-        this.$emit('update:value', newValue)
+        this.$emit('update:modelValue', newValue)
       }
     }
   }
