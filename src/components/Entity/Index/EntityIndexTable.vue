@@ -14,51 +14,53 @@
              :selection="tableSelectionMode"
              @request="onChangePage">
       <template #top="props">
-        <div class="col-2 q-table__title">{{ title }}</div>
-        <q-space />
-        <q-select v-if="false"
-                  v-model="visibleColumns"
-                  multiple
-                  dense
-                  options-dense
-                  :display-value="$q.lang.table.columns"
-                  emit-value
-                  map-options
-                  :options="columns"
-                  option-value="name"
-                  style="min-width: 150px" />
-        <q-btn v-if="showSearchButton"
-               flat
-               round
-               dense
-               icon="search"
-               no-caps
-               @click="searchEvent">
-          <q-tooltip>
-            جستجو
-          </q-tooltip>
-        </q-btn>
-        <q-btn v-if="showExportTableButton"
-               flat
-               round
-               dense
-               icon="archive"
-               no-caps
-               @click="exportTable">
-          <q-tooltip>
-            خروجی اکسل
-          </q-tooltip>
-        </q-btn>
-        <q-btn v-if="showFullscreenButton"
-               flat
-               round
-               dense
-               :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-               @click="props.toggleFullscreen">
-          <q-tooltip>
-            تمام صفحه
-          </q-tooltip>
-        </q-btn>
+        <template v-if="showTableTop">
+          <div class="col-2 q-table__title">{{ title }}</div>
+          <q-space />
+          <q-select v-if="false"
+                    v-model="visibleColumns"
+                    multiple
+                    dense
+                    options-dense
+                    :display-value="$q.lang.table.columns"
+                    emit-value
+                    map-options
+                    :options="columns"
+                    option-value="name"
+                    style="min-width: 150px" />
+          <q-btn v-if="showSearchButton"
+                 flat
+                 round
+                 dense
+                 icon="search"
+                 no-caps
+                 @click="searchEvent">
+            <q-tooltip>
+              جستجو
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="showExportTableButton"
+                 flat
+                 round
+                 dense
+                 icon="archive"
+                 no-caps
+                 @click="exportTable">
+            <q-tooltip>
+              خروجی اکسل
+            </q-tooltip>
+          </q-btn>
+          <q-btn v-if="showFullscreenButton"
+                 flat
+                 round
+                 dense
+                 :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+                 @click="props.toggleFullscreen">
+            <q-tooltip>
+              تمام صفحه
+            </q-tooltip>
+          </q-btn>
+        </template>
       </template>
       <template v-if="isInGridMode"
                 #item="props">
@@ -216,6 +218,10 @@ export default {
       default () {
         return false
       }
+    },
+    showTableTop: {
+      default: true,
+      type: Boolean
     },
     showSearchButton: {
       default: true,
