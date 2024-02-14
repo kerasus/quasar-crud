@@ -57,7 +57,8 @@
         </slot>
       </template>
       <template #content>
-        <q-expansion-item v-model="expanded">
+        <expansion-dynamic-layout v-model="expanded"
+                                  :default-layout="defaultLayout">
           <slot name="chip-area">
             <template v-if="Array.isArray(tableSelectedValues)">
               <q-chip v-for="(item, index) in tableSelectedValues"
@@ -146,7 +147,7 @@
               </div>
             </div>
           </div>
-        </q-expansion-item>
+        </expansion-dynamic-layout>
         <q-dialog v-model="confirmRemoveDialog"
                   persistent>
           <q-card>
@@ -180,10 +181,16 @@ import Portlet from '../../Portlet.vue'
 import EntityIndexTable from './EntityIndexTable.vue'
 import EntityMixin from '../../../mixins/EntityMixin.js'
 import EntityCrudFormBuilder from '../EntityCrudFormBuilder.vue'
+import ExpansionDynamicLayout from '../../ExpansionDynamicLayout.vue'
 
 export default {
   name: 'EntityIndex',
-  components: { Portlet, EntityIndexTable, EntityCrudFormBuilder },
+  components: {
+    Portlet,
+    EntityIndexTable,
+    EntityCrudFormBuilder,
+    ExpansionDynamicLayout
+  },
   mixins: [inputMixin, EntityMixin],
   props: {
     showNoEntitySlot: {

@@ -19,7 +19,7 @@
     <slot name="afterActions" />
   </q-card>
   <div v-else>
-    <slot name="title"/>
+    <slot name="title" />
     <slot name="toolbar" />
     <slot name="content" />
     <slot name="actions" />
