@@ -11,10 +11,10 @@
   "main": "index.js",
   "dependencies": {
     "@quasar/extras": "^1.16.9",
-    "axios": "^1.6.2",
+    "axios": "^1.6.7",
     "moment-jalaali": "^0.10.0",
-    "quasar": "^2.14.2",
-    "quasar-form-builder": "^1.0.2",
+    "quasar": "^2.14.3",
+    "quasar-form-builder": "^1.0.6",
     "shvl": "^3.0.0"
   },
   "devDependencies": {
