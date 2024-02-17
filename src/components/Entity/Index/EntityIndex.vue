@@ -114,6 +114,7 @@
                                   :show-search-button="showSearchButton"
                                   :show-export-table-button="showExportTableButton"
                                   :show-fullscreen-button="showFullscreenButton"
+                                  :show-table-top="showTableTop"
                                   @update:table-selected-values="updateSelectedValues"
                                   @search="search">
                 <!--              slots has been declared in template before use-->
@@ -202,6 +203,10 @@ export default {
     },
     showCloseButton: {
       default: false,
+      type: Boolean
+    },
+    showTableTop: {
+      default: true,
       type: Boolean
     },
     onAddButton: {
