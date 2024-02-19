@@ -19,11 +19,21 @@
     <slot name="afterActions" />
   </q-card>
   <div v-else>
-    <slot name="title" />
-    <slot name="toolbar" />
-    <slot name="content" />
-    <slot name="actions" />
-    <slot name="afterActions" />
+    <div class="portlet-title">
+      <slot name="title" />
+    </div>
+    <div class="portlet-toolbar">
+      <slot name="toolbar" />
+    </div>
+    <div class="portlet-content">
+      <slot name="content" />
+    </div>
+    <div class="portlet-actions">
+      <slot name="actions" />
+    </div>
+    <div class="portlet-afterActions">
+      <slot name="afterActions" />
+    </div>
   </div>
 </template>
 
