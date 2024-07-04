@@ -122,9 +122,7 @@
                   <slot name="entity-index-table-cell"
                         :inputData="slotProps"
                         :showConfirmRemoveDialog="showConfirmRemoveDialog">
-                    <q-td :props="slotProps">
-                      {{ slotProps.col.value }}
-                    </q-td>
+                    {{ slotProps.col.value }}
                   </slot>
                 </template>
                 <template #entity-index-table-item-cell="slotProps">
