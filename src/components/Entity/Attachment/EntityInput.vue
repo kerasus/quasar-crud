@@ -55,8 +55,7 @@
                 v-bind="slotProps || {}" />
         </template>
         <template #after-index-table>
-          <q-btn v-close-popup
-                 class="col-12"
+          <q-btn class="col-12"
                  style="float: left;"
                  :push="getDialogConfirmButtonConfig.push"
                  :unelevated="getDialogConfirmButtonConfig.unelevated"
@@ -258,6 +257,7 @@ export default {
   },
   methods: {
     onConfirmedBtn () {
+      this.closeDialog()
       this.$emit('onConfirmed', this.selected)
       this.onConfirmed(this.selected)
     },
@@ -282,6 +282,9 @@ export default {
     },
     getItemIdentifyKey () {
       return this.itemIdentifyKey
+    },
+    closeDialog () {
+      this.dialog = false
     }
   }
 }
