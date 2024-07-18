@@ -1,7 +1,7 @@
 <template>
   <div class="entity-crud-formBuilder">
     <div class="slot-wrapper">
-      <slot name="before-form-builder"/>
+      <slot name="before-form-builder" />
     </div>
     <form-builder ref="formBuilder"
                   v-model:value="computedInputs"
@@ -11,34 +11,34 @@
                   @onKeyPress="onInputKeyPress">
       <template #entity-index-table-cell="slotProps">
         <slot name="entity-index-table-cell"
-              v-bind="slotProps || {}"/>
+              v-bind="slotProps || {}" />
       </template>
       <template #entity-index-table-body="slotProps">
         <slot name="entity-index-table-body"
-              v-bind="slotProps || {}"/>
+              v-bind="slotProps || {}" />
       </template>
       <template #entity-index-table-selection-cell="slotProps">
         <slot name="entity-index-table-selection-cell"
-              v-bind="slotProps || {}"/>
+              v-bind="slotProps || {}" />
       </template>
       <template #entity-index-table-expanded-row="slotProps">
         <slot name="entity-index-table-expanded-row"
-              v-bind="slotProps || {}"/>
+              v-bind="slotProps || {}" />
       </template>
       <template #entity-index-table-item-cell="slotProps">
         <slot name="entity-index-table-item-cell"
-              v-bind="slotProps || {}"/>
+              v-bind="slotProps || {}" />
       </template>
     </form-builder>
     <div class="slot-wrapper">
-      <slot name="after-form-builder"/>
+      <slot name="after-form-builder" />
     </div>
   </div>
 </template>
 
 <script>
 import { shallowRef } from 'vue'
-import { copyToClipboard } from 'quasar'
+// import { copyToClipboard } from 'quasar'
 import EntityMixin from '../../mixins/EntityMixin.js'
 import EntityInput from './Attachment/EntityInput.vue'
 import { FormBuilder, inputMixin } from 'quasar-form-builder'
@@ -150,14 +150,14 @@ export default {
   },
   methods: {
     onInputClick (data) {
-      const targetValue = data?.event?.target?.value
-      if (this.copyOnClick && targetValue) {
-        copyToClipboard(targetValue)
-            .then(() => {
-              this.$emit('onCopyToClipboard', data)
-            })
-      }
-      this.$emit('onInputClick', data)
+      // const targetValue = data?.event?.target?.value
+      // if (this.copyOnClick && targetValue) {
+      //   copyToClipboard(targetValue)
+      //       .then(() => {
+      //         this.$emit('onCopyToClipboard', data)
+      //       })
+      // }
+      // this.$emit('onInputClick', data)
     },
     onInputKeyPress (data) {
       this.$emit('onInputKeyPress', data)
