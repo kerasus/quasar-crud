@@ -112,7 +112,7 @@
                                   :loading="entityLoading"
                                   :change-page="changePage"
                                   :show-search-button="showSearchButton"
-                                  :show-export-table-button="false"
+                                  :show-export-table-button="showExportTableButton"
                                   :show-fullscreen-button="showFullscreenButton"
                                   :show-table-top="showTableTop"
                                   @update:table-selected-values="updateSelectedValues"

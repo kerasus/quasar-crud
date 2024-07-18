@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import { exportFile } from 'quasar'
+// import { exportFile } from 'quasar'
 import { inputMixin } from 'quasar-form-builder'
 
 function wrapCsvValue (val, formatFn) {
@@ -307,28 +307,28 @@ export default {
     },
     exportTable () {
       // naive encoding to csv format
-      const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
-        this.inputData.data.map(row => this.columns.map(col => wrapCsvValue(
-          typeof col.field === 'function'
-            ? col.field(row)
-            : row[typeof col.field === 'undefined' ? col.name : col.field],
-          col.format
-        )).join(','))
-      ).join('\r\n')
+      // const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
+      //   this.inputData.data.map(row => this.columns.map(col => wrapCsvValue(
+      //     typeof col.field === 'function'
+      //       ? col.field(row)
+      //       : row[typeof col.field === 'undefined' ? col.name : col.field],
+      //     col.format
+      //   )).join(','))
+      // ).join('\r\n')
 
-      const status = exportFile(
-        'table-export.csv',
-        '\ufeff' + content,
-        'text/csv'
-      )
-
-      if (status !== true) {
-        this.$q.notify({
-          message: 'Browser denied file download...',
-          color: 'negative',
-          icon: 'warning'
-        })
-      }
+      // const status = exportFile(
+      //   'table-export.csv',
+      //   '\ufeff' + content,
+      //   'text/csv'
+      // )
+      //
+      // if (status !== true) {
+      //   this.$q.notify({
+      //     message: 'Browser denied file download...',
+      //     color: 'negative',
+      //     icon: 'warning'
+      //   })
+      // }
     },
     prevPage () {
       if (this.inputData.pagination.page !== 1 && this.inputData.pagination.page <= this.pagesNumber) {
