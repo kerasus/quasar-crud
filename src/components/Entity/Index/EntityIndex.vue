@@ -35,15 +35,15 @@
               بارگذاری مجدد
             </q-tooltip>
           </q-btn>
-          <q-btn v-if="showCloseButton"
-                 v-close-popup
-                 flat
-                 round
-                 icon="cancel">
-            <q-tooltip>
-              بستن
-            </q-tooltip>
-          </q-btn>
+          <!--          <q-btn v-if="showCloseButton"-->
+          <!--                 v-close-popup-->
+          <!--                 flat-->
+          <!--                 round-->
+          <!--                 icon="cancel">-->
+          <!--            <q-tooltip>-->
+          <!--              بستن-->
+          <!--            </q-tooltip>-->
+          <!--          </q-btn>-->
           <q-btn v-if="showExpandButton"
                  flat
                  round
@@ -160,12 +160,11 @@
               <span class="q-ml-sm">{{ confirmRemoveMessage }}</span>
             </q-card-section>
             <q-card-actions align="right">
-              <q-btn v-close-popup
-                     flat
+              <q-btn flat
                      label="انصراف"
-                     color="primary" />
-              <q-btn v-close-popup
-                     flat
+                     color="primary"
+                     @click="closeConfirmRemoveDialog" />
+              <q-btn flat
                      label="تایید"
                      color="primary"
                      @click="removeItem" />
@@ -357,6 +356,9 @@ export default {
     })
   },
   methods: {
+    closeConfirmRemoveDialog () {
+      this.confirmRemoveDialog = false
+    },
     onInputKeyPress(data) {
       if (data.key === 'Enter' || data.keyCode === 13) {
         this.search()
@@ -385,6 +387,7 @@ export default {
       this.confirmRemoveDialog = true
     },
     removeItem () {
+      this.closeConfirmRemoveDialog()
       if (this.selectedItemToRemove === null) {
         return
       }

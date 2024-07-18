@@ -11,7 +11,7 @@
   "main": "index.js",
   "dependencies": {
     "@quasar/extras": "^1.16.11",
-    "axios": "^1.6.8",
+    "axios": "^1.6.9",
     "moment-jalaali": "^0.10.0",
     "quasar": "^2.15.2",
     "quasar-form-builder": "^2.4.1",
