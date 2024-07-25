@@ -14,7 +14,7 @@
     "axios": "^1.6.8",
     "quasar": "^2.14.2",
     "vue": "^3.4.21",
-    "quasar-form-builder": "^2.4.6",
+    "quasar-form-builder": "^2.4.7",
     "shvl": "^3.0.0"
   },
   "devDependencies": {
