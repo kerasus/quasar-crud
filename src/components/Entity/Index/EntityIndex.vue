@@ -351,7 +351,11 @@ export default {
     this.isCrudFormBuilderReady = true
     this.$nextTick(() => {
       this.$nextTick(() => {
-        this.search()
+        if (this.loadedData) {
+          this.setTableData(this.loadedData)
+        } else {
+          this.search()
+        }
       })
     })
   },
@@ -395,12 +399,12 @@ export default {
       const that = this
       this.entityLoading = true
       this.$axios.delete(this.api + '/' + this.selectedItemToRemove[this.removeIdKey])
-        .then(() => {
-          that.reload()
-        })
-        .catch(() => {
-          that.entityLoading = false
-        })
+          .then(() => {
+            that.reload()
+          })
+          .catch(() => {
+            that.entityLoading = false
+          })
     },
     changePage (page) {
       this.clearData()
@@ -430,23 +434,24 @@ export default {
         signal: this.dataAbortController.signal,
         params: that.createParams(page)
       })
-        .then((response) => {
-          that.entityLoading = false
-
-          that.tableData.data = that.getValidChainedObject(response.data, that.tableKeys.data)
-          that.tableData.pagination.rowsNumber = that.getValidChainedObject(response.data, that.tableKeys.total)
-          that.tableData.pagination.page = that.getValidChainedObject(response.data, that.tableKeys.currentPage)
-          that.tableData.pagination.rowsPerPage = that.getValidChainedObject(response.data, that.tableKeys.perPage)
-
-          that.$emit('onPageChanged', response)
-          // this.key = Date.now()
-        })
-        .catch(thrown => {
-          if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
+          .then((response) => {
             that.entityLoading = false
-          }
-          that.$emit('catchError', thrown)
-        })
+            that.setTableData(response.data)
+            that.$emit('onPageChanged', response)
+            // this.key = Date.now()
+          })
+          .catch(thrown => {
+            if (typeof this.$axios.isCancel === 'function' && !this.$axios.isCancel(thrown)) {
+              that.entityLoading = false
+            }
+            that.$emit('catchError', thrown)
+          })
+    },
+    setTableData (data) {
+      this.tableData.data = this.getValidChainedObject(data, this.tableKeys.data)
+      this.tableData.pagination.rowsNumber = this.getValidChainedObject(data, this.tableKeys.total)
+      this.tableData.pagination.page = this.getValidChainedObject(data, this.tableKeys.currentPage)
+      this.tableData.pagination.rowsPerPage = this.getValidChainedObject(data, this.tableKeys.perPage)
     },
     removeEmptyString (filterData) {
       Object.keys(filterData).forEach(key => {
