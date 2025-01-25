@@ -1,6 +1,6 @@
 {
   "name": "quasar-crud",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "quasar crud. Uses Quasar Framework and Vue.",
   "scripts": {
     "lint": "eslint --fix --ext .js,.vue ./",
@@ -13,12 +13,11 @@
     "@quasar/extras": "^1.16.9",
     "axios": "^1.6.8",
     "quasar": "^2.14.2",
-    "vue": "^3.4.21",
-    "quasar-form-builder": "^3.2.0",
-    "shvl": "^3.0.0"
+    "quasar-form-builder": "^3.5.2",
+    "shvl": "^3.0.0",
+    "vue": "^3.4.21"
   },
   "devDependencies": {
-    "vue": "^3.4.21",
     "@quasar/app-vite": "^1.8.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "autoprefixer": "^10.4.13",
@@ -32,6 +31,7 @@
     "postcss-rtlcss": "^4.0.1",
     "vite": "^5.2.8",
     "vite-plugin-eslint": "^1.8.1",
+    "vue": "^3.4.21",
     "vue-router": "4"
   },
   "browserslist": [
